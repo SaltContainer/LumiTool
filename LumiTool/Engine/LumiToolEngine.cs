@@ -102,6 +102,30 @@ namespace LumiTool.Engine
 
         }
 
+        public void CopyMaterials(AssetsFileInstance to, AssetsFileInstance from)
+        {
+            var toMats = to.file.GetAssetsOfType(AssetClassID.Material);
+            var fromMats = from.file.GetAssetsOfType(AssetClassID.Material);
+            foreach (var fromMat in fromMats)
+            {
+                var fromMatBase = manager.GetBaseField(from, fromMat);
+                var toMat = toMats.Find(m => manager.GetBaseField(to, m)["m_Name"].AsString == fromMatBase["m_Name"].AsString);
+                if (toMat != null)
+                {
+                    var toMatBase = manager.GetBaseField(to, toMat);
+                    CopyMaterial(toMat, fromMatBase);
+                }
+            }
+
+            to.parentBundle.file.BlockAndDirInfo.DirectoryInfos[0].SetNewData(to.file);
+        }
+
+        private void CopyMaterial(AssetFileInfo toMat, AssetTypeValueField fromMatBase)
+        {
+            byte[] fromData = fromMatBase.WriteToByteArray();
+            toMat.SetNewData(fromData);
+        }
+
         private TypeTreeType ConvertTemplateFieldToTypeTree(ClassDatabaseFile cldbFile, AssetTypeTemplateField templateField, int typeId, ushort scriptIndex)
         {
             return typeTreeConverter.ConvertInternal(cldbFile, templateField, typeId, scriptIndex);
