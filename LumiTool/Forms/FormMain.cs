@@ -9,6 +9,7 @@ namespace LumiTool
 
         private FormAbout aboutForm;
         private FormPlatform platformForm;
+        private FormMono monoForm;
 
         public FormMain()
         {
@@ -16,6 +17,7 @@ namespace LumiTool
 
             aboutForm = new FormAbout();
             platformForm = new FormPlatform(engine);
+            monoForm = new FormMono(engine);
 
             InitializeComponent();
         }
@@ -32,7 +34,7 @@ namespace LumiTool
 
         private void btnMono_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This feature is not implemented yet!", "WIP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            monoForm.ShowDialog();
         }
 
         private void btnMap_Click(object sender, EventArgs e)

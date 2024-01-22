@@ -32,6 +32,8 @@
 
   <ItemGroup>
     <PackageReference Include="AssetsTools.NET" Version="3.0.0" />
+    <PackageReference Include="AssetsTools.NET.MonoCecil" Version="1.0.0" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.5" />
   </ItemGroup>
 
   <ItemGroup>
