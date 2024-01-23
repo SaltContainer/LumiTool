@@ -29,6 +29,7 @@ namespace LumiTool.Forms
             checkConvertDependencies.Enabled = false;
             checkConvertMaterials.Enabled = false;
             checkConvertTextures.Enabled = false;
+            checkConvertNewMaterials.Enabled = false;
         }
 
         private void UpdateComponentsOnLoadCommon()
@@ -40,6 +41,7 @@ namespace LumiTool.Forms
             checkConvertDependencies.Enabled = active;
             checkConvertMaterials.Enabled = active;
             checkConvertTextures.Enabled = active;
+            checkConvertNewMaterials.Enabled = active;
         }
 
         private void UpdateComponentsOnLoadEditing()
@@ -116,7 +118,8 @@ namespace LumiTool.Forms
                 if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
                 if (checkConvertMaterials.Checked) engine.CopyMaterials(afileInst, afileInstV);
                 if (checkConvertTextures.Checked) engine.RepointTexturesOfMaterials(afileInst, afileInstV);
-                MessageBox.Show("Successfully converted the map bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (checkConvertNewMaterials.Checked) engine.AssignDataToNewMaterials(afileInst, afileInstV, -4213824261075451297);
+                MessageBox.Show("Successfully converted the map bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {

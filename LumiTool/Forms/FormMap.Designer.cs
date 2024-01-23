@@ -42,6 +42,7 @@
             checkConvertMaterials = new CheckBox();
             checkConvertTextures = new CheckBox();
             grpConvert = new GroupBox();
+            checkConvertNewMaterials = new CheckBox();
             grpBundle.SuspendLayout();
             grpBundleV.SuspendLayout();
             grpConvert.SuspendLayout();
@@ -189,26 +190,39 @@
             grpConvert.Controls.Add(checkConvertDependencies);
             grpConvert.Controls.Add(checkConvertMaterials);
             grpConvert.Controls.Add(checkConvertTextures);
+            grpConvert.Controls.Add(checkConvertNewMaterials);
             grpConvert.Location = new Point(12, 104);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(458, 127);
+            grpConvert.Size = new Size(458, 175);
             grpConvert.TabIndex = 13;
             grpConvert.TabStop = false;
             grpConvert.Text = "Convert Windows Existing Map Bundle";
+            // 
+            // checkConvertNewMaterials
+            // 
+            checkConvertNewMaterials.AutoSize = true;
+            checkConvertNewMaterials.Checked = true;
+            checkConvertNewMaterials.CheckState = CheckState.Checked;
+            checkConvertNewMaterials.Location = new Point(8, 122);
+            checkConvertNewMaterials.Name = "checkConvertNewMaterials";
+            checkConvertNewMaterials.Size = new Size(402, 19);
+            checkConvertNewMaterials.TabIndex = 13;
+            checkConvertNewMaterials.Text = "Assign Delphis/Map/Standard Shader to New Materials and Fix Textures";
+            checkConvertNewMaterials.UseVisualStyleBackColor = true;
             // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(488, 243);
+            ClientSize = new Size(488, 291);
             Controls.Add(grpConvert);
             Controls.Add(grpBundleV);
             Controls.Add(grpBundle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(504, 282);
-            MinimumSize = new Size(504, 282);
+            MaximumSize = new Size(504, 330);
+            MinimumSize = new Size(504, 330);
             Name = "FormMap";
             Text = "FormMap";
             FormClosed += FormMap_FormClosed;
@@ -237,5 +251,6 @@
         private CheckBox checkConvertMaterials;
         private CheckBox checkConvertTextures;
         private GroupBox grpConvert;
+        private CheckBox checkConvertNewMaterials;
     }
 }

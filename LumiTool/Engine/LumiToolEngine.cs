@@ -166,6 +166,68 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(to.parentBundle, to);
         }
 
+        public void AssignDataToNewMaterials(AssetsFileInstance to, AssetsFileInstance from, long shaderPathID)
+        {
+            var toMats = to.file.GetAssetsOfType(AssetClassID.Material);
+            var fromMats = from.file.GetAssetsOfType(AssetClassID.Material);
+
+            var toNewMats = toMats.Where(t => !fromMats.Select(f => manager.GetBaseField(from, f)["m_Name"].AsString).Contains(manager.GetBaseField(to, t)["m_Name"].AsString));
+            foreach (var toNewMat in toNewMats)
+            {
+                var toNewMatBase = manager.GetBaseField(to, toNewMat);
+                AssignShaderToMaterial(toNewMat, toNewMatBase, shaderPathID);
+                var toTexsOfMat = toNewMatBase["m_SavedProperties"]["m_TexEnvs"]["Array"];
+
+                foreach (var toTexOfMat in toTexsOfMat)
+                {
+                    long original = toTexOfMat["second"]["m_Texture"]["m_PathID"].AsLong;
+                    if (original == 0)
+                        continue;
+
+                    string newTexName = GetGameMaterialProperty(toTexOfMat["first"].AsString);
+                    if (newTexName != "")
+                        toTexOfMat["first"].AsString = newTexName;
+                }
+
+                toNewMat.SetNewData(toNewMatBase);
+            }
+
+            SetAssetsFileInBundle(to.parentBundle, to);
+        }
+
+        private void AssignShaderToMaterial(AssetFileInfo mat, AssetTypeValueField matBase, long pathID)
+        {
+            matBase["m_Shader"]["m_PathID"].AsLong = pathID;
+            mat.SetNewData(matBase);
+        }
+
+        private string GetGameMaterialProperty(string windowsProperty)
+        {
+            switch (windowsProperty)
+            {
+                case "_BumpMap":
+                    return "_BumpTex";
+                case "_DetailAlbedoMap":
+                    return "_LayerTex";
+                case "_DetailMask":
+                    return "_LayerComplexTex";
+                case "_DetailNormalMap":
+                    return "_LayerBumpTex";
+                case "_EmissionMap":
+                    return "_EmissionTex";
+                case "_MainTex":
+                    return "_MainTex";
+                case "_MetallicGlossMap":
+                    return "_MirrorMap";
+                case "_OcclusionMap":
+                    return "_BlendTex";
+                case "_ParallaxMap": // Unsure on this one, just giving it the last one
+                    return "_ComplexTex";
+                default:
+                    return "";
+            }
+        }
+
         private void ClearDependencies(AssetsFileInstance assetsFile)
         {
             assetsFile.file.Metadata.Externals.Clear();
