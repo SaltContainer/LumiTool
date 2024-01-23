@@ -1,6 +1,8 @@
 ﻿using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 using LumiTool.Data;
+using LumiTool.Forms;
+using static System.Windows.Forms.DataFormats;
 
 namespace LumiTool.Engine
 {
@@ -117,7 +119,70 @@ namespace LumiTool.Engine
                 }
             }
 
-            to.parentBundle.file.BlockAndDirInfo.DirectoryInfos[0].SetNewData(to.file);
+            SetAssetsFileInBundle(to.parentBundle, to);
+        }
+
+        public void CopyDependencies(AssetsFileInstance to, AssetsFileInstance from)
+        {
+            ClearDependencies(to);
+            foreach (var dep in from.file.Metadata.Externals)
+                to.file.Metadata.Externals.Add(dep);
+
+            SetAssetsFileInBundle(to.parentBundle, to);
+        }
+
+        public void RepointTexturesOfMaterials(AssetsFileInstance to, AssetsFileInstance from)
+        {
+            var toMats = to.file.GetAssetsOfType(AssetClassID.Material);
+            var fromMats = from.file.GetAssetsOfType(AssetClassID.Material);
+            var toTexs = to.file.GetAssetsOfType(AssetClassID.Texture2D);
+
+            foreach (var fromMat in fromMats)
+            {
+                var fromMatBase = manager.GetBaseField(from, fromMat);
+                var toMat = toMats.Find(m => manager.GetBaseField(to, m)["m_Name"].AsString == fromMatBase["m_Name"].AsString);
+                if (toMat != null)
+                {
+                    var toMatBase = manager.GetBaseField(to, toMat);
+                    var toTexsOfMat = toMatBase["m_SavedProperties"]["m_TexEnvs"]["Array"];
+
+                    foreach (var toTexOfMat in toTexsOfMat)
+                    {
+                        long original = toTexOfMat["second"]["m_Texture"]["m_PathID"].AsLong;
+                        if (original == 0)
+                            continue;
+
+                        var fromTex = manager.GetBaseField(from, original);
+
+                        var toTex = toTexs.Find(t => manager.GetBaseField(to, t)["m_Name"].AsString == fromTex["m_Name"].AsString);
+                        if (toTex != null)
+                            toTexOfMat["second"]["m_Texture"]["m_PathID"].AsLong = toTex.PathId;
+                    }
+
+                    toMat.SetNewData(toMatBase);
+                }
+            }
+
+            SetAssetsFileInBundle(to.parentBundle, to);
+        }
+
+        private void ClearDependencies(AssetsFileInstance assetsFile)
+        {
+            assetsFile.file.Metadata.Externals.Clear();
+        }
+
+        private void AddDependency(AssetsFileInstance assetsFile, string path)
+        {
+            var deps = assetsFile.file.Metadata.Externals;
+            AssetsFileExternal dep = new AssetsFileExternal()
+            {
+                VirtualAssetPathName = "",
+                PathName = path,
+                OriginalPathName = "",
+                Type = AssetsFileExternalType.Normal,
+                Guid = default,
+            };
+            deps.Add(dep);
         }
 
         private void CopyMaterial(AssetFileInfo toMat, AssetTypeValueField fromMatBase)

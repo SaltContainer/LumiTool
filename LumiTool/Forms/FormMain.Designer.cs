@@ -48,6 +48,7 @@
             // 
             // btnMono
             // 
+            btnMono.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnMono.Location = new Point(182, 65);
             btnMono.Name = "btnMono";
             btnMono.Size = new Size(164, 59);
@@ -58,6 +59,7 @@
             // 
             // btnMap
             // 
+            btnMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnMap.Location = new Point(12, 130);
             btnMap.Name = "btnMap";
             btnMap.Size = new Size(164, 59);
@@ -68,6 +70,7 @@
             // 
             // btnCharacter
             // 
+            btnCharacter.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCharacter.Location = new Point(182, 130);
             btnCharacter.Name = "btnCharacter";
             btnCharacter.Size = new Size(164, 59);
@@ -78,6 +81,7 @@
             // 
             // btnAbout
             // 
+            btnAbout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAbout.Location = new Point(271, 12);
             btnAbout.Name = "btnAbout";
             btnAbout.Size = new Size(75, 47);

@@ -24,18 +24,34 @@ namespace LumiTool.Forms
             lbBundleName.Text = "Bundle Name: ";
             lbBundleVName.Text = "Bundle Name: ";
             btnBundleSave.Enabled = false;
+            btnConvertApply.Enabled = false;
+            checkConvertPlatform.Enabled = false;
+            checkConvertDependencies.Enabled = false;
+            checkConvertMaterials.Enabled = false;
+            checkConvertTextures.Enabled = false;
         }
 
-        private void UpdateComponentsOnLoad()
+        private void UpdateComponentsOnLoadCommon()
+        {
+            bool active = bundle != null && bundleV != null;
+            btnBundleSave.Enabled = active;
+            btnConvertApply.Enabled = active;
+            checkConvertPlatform.Enabled = active;
+            checkConvertDependencies.Enabled = active;
+            checkConvertMaterials.Enabled = active;
+            checkConvertTextures.Enabled = active;
+        }
+
+        private void UpdateComponentsOnLoadEditing()
         {
             lbBundleName.Text = "Bundle Name: " + bundle.name;
-            btnBundleSave.Enabled = bundle != null && bundleV != null;
+            UpdateComponentsOnLoadCommon();
         }
 
         private void UpdateComponentsOnLoadVanilla()
         {
             lbBundleVName.Text = "Bundle Name: " + bundleV.name;
-            btnBundleSave.Enabled = bundle != null && bundleV != null;
+            UpdateComponentsOnLoadCommon();
         }
 
         private void btnBundleOpen_Click(object sender, EventArgs e)
@@ -47,7 +63,7 @@ namespace LumiTool.Forms
                     bundle = engine.LoadBundle(openFileDialog.FileName);
                     afileInst = engine.LoadAssetsFileFromBundle(bundle);
 
-                    UpdateComponentsOnLoad();
+                    UpdateComponentsOnLoadEditing();
                 }
             }
         }
@@ -92,16 +108,20 @@ namespace LumiTool.Forms
             engine.UnloadBundles();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnConvertApply_Click(object sender, EventArgs e)
         {
-            engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
-            MessageBox.Show("Successfully set platform!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            engine.CopyMaterials(afileInst, afileInstV);
-            MessageBox.Show("Successfully copied materials!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            try
+            {
+                if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
+                if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
+                if (checkConvertMaterials.Checked) engine.CopyMaterials(afileInst, afileInstV);
+                if (checkConvertTextures.Checked) engine.RepointTexturesOfMaterials(afileInst, afileInstV);
+                MessageBox.Show("Successfully converted the map bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was an exception when converting the map bundle. Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

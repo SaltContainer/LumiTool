@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMap));
             grpBundle = new GroupBox();
             lbBundleName = new Label();
             btnBundleOpen = new Button();
@@ -35,10 +36,15 @@
             grpBundleV = new GroupBox();
             lbBundleVName = new Label();
             btnBundleVOpen = new Button();
-            button1 = new Button();
-            button2 = new Button();
+            btnConvertApply = new Button();
+            checkConvertPlatform = new CheckBox();
+            checkConvertDependencies = new CheckBox();
+            checkConvertMaterials = new CheckBox();
+            checkConvertTextures = new CheckBox();
+            grpConvert = new GroupBox();
             grpBundle.SuspendLayout();
             grpBundleV.SuspendLayout();
+            grpConvert.SuspendLayout();
             SuspendLayout();
             // 
             // grpBundle
@@ -118,35 +124,91 @@
             btnBundleVOpen.UseVisualStyleBackColor = true;
             btnBundleVOpen.Click += btnBundleVOpen_Click;
             // 
-            // button1
+            // btnConvertApply
             // 
-            button1.Location = new Point(12, 104);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 44);
-            button1.TabIndex = 4;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btnConvertApply.Location = new Point(294, 15);
+            btnConvertApply.Name = "btnConvertApply";
+            btnConvertApply.Size = new Size(158, 44);
+            btnConvertApply.TabIndex = 8;
+            btnConvertApply.Text = "Execute Script";
+            btnConvertApply.UseVisualStyleBackColor = true;
+            btnConvertApply.Click += btnConvertApply_Click;
             // 
-            // button2
+            // checkConvertPlatform
             // 
-            button2.Location = new Point(130, 104);
-            button2.Name = "button2";
-            button2.Size = new Size(112, 44);
-            button2.TabIndex = 5;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            checkConvertPlatform.AutoSize = true;
+            checkConvertPlatform.Checked = true;
+            checkConvertPlatform.CheckState = CheckState.Checked;
+            checkConvertPlatform.Location = new Point(8, 22);
+            checkConvertPlatform.Name = "checkConvertPlatform";
+            checkConvertPlatform.Size = new Size(168, 19);
+            checkConvertPlatform.TabIndex = 9;
+            checkConvertPlatform.Text = "Change Platform to Switch";
+            checkConvertPlatform.UseVisualStyleBackColor = true;
+            // 
+            // checkConvertDependencies
+            // 
+            checkConvertDependencies.AutoSize = true;
+            checkConvertDependencies.Checked = true;
+            checkConvertDependencies.CheckState = CheckState.Checked;
+            checkConvertDependencies.Location = new Point(8, 47);
+            checkConvertDependencies.Name = "checkConvertDependencies";
+            checkConvertDependencies.Size = new Size(131, 19);
+            checkConvertDependencies.TabIndex = 10;
+            checkConvertDependencies.Text = "Copy Dependencies";
+            checkConvertDependencies.UseVisualStyleBackColor = true;
+            // 
+            // checkConvertMaterials
+            // 
+            checkConvertMaterials.AutoSize = true;
+            checkConvertMaterials.Checked = true;
+            checkConvertMaterials.CheckState = CheckState.Checked;
+            checkConvertMaterials.Location = new Point(8, 72);
+            checkConvertMaterials.Name = "checkConvertMaterials";
+            checkConvertMaterials.Size = new Size(105, 19);
+            checkConvertMaterials.TabIndex = 11;
+            checkConvertMaterials.Text = "Copy Materials";
+            checkConvertMaterials.UseVisualStyleBackColor = true;
+            // 
+            // checkConvertTextures
+            // 
+            checkConvertTextures.AutoSize = true;
+            checkConvertTextures.Checked = true;
+            checkConvertTextures.CheckState = CheckState.Checked;
+            checkConvertTextures.Location = new Point(8, 97);
+            checkConvertTextures.Name = "checkConvertTextures";
+            checkConvertTextures.Size = new Size(212, 19);
+            checkConvertTextures.TabIndex = 12;
+            checkConvertTextures.Text = "Adjust Texture Path IDs of Materials";
+            checkConvertTextures.UseVisualStyleBackColor = true;
+            // 
+            // grpConvert
+            // 
+            grpConvert.Controls.Add(btnConvertApply);
+            grpConvert.Controls.Add(checkConvertPlatform);
+            grpConvert.Controls.Add(checkConvertDependencies);
+            grpConvert.Controls.Add(checkConvertMaterials);
+            grpConvert.Controls.Add(checkConvertTextures);
+            grpConvert.Location = new Point(12, 104);
+            grpConvert.Name = "grpConvert";
+            grpConvert.Size = new Size(458, 127);
+            grpConvert.TabIndex = 13;
+            grpConvert.TabStop = false;
+            grpConvert.Text = "Convert Windows Existing Map Bundle";
             // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(488, 243);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(grpConvert);
             Controls.Add(grpBundleV);
             Controls.Add(grpBundle);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MaximumSize = new Size(504, 282);
+            MinimumSize = new Size(504, 282);
             Name = "FormMap";
             Text = "FormMap";
             FormClosed += FormMap_FormClosed;
@@ -155,6 +217,8 @@
             grpBundle.PerformLayout();
             grpBundleV.ResumeLayout(false);
             grpBundleV.PerformLayout();
+            grpConvert.ResumeLayout(false);
+            grpConvert.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -167,7 +231,11 @@
         private GroupBox grpBundleV;
         private Label lbBundleVName;
         private Button btnBundleVOpen;
-        private Button button1;
-        private Button button2;
+        private Button btnConvertApply;
+        private CheckBox checkConvertPlatform;
+        private CheckBox checkConvertDependencies;
+        private CheckBox checkConvertMaterials;
+        private CheckBox checkConvertTextures;
+        private GroupBox grpConvert;
     }
 }
