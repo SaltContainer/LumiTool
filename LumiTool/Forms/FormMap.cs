@@ -27,9 +27,7 @@ namespace LumiTool.Forms
             btnConvertApply.Enabled = false;
             checkConvertPlatform.Enabled = false;
             checkConvertDependencies.Enabled = false;
-            checkConvertMaterials.Enabled = false;
-            checkConvertTextures.Enabled = false;
-            checkConvertNewMaterials.Enabled = false;
+            checkConvertShaders.Enabled = false;
         }
 
         private void UpdateComponentsOnLoadCommon()
@@ -39,9 +37,7 @@ namespace LumiTool.Forms
             btnConvertApply.Enabled = active;
             checkConvertPlatform.Enabled = active;
             checkConvertDependencies.Enabled = active;
-            checkConvertMaterials.Enabled = active;
-            checkConvertTextures.Enabled = active;
-            checkConvertNewMaterials.Enabled = active;
+            checkConvertShaders.Enabled = active;
         }
 
         private void UpdateComponentsOnLoadEditing()
@@ -116,9 +112,7 @@ namespace LumiTool.Forms
             {
                 if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
                 if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
-                if (checkConvertMaterials.Checked) engine.CopyMaterials(afileInst, afileInstV);
-                if (checkConvertTextures.Checked) engine.RepointTexturesOfMaterials(afileInst, afileInstV);
-                if (checkConvertNewMaterials.Checked) engine.AssignDataToNewMaterials(afileInst, afileInstV, -4213824261075451297);
+                if (checkConvertShaders.Checked) engine.FixShadersOfMaterials(bundle, afileInst);
                 MessageBox.Show("Successfully converted the map bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)

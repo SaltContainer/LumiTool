@@ -39,10 +39,8 @@
             btnConvertApply = new Button();
             checkConvertPlatform = new CheckBox();
             checkConvertDependencies = new CheckBox();
-            checkConvertMaterials = new CheckBox();
-            checkConvertTextures = new CheckBox();
+            checkConvertShaders = new CheckBox();
             grpConvert = new GroupBox();
-            checkConvertNewMaterials = new CheckBox();
             grpBundle.SuspendLayout();
             grpBundleV.SuspendLayout();
             grpConvert.SuspendLayout();
@@ -159,70 +157,44 @@
             checkConvertDependencies.Text = "Copy Dependencies";
             checkConvertDependencies.UseVisualStyleBackColor = true;
             // 
-            // checkConvertMaterials
+            // checkConvertShaders
             // 
-            checkConvertMaterials.AutoSize = true;
-            checkConvertMaterials.Checked = true;
-            checkConvertMaterials.CheckState = CheckState.Checked;
-            checkConvertMaterials.Location = new Point(8, 72);
-            checkConvertMaterials.Name = "checkConvertMaterials";
-            checkConvertMaterials.Size = new Size(105, 19);
-            checkConvertMaterials.TabIndex = 11;
-            checkConvertMaterials.Text = "Copy Materials";
-            checkConvertMaterials.UseVisualStyleBackColor = true;
-            // 
-            // checkConvertTextures
-            // 
-            checkConvertTextures.AutoSize = true;
-            checkConvertTextures.Checked = true;
-            checkConvertTextures.CheckState = CheckState.Checked;
-            checkConvertTextures.Location = new Point(8, 97);
-            checkConvertTextures.Name = "checkConvertTextures";
-            checkConvertTextures.Size = new Size(212, 19);
-            checkConvertTextures.TabIndex = 12;
-            checkConvertTextures.Text = "Adjust Texture Path IDs of Materials";
-            checkConvertTextures.UseVisualStyleBackColor = true;
+            checkConvertShaders.AutoSize = true;
+            checkConvertShaders.Checked = true;
+            checkConvertShaders.CheckState = CheckState.Checked;
+            checkConvertShaders.Location = new Point(8, 72);
+            checkConvertShaders.Name = "checkConvertShaders";
+            checkConvertShaders.Size = new Size(121, 19);
+            checkConvertShaders.TabIndex = 11;
+            checkConvertShaders.Text = "Re-assign Shaders";
+            checkConvertShaders.UseVisualStyleBackColor = true;
             // 
             // grpConvert
             // 
             grpConvert.Controls.Add(btnConvertApply);
             grpConvert.Controls.Add(checkConvertPlatform);
             grpConvert.Controls.Add(checkConvertDependencies);
-            grpConvert.Controls.Add(checkConvertMaterials);
-            grpConvert.Controls.Add(checkConvertTextures);
-            grpConvert.Controls.Add(checkConvertNewMaterials);
+            grpConvert.Controls.Add(checkConvertShaders);
             grpConvert.Location = new Point(12, 104);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(458, 175);
+            grpConvert.Size = new Size(458, 105);
             grpConvert.TabIndex = 13;
             grpConvert.TabStop = false;
             grpConvert.Text = "Convert Windows Existing Map Bundle";
-            // 
-            // checkConvertNewMaterials
-            // 
-            checkConvertNewMaterials.AutoSize = true;
-            checkConvertNewMaterials.Checked = true;
-            checkConvertNewMaterials.CheckState = CheckState.Checked;
-            checkConvertNewMaterials.Location = new Point(8, 122);
-            checkConvertNewMaterials.Name = "checkConvertNewMaterials";
-            checkConvertNewMaterials.Size = new Size(402, 19);
-            checkConvertNewMaterials.TabIndex = 13;
-            checkConvertNewMaterials.Text = "Assign Delphis/Map/Standard Shader to New Materials and Fix Textures";
-            checkConvertNewMaterials.UseVisualStyleBackColor = true;
             // 
             // FormMap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(488, 291);
+            ClientSize = new Size(488, 221);
             Controls.Add(grpConvert);
             Controls.Add(grpBundleV);
             Controls.Add(grpBundle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(504, 330);
-            MinimumSize = new Size(504, 330);
+            MaximumSize = new Size(504, 260);
+            MinimumSize = new Size(504, 260);
             Name = "FormMap";
             Text = "FormMap";
             FormClosed += FormMap_FormClosed;
@@ -248,9 +220,7 @@
         private Button btnConvertApply;
         private CheckBox checkConvertPlatform;
         private CheckBox checkConvertDependencies;
-        private CheckBox checkConvertMaterials;
-        private CheckBox checkConvertTextures;
+        private CheckBox checkConvertShaders;
         private GroupBox grpConvert;
-        private CheckBox checkConvertNewMaterials;
     }
 }
