@@ -84,8 +84,8 @@ namespace LumiTool.Forms
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    bundleV = engine.LoadBundle(openFileDialog.FileName);
-                    afileInstV = engine.LoadAssetsFileFromBundle(bundleV);
+                    bundleV = engine.LoadBundleV(openFileDialog.FileName);
+                    afileInstV = engine.LoadAssetsFileFromBundleV(bundleV);
 
                     UpdateComponentsOnLoadVanilla();
                 }

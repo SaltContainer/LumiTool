@@ -8,6 +8,7 @@ namespace LumiTool.Engine
     public class LumiToolEngine
     {
         private AssetsManager manager;
+        private AssetsManager managerV;
         private TemplateFieldToTypeTree typeTreeConverter;
 
         private Dictionary<long, Shader> foundShaders = new Dictionary<long, Shader>();
@@ -88,12 +89,14 @@ namespace LumiTool.Engine
         public LumiToolEngine()
         {
             manager = new AssetsManager();
+            managerV = new AssetsManager();
             typeTreeConverter = new TemplateFieldToTypeTree();
         }
 
         public void UnloadBundles()
         {
             manager.UnloadAll();
+            managerV.UnloadAll();
         }
 
         public BundleFileInstance LoadBundle(string path)
@@ -101,9 +104,19 @@ namespace LumiTool.Engine
             return manager.LoadBundleFile(path, true);
         }
 
+        public BundleFileInstance LoadBundleV(string path)
+        {
+            return managerV.LoadBundleFile(path, true);
+        }
+
         public AssetsFileInstance LoadAssetsFileFromBundle(BundleFileInstance bundle)
         {
             return manager.LoadAssetsFileFromBundle(bundle, 0, false);
+        }
+
+        public AssetsFileInstance LoadAssetsFileFromBundleV(BundleFileInstance bundle)
+        {
+            return managerV.LoadAssetsFileFromBundle(bundle, 0, false);
         }
 
         public void SetAssetsFileInBundle(BundleFileInstance bundle, AssetsFileInstance assetsFile)
@@ -183,7 +196,7 @@ namespace LumiTool.Engine
             var fromMats = from.file.GetAssetsOfType(AssetClassID.Material);
             foreach (var fromMat in fromMats)
             {
-                var fromMatBase = manager.GetBaseField(from, fromMat);
+                var fromMatBase = managerV.GetBaseField(from, fromMat);
                 var toMat = toMats.Find(m => manager.GetBaseField(to, m)["m_Name"].AsString == fromMatBase["m_Name"].AsString);
                 if (toMat != null)
                 {
@@ -212,7 +225,7 @@ namespace LumiTool.Engine
 
             foreach (var fromMat in fromMats)
             {
-                var fromMatBase = manager.GetBaseField(from, fromMat);
+                var fromMatBase = managerV.GetBaseField(from, fromMat);
                 var toMat = toMats.Find(m => manager.GetBaseField(to, m)["m_Name"].AsString == fromMatBase["m_Name"].AsString);
                 if (toMat != null)
                 {
@@ -225,7 +238,7 @@ namespace LumiTool.Engine
                         if (original == 0)
                             continue;
 
-                        var fromTex = manager.GetBaseField(from, original);
+                        var fromTex = managerV.GetBaseField(from, original);
 
                         var toTex = toTexs.Find(t => manager.GetBaseField(to, t)["m_Name"].AsString == fromTex["m_Name"].AsString);
                         if (toTex != null)
@@ -244,7 +257,7 @@ namespace LumiTool.Engine
             var toMats = to.file.GetAssetsOfType(AssetClassID.Material);
             var fromMats = from.file.GetAssetsOfType(AssetClassID.Material);
 
-            var toNewMats = toMats.Where(t => !fromMats.Select(f => manager.GetBaseField(from, f)["m_Name"].AsString).Contains(manager.GetBaseField(to, t)["m_Name"].AsString));
+            var toNewMats = toMats.Where(t => !fromMats.Select(f => managerV.GetBaseField(from, f)["m_Name"].AsString).Contains(manager.GetBaseField(to, t)["m_Name"].AsString));
             foreach (var toNewMat in toNewMats)
             {
                 var toNewMatBase = manager.GetBaseField(to, toNewMat);
@@ -335,6 +348,7 @@ namespace LumiTool.Engine
             }
 
             SetAssetsFileInBundle(bundle, assetsFile);
+            ClearShaderPathIDs();
         }
 
         public void ClearShaderPathIDs()

@@ -64,6 +64,7 @@
             // 
             // FormShaderSelect
             // 
+            AcceptButton = btnSelect;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(284, 123);
@@ -76,6 +77,7 @@
             MinimizeBox = false;
             MinimumSize = new Size(300, 162);
             Name = "FormShaderSelect";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Select Shader";
             ResumeLayout(false);
         }

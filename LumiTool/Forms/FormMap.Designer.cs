@@ -148,8 +148,6 @@
             // checkConvertDependencies
             // 
             checkConvertDependencies.AutoSize = true;
-            checkConvertDependencies.Checked = true;
-            checkConvertDependencies.CheckState = CheckState.Checked;
             checkConvertDependencies.Location = new Point(8, 47);
             checkConvertDependencies.Name = "checkConvertDependencies";
             checkConvertDependencies.Size = new Size(131, 19);
@@ -180,7 +178,7 @@
             grpConvert.Size = new Size(458, 105);
             grpConvert.TabIndex = 13;
             grpConvert.TabStop = false;
-            grpConvert.Text = "Convert Windows Existing Map Bundle";
+            grpConvert.Text = "Convert Windows Map Bundle";
             // 
             // FormMap
             // 
@@ -196,7 +194,7 @@
             MaximumSize = new Size(504, 260);
             MinimumSize = new Size(504, 260);
             Name = "FormMap";
-            Text = "FormMap";
+            Text = "Map Stuff";
             FormClosed += FormMap_FormClosed;
             Shown += FormMap_Shown;
             grpBundle.ResumeLayout(false);
