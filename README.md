@@ -6,10 +6,9 @@ A tool that allows for many different manipulations on Unity Asset Bundles. Made
 
 - Setting a bundle's Platform.
 - Adding MonoScripts to a bundle's type tree.
-- Merging edited map bundles that were newly built in Unity with corresponding Vanilla BDSP bundles by automatically re-adjusting materials, shaders, and textures.
+- Converting edited map bundles that were newly built in Unity (ripped using AssetRipper) back into proper bundles for BDSP.
+  - Requires reassigning shaders. The tool will automatically ask for those.
 
 ## Planned Features
 
-- Merging newly Unity-built bundles with Vanilla BDSP bundles by automatically re-adjusting materials and shaders.
-- Adding both a MonoScript and MonoBehaviour at once with specific default values.
-- 
+I don't know! At this point we can pretty much just do everything in Unity.
