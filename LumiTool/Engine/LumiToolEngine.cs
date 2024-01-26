@@ -252,35 +252,6 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(to.parentBundle, to);
         }
 
-        public void AssignDataToNewMaterials(AssetsFileInstance to, AssetsFileInstance from, long shaderPathID)
-        {
-            var toMats = to.file.GetAssetsOfType(AssetClassID.Material);
-            var fromMats = from.file.GetAssetsOfType(AssetClassID.Material);
-
-            var toNewMats = toMats.Where(t => !fromMats.Select(f => managerV.GetBaseField(from, f)["m_Name"].AsString).Contains(manager.GetBaseField(to, t)["m_Name"].AsString));
-            foreach (var toNewMat in toNewMats)
-            {
-                var toNewMatBase = manager.GetBaseField(to, toNewMat);
-                AssignShaderToMaterial(toNewMat, toNewMatBase, -1, shaderPathID);
-                var toTexsOfMat = toNewMatBase["m_SavedProperties"]["m_TexEnvs"]["Array"];
-
-                foreach (var toTexOfMat in toTexsOfMat)
-                {
-                    long original = toTexOfMat["second"]["m_Texture"]["m_PathID"].AsLong;
-                    if (original == 0)
-                        continue;
-
-                    string newTexName = GetGameMaterialProperty(toTexOfMat["first"].AsString);
-                    if (newTexName != "")
-                        toTexOfMat["first"].AsString = newTexName;
-                }
-
-                toNewMat.SetNewData(toNewMatBase);
-            }
-
-            SetAssetsFileInBundle(to.parentBundle, to);
-        }
-
         public bool RegenerateMonoTypeTree(BundleFileInstance bundle, AssetsFileInstance assetsFile)
         {
             var file = assetsFile.file;
@@ -351,7 +322,153 @@ namespace LumiTool.Engine
             ClearShaderPathIDs();
         }
 
-        public void ClearShaderPathIDs()
+        public void CopyMonos(AssetsFileInstance to, AssetsFileInstance from)
+        {
+            var toMonos = to.file.GetAssetsOfType(AssetClassID.MonoBehaviour);
+            var fromMonos = from.file.GetAssetsOfType(AssetClassID.MonoBehaviour);
+
+            foreach (var toMono in toMonos)
+            {
+                var toMonoBase = manager.GetBaseField(to, toMono);
+                var toMonoScriptBase = manager.GetBaseField(to, to.file.GetAssetInfo(toMonoBase["m_Script"]["m_PathID"].AsLong));
+
+                string monoScriptName = toMonoScriptBase["m_Name"].AsString;
+
+                var fromMonoScript = from.file.GetAssetsOfType(AssetClassID.MonoScript).Find(s => managerV.GetBaseField(from, s)["m_Name"].AsString == monoScriptName);
+                if (fromMonoScript == null)
+                    return;
+                
+                var fromMono = fromMonos.Find(b => managerV.GetBaseField(from, b)["m_Script"]["m_PathID"].AsLong == fromMonoScript.PathId);
+                if (fromMono == null)
+                    return;
+
+                switch (monoScriptName)
+                {
+                    case "CurvePatterns":
+                        CopyCurvePatterns(to, from, toMono, fromMono);
+                        break;
+                    case "FieldCharacterEntity":
+                        CopyFieldCharacterEntity(to, from, toMono, fromMono);
+                        break;
+                    case "FieldPlayerEntity":
+                        CopyFieldPlayerEntity(to, from, toMono, fromMono);
+                        break;
+                }
+            }
+
+            SetAssetsFileInBundle(to.parentBundle, to);
+        }
+
+        private void CopyCurvePatterns(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
+        {
+            var fromMonoBase = managerV.GetBaseField(from, fromMono);
+            var toMonoBase = manager.GetBaseField(to, toMono);
+
+            var fromMonoScriptBase = managerV.GetBaseField(from, from.file.GetAssetInfo(fromMonoBase["m_Script"]["m_PathID"].AsLong));
+            var toMonoScript = to.file.GetAssetsOfType(AssetClassID.MonoScript).Find(s => manager.GetBaseField(to, s)["m_Name"].AsString == fromMonoScriptBase["m_Name"].AsString);
+
+            if (toMonoScript == null)
+                return;
+
+            toMonoBase["m_Enabled"].AsBool = fromMonoBase["m_Enabled"].AsBool;
+            toMonoBase["curves"]["Array"].AsArray = fromMonoBase["curves"]["Array"].AsArray;
+
+            toMono.SetNewData(toMonoBase);
+        }
+
+        private void CopyFieldCharacterEntity(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
+        {
+            var fromMonoBase = managerV.GetBaseField(from, fromMono);
+            var toMonoBase = manager.GetBaseField(to, toMono);
+
+            var fromMonoScriptBase = managerV.GetBaseField(from, from.file.GetAssetInfo(fromMonoBase["m_Script"]["m_PathID"].AsLong));
+            var toMonoScript = to.file.GetAssetsOfType(AssetClassID.MonoScript).Find(s => manager.GetBaseField(to, s)["m_Name"].AsString == fromMonoScriptBase["m_Name"].AsString);
+
+            if (toMonoScript == null)
+                return;
+
+            toMonoBase["m_Enabled"].AsBool = fromMonoBase["m_Enabled"].AsBool;
+            toMonoBase["m_Name"].AsString = fromMonoBase["m_Name"].AsString;
+            toMonoBase["_enityName"].AsString = fromMonoBase["_enityName"].AsString;
+            toMonoBase["IsIgnorePlayerCollision"].AsBool = fromMonoBase["IsIgnorePlayerCollision"].AsBool;
+            toMonoBase["HandScale"].AsFloat = fromMonoBase["HandScale"].AsFloat;
+
+            MergeAnimationClipsOfEntity(to, from, toMono, fromMono);
+
+            toMonoBase["_variations"]["Array"].AsArray = fromMonoBase["_variations"]["Array"].AsArray;
+            for (int i=0; i<fromMonoBase["_variations"]["Array"].Children.Count; i++)
+            {
+                var fromVariation = fromMonoBase["_variations"]["Array"].Children[i];
+                var toVariation = toMonoBase["_variations"]["Array"].Children[i];
+                toVariation["root"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["root"], fromVariation["root"]);
+                toVariation["neck"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["neck"], fromVariation["neck"]);
+                toVariation["lhand"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["lhand"], fromVariation["lhand"]);
+                toVariation["rhand"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["rhand"], fromVariation["rhand"]);
+                toVariation["faceRenderer"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["faceRenderer"], fromVariation["faceRenderer"]);
+                toVariation["eyeMaterialIndex"].AsInt = fromVariation["eyeMaterialIndex"].AsInt;
+                toVariation["mouthMaterialIndex"].AsInt = fromVariation["mouthMaterialIndex"].AsInt;
+            }
+
+            toMonoBase["_eyePatternIndex"].AsInt = fromMonoBase["_eyePatternIndex"].AsInt;
+            toMonoBase["_mouthPatternIndex"].AsInt = fromMonoBase["_mouthPatternIndex"].AsInt;
+            toMonoBase["_currentVariation"].AsInt = fromMonoBase["_currentVariation"].AsInt;
+
+            toMonoBase["_watchRenderer"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toMonoBase["_watchRenderer"], fromMonoBase["_watchRenderer"]);
+
+            toMonoBase["NeckAngle"]["x"].AsFloat = fromMonoBase["NeckAngle"]["x"].AsFloat;
+            toMonoBase["NeckAngle"]["y"].AsFloat = fromMonoBase["NeckAngle"]["y"].AsFloat;
+            toMonoBase["NeckAngle"]["z"].AsFloat = fromMonoBase["NeckAngle"]["z"].AsFloat;
+
+            toMonoBase["_updateNeckAngle"]["x"].AsFloat = fromMonoBase["_updateNeckAngle"]["x"].AsFloat;
+            toMonoBase["_updateNeckAngle"]["y"].AsFloat = fromMonoBase["_updateNeckAngle"]["y"].AsFloat;
+            toMonoBase["_updateNeckAngle"]["z"].AsFloat = fromMonoBase["_updateNeckAngle"]["z"].AsFloat;
+
+            toMonoBase["_updateNeckAngle2"]["x"].AsFloat = fromMonoBase["_updateNeckAngle2"]["x"].AsFloat;
+            toMonoBase["_updateNeckAngle2"]["y"].AsFloat = fromMonoBase["_updateNeckAngle2"]["y"].AsFloat;
+            toMonoBase["_updateNeckAngle2"]["z"].AsFloat = fromMonoBase["_updateNeckAngle2"]["z"].AsFloat;
+
+            toMonoBase["SubductionDepth"].AsFloat = fromMonoBase["SubductionDepth"].AsFloat;
+
+            toMono.SetNewData(toMonoBase);
+        }
+
+        private void CopyFieldPlayerEntity(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
+        {
+            var fromMonoBase = managerV.GetBaseField(from, fromMono);
+            var toMonoBase = manager.GetBaseField(to, toMono);
+
+            var fromMonoScriptBase = managerV.GetBaseField(from, from.file.GetAssetInfo(fromMonoBase["m_Script"]["m_PathID"].AsLong));
+            var toMonoScript = to.file.GetAssetsOfType(AssetClassID.MonoScript).Find(s => manager.GetBaseField(to, s)["m_Name"].AsString == fromMonoScriptBase["m_Name"].AsString);
+
+            if (toMonoScript == null)
+                return;
+
+            // TODO
+
+            toMono.SetNewData(toMonoBase);
+        }
+
+        private void MergeAnimationClipsOfEntity(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
+        {
+            // TODO
+        }
+
+        private long FindMatchingGameObjectName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField)
+        {
+            if (fromField["m_PathID"].AsLong == 0)
+                return 0;
+
+            var fromComponent = managerV.GetBaseField(from, from.file.GetAssetInfo(fromField["m_PathID"].AsLong));
+            var fromGO = managerV.GetBaseField(from, fromComponent["m_GameObject"]["m_PathID"].AsLong);
+
+            var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(s => manager.GetBaseField(to, s)["m_Name"].AsString == fromGO["m_Name"].AsString);
+            if (toGO == null)
+                return 0;
+
+            return toGO.PathId;
+        }
+
+        private void ClearShaderPathIDs()
         {
             foundShaders.Clear();
         }
@@ -369,33 +486,6 @@ namespace LumiTool.Engine
             matBase["m_Shader"]["m_PathID"].AsLong = pathID;
 
             mat.SetNewData(matBase);
-        }
-
-        private string GetGameMaterialProperty(string windowsProperty)
-        {
-            switch (windowsProperty)
-            {
-                case "_BumpMap":
-                    return "_BumpTex";
-                case "_DetailAlbedoMap":
-                    return "_LayerTex";
-                case "_DetailMask":
-                    return "_LayerComplexTex";
-                case "_DetailNormalMap":
-                    return "_LayerBumpTex";
-                case "_EmissionMap":
-                    return "_EmissionTex";
-                case "_MainTex":
-                    return "_MainTex";
-                case "_MetallicGlossMap":
-                    return "_MirrorMap";
-                case "_OcclusionMap":
-                    return "_BlendTex";
-                case "_ParallaxMap": // Unsure on this one, just giving it the last one
-                    return "_ComplexTex";
-                default:
-                    return "";
-            }
         }
 
         private void ClearDependencies(AssetsFileInstance assetsFile)
