@@ -2,6 +2,7 @@
 using AssetsTools.NET.Extra;
 using LumiTool.Data;
 using LumiTool.Forms.Popups;
+using System.Windows.Forms;
 
 namespace LumiTool.Engine
 {
@@ -371,7 +372,7 @@ namespace LumiTool.Engine
                 return;
 
             toMonoBase["m_Enabled"].AsBool = fromMonoBase["m_Enabled"].AsBool;
-            toMonoBase["curves"]["Array"].AsArray = fromMonoBase["curves"]["Array"].AsArray;
+            toMonoBase["curves"]["Array"].Children = fromMonoBase["curves"]["Array"].Children;
 
             toMono.SetNewData(toMonoBase);
         }
@@ -387,47 +388,7 @@ namespace LumiTool.Engine
             if (toMonoScript == null)
                 return;
 
-            toMonoBase["m_Enabled"].AsBool = fromMonoBase["m_Enabled"].AsBool;
-            toMonoBase["m_Name"].AsString = fromMonoBase["m_Name"].AsString;
-            toMonoBase["_enityName"].AsString = fromMonoBase["_enityName"].AsString;
-            toMonoBase["IsIgnorePlayerCollision"].AsBool = fromMonoBase["IsIgnorePlayerCollision"].AsBool;
-            toMonoBase["HandScale"].AsFloat = fromMonoBase["HandScale"].AsFloat;
-
-            MergeAnimationClipsOfEntity(to, from, toMono, fromMono);
-
-            toMonoBase["_variations"]["Array"].AsArray = fromMonoBase["_variations"]["Array"].AsArray;
-            for (int i=0; i<fromMonoBase["_variations"]["Array"].Children.Count; i++)
-            {
-                var fromVariation = fromMonoBase["_variations"]["Array"].Children[i];
-                var toVariation = toMonoBase["_variations"]["Array"].Children[i];
-                toVariation["root"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["root"], fromVariation["root"]);
-                toVariation["neck"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["neck"], fromVariation["neck"]);
-                toVariation["lhand"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["lhand"], fromVariation["lhand"]);
-                toVariation["rhand"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["rhand"], fromVariation["rhand"]);
-                toVariation["faceRenderer"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toVariation["faceRenderer"], fromVariation["faceRenderer"]);
-                toVariation["eyeMaterialIndex"].AsInt = fromVariation["eyeMaterialIndex"].AsInt;
-                toVariation["mouthMaterialIndex"].AsInt = fromVariation["mouthMaterialIndex"].AsInt;
-            }
-
-            toMonoBase["_eyePatternIndex"].AsInt = fromMonoBase["_eyePatternIndex"].AsInt;
-            toMonoBase["_mouthPatternIndex"].AsInt = fromMonoBase["_mouthPatternIndex"].AsInt;
-            toMonoBase["_currentVariation"].AsInt = fromMonoBase["_currentVariation"].AsInt;
-
-            toMonoBase["_watchRenderer"]["m_PathID"].AsLong = FindMatchingGameObjectName(to, from, toMonoBase["_watchRenderer"], fromMonoBase["_watchRenderer"]);
-
-            toMonoBase["NeckAngle"]["x"].AsFloat = fromMonoBase["NeckAngle"]["x"].AsFloat;
-            toMonoBase["NeckAngle"]["y"].AsFloat = fromMonoBase["NeckAngle"]["y"].AsFloat;
-            toMonoBase["NeckAngle"]["z"].AsFloat = fromMonoBase["NeckAngle"]["z"].AsFloat;
-
-            toMonoBase["_updateNeckAngle"]["x"].AsFloat = fromMonoBase["_updateNeckAngle"]["x"].AsFloat;
-            toMonoBase["_updateNeckAngle"]["y"].AsFloat = fromMonoBase["_updateNeckAngle"]["y"].AsFloat;
-            toMonoBase["_updateNeckAngle"]["z"].AsFloat = fromMonoBase["_updateNeckAngle"]["z"].AsFloat;
-
-            toMonoBase["_updateNeckAngle2"]["x"].AsFloat = fromMonoBase["_updateNeckAngle2"]["x"].AsFloat;
-            toMonoBase["_updateNeckAngle2"]["y"].AsFloat = fromMonoBase["_updateNeckAngle2"]["y"].AsFloat;
-            toMonoBase["_updateNeckAngle2"]["z"].AsFloat = fromMonoBase["_updateNeckAngle2"]["z"].AsFloat;
-
-            toMonoBase["SubductionDepth"].AsFloat = fromMonoBase["SubductionDepth"].AsFloat;
+            CopyFieldCharacterEntityFields(to, from, toMonoBase, fromMonoBase);
 
             toMono.SetNewData(toMonoBase);
         }
@@ -443,17 +404,134 @@ namespace LumiTool.Engine
             if (toMonoScript == null)
                 return;
 
-            // TODO
+            CopyFieldCharacterEntityFields(to, from, toMonoBase, fromMonoBase);
+            CopyFieldPlayerEntityFields(to, from, toMonoBase, fromMonoBase);
 
             toMono.SetNewData(toMonoBase);
         }
 
-        private void MergeAnimationClipsOfEntity(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
+        private void CopyFieldCharacterEntityFields(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toMonoBase, AssetTypeValueField fromMonoBase)
         {
-            // TODO
+            toMonoBase["m_Enabled"].AsBool = fromMonoBase["m_Enabled"].AsBool;
+            toMonoBase["m_Name"].AsString = fromMonoBase["m_Name"].AsString;
+            toMonoBase["_enityName"].AsString = fromMonoBase["_enityName"].AsString;
+            toMonoBase["IsIgnorePlayerCollision"].AsBool = fromMonoBase["IsIgnorePlayerCollision"].AsBool;
+            toMonoBase["HandScale"].AsFloat = fromMonoBase["HandScale"].AsFloat;
+
+            MergeAnimationClipsOfEntity(to, from, toMonoBase, fromMonoBase);
+
+            toMonoBase["_variations"]["Array"].Children = fromMonoBase["_variations"]["Array"].Children;
+            for (int i=0; i<fromMonoBase["_variations"]["Array"].Children.Count; i++)
+            {
+                var fromVariation = fromMonoBase["_variations"]["Array"].Children[i];
+                var toVariation = toMonoBase["_variations"]["Array"].Children[i];
+                toVariation["root"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["root"], fromVariation["root"], AssetClassID.Transform);
+                toVariation["neck"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["neck"], fromVariation["neck"], AssetClassID.Transform);
+                toVariation["lhand"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["lhand"], fromVariation["lhand"], AssetClassID.Transform);
+                toVariation["rhand"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["rhand"], fromVariation["rhand"], AssetClassID.Transform);
+                toVariation["faceRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["faceRenderer"], fromVariation["faceRenderer"], AssetClassID.SkinnedMeshRenderer);
+                toVariation["eyeMaterialIndex"].AsInt = fromVariation["eyeMaterialIndex"].AsInt;
+                toVariation["mouthMaterialIndex"].AsInt = fromVariation["mouthMaterialIndex"].AsInt;
+            }
+
+            toMonoBase["_eyePatternIndex"].AsInt = fromMonoBase["_eyePatternIndex"].AsInt;
+            toMonoBase["_mouthPatternIndex"].AsInt = fromMonoBase["_mouthPatternIndex"].AsInt;
+            toMonoBase["_currentVariation"].AsInt = fromMonoBase["_currentVariation"].AsInt;
+
+            toMonoBase["_watchRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_watchRenderer"], fromMonoBase["_watchRenderer"], AssetClassID.SkinnedMeshRenderer);
+
+            toMonoBase["NeckAngle"]["x"].AsFloat = fromMonoBase["NeckAngle"]["x"].AsFloat;
+            toMonoBase["NeckAngle"]["y"].AsFloat = fromMonoBase["NeckAngle"]["y"].AsFloat;
+            toMonoBase["NeckAngle"]["z"].AsFloat = fromMonoBase["NeckAngle"]["z"].AsFloat;
+
+            toMonoBase["_updateNeckAngle"]["x"].AsFloat = fromMonoBase["_updateNeckAngle"]["x"].AsFloat;
+            toMonoBase["_updateNeckAngle"]["y"].AsFloat = fromMonoBase["_updateNeckAngle"]["y"].AsFloat;
+            toMonoBase["_updateNeckAngle"]["z"].AsFloat = fromMonoBase["_updateNeckAngle"]["z"].AsFloat;
+
+            toMonoBase["_updateNeckAngle2"]["x"].AsFloat = fromMonoBase["_updateNeckAngle2"]["x"].AsFloat;
+            toMonoBase["_updateNeckAngle2"]["y"].AsFloat = fromMonoBase["_updateNeckAngle2"]["y"].AsFloat;
+            toMonoBase["_updateNeckAngle2"]["z"].AsFloat = fromMonoBase["_updateNeckAngle2"]["z"].AsFloat;
+
+            toMonoBase["SubductionDepth"].AsFloat = fromMonoBase["SubductionDepth"].AsFloat;
         }
 
-        private long FindMatchingGameObjectName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField)
+        private void CopyFieldPlayerEntityFields(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toMonoBase, AssetTypeValueField fromMonoBase)
+        {
+            toMonoBase["_hatRenderers"]["Array"].Children = fromMonoBase["_hatRenderers"]["Array"].Children;
+            for (int i=0; i<fromMonoBase["_hatRenderers"]["Array"].Children.Count; i++)
+            {
+                var fromRenderer = fromMonoBase["_hatRenderers"]["Array"].Children[i];
+                var toRenderer = toMonoBase["_hatRenderers"]["Array"].Children[i];
+                toRenderer["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer);
+            }
+
+            toMonoBase["_shoesRenderers"]["Array"].Children = fromMonoBase["_shoesRenderers"]["Array"].Children;
+            for (int i = 0; i < fromMonoBase["_shoesRenderers"]["Array"].Children.Count; i++)
+            {
+                var fromRenderer = fromMonoBase["_shoesRenderers"]["Array"].Children[i];
+                var toRenderer = toMonoBase["_shoesRenderers"]["Array"].Children[i];
+                toRenderer["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer);
+            }
+
+            toMonoBase["_meshGroup"]["m_PathID"].AsLong = FindGameObjectPathIDFromName(to, from, toMonoBase["_meshGroup"], fromMonoBase["_meshGroup"]);
+            toMonoBase["_bicycleObject"]["m_PathID"].AsLong = FindGameObjectPathIDFromName(to, from, toMonoBase["_bicycleObject"], fromMonoBase["_bicycleObject"]);
+
+            toMonoBase["_rodRenderers"]["Array"].Children = fromMonoBase["_rodRenderers"]["Array"].Children;
+            for (int i = 0; i < fromMonoBase["_rodRenderers"]["Array"].Children.Count; i++)
+            {
+                var fromRenderer = fromMonoBase["_rodRenderers"]["Array"].Children[i];
+                var toRenderer = toMonoBase["_rodRenderers"]["Array"].Children[i];
+                toRenderer["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer);
+            }
+
+            toMonoBase["_podRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_podRenderer"], fromMonoBase["_podRenderer"], AssetClassID.SkinnedMeshRenderer);
+            toMonoBase["_beadaruRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_beadaruRenderer"], fromMonoBase["_beadaruRenderer"], AssetClassID.SkinnedMeshRenderer);
+            toMonoBase["_mukuhawkRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_mukuhawkRenderer"], fromMonoBase["_mukuhawkRenderer"], AssetClassID.SkinnedMeshRenderer);
+            toMonoBase["_bicycleColors"]["Array"].Children = fromMonoBase["_bicycleColors"]["Array"].Children;
+            toMonoBase["_bicycleRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_bicycleRenderer"], fromMonoBase["_bicycleRenderer"], AssetClassID.SkinnedMeshRenderer);
+            toMonoBase["_bicycleMaterialIndex"].AsInt = fromMonoBase["_bicycleMaterialIndex"].AsInt;
+
+            toMonoBase["InputMoveVector"]["x"].AsFloat = fromMonoBase["InputMoveVector"]["x"].AsFloat;
+            toMonoBase["InputMoveVector"]["y"].AsFloat = fromMonoBase["InputMoveVector"]["y"].AsFloat;
+            toMonoBase["InputMoveVector"]["z"].AsFloat = fromMonoBase["InputMoveVector"]["z"].AsFloat;
+
+            toMonoBase["FormType"].AsInt = fromMonoBase["FormType"].AsInt;
+            toMonoBase["ForcePlayNaminoriEffect"].AsBool = fromMonoBase["ForcePlayNaminoriEffect"].AsBool;
+        }
+
+        private void MergeAnimationClipsOfEntity(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toMonoBase, AssetTypeValueField fromMonoBase)
+        {
+            for (int i=toMonoBase["_animationPlayer"]["_clips"]["Array"].Children.Count; i<fromMonoBase["_animationPlayer"]["_clips"]["Array"].Children.Count; i++)
+            {
+                var newClip = ValueBuilder.DefaultValueFieldFromArrayTemplate(toMonoBase["_animationPlayer"]["_clips"]["Array"]);
+                toMonoBase["_animationPlayer"]["_clips"]["Array"].Children.Add(newClip);
+            }
+
+            for (int i=0; i<toMonoBase["_animationPlayer"]["_clips"]["Array"].Children.Count; i++)
+            {
+                long toClipPathID = toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_PathID"].AsLong;
+                if (toClipPathID != 0)
+                    continue;
+
+                long clipPathID = FindAnimationClipPathIDFromName(to, from, toMonoBase["_animationPlayer"]["_clips"]["Array"][i], fromMonoBase["_animationPlayer"]["_clips"]["Array"][i]);
+                toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_PathID"].AsLong = clipPathID;
+            }
+        }
+
+        private long FindAnimationClipPathIDFromName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField)
+        {
+            if (fromField["m_PathID"].AsLong == 0)
+                return 0;
+
+            string clipName = managerV.GetBaseField(from, fromField["m_PathID"].AsLong)["m_Name"].AsString;
+            var toClip = to.file.GetAssetsOfType(AssetClassID.AnimationClip).Find(c => manager.GetBaseField(to, c)["m_Name"].AsString == clipName);
+            if (toClip == null)
+                return 0;
+
+            return toClip.PathId;
+        }
+
+        private long FindComponentPathIDFromGameObjectName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField, AssetClassID klass)
         {
             if (fromField["m_PathID"].AsLong == 0)
                 return 0;
@@ -461,7 +539,27 @@ namespace LumiTool.Engine
             var fromComponent = managerV.GetBaseField(from, from.file.GetAssetInfo(fromField["m_PathID"].AsLong));
             var fromGO = managerV.GetBaseField(from, fromComponent["m_GameObject"]["m_PathID"].AsLong);
 
-            var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(s => manager.GetBaseField(to, s)["m_Name"].AsString == fromGO["m_Name"].AsString);
+            var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(g => manager.GetBaseField(to, g)["m_Name"].AsString == fromGO["m_Name"].AsString);
+            if (toGO == null)
+                return 0;
+
+            var toGOBase = manager.GetBaseField(to, toGO);
+            var toComponent = to.file.GetAssetsOfType(klass).Find(a => toGOBase["m_Component"]["Array"].Children.Any(c => c["component"]["m_PathID"].AsLong == a.PathId));
+            if (toComponent == null)
+                return 0;
+
+            return toComponent.PathId;
+        }
+
+        private long FindGameObjectPathIDFromName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField)
+        {
+            if (fromField["m_PathID"].AsLong == 0)
+                return 0;
+
+            var fromComponent = managerV.GetBaseField(from, from.file.GetAssetInfo(fromField["m_PathID"].AsLong));
+            var fromGO = managerV.GetBaseField(from, fromComponent["m_GameObject"]["m_PathID"].AsLong);
+
+            var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(g => manager.GetBaseField(to, g)["m_Name"].AsString == fromGO["m_Name"].AsString);
             if (toGO == null)
                 return 0;
 

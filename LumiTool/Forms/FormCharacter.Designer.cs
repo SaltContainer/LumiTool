@@ -35,7 +35,6 @@
             checkConvertDependencies = new CheckBox();
             checkConvertShaders = new CheckBox();
             checkConvertCopyMonos = new CheckBox();
-            checkConvertMergeAnims = new CheckBox();
             grpBundleV = new GroupBox();
             lbBundleVName = new Label();
             btnBundleVOpen = new Button();
@@ -55,10 +54,9 @@
             grpConvert.Controls.Add(checkConvertDependencies);
             grpConvert.Controls.Add(checkConvertShaders);
             grpConvert.Controls.Add(checkConvertCopyMonos);
-            grpConvert.Controls.Add(checkConvertMergeAnims);
             grpConvert.Location = new Point(12, 104);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(458, 155);
+            grpConvert.Size = new Size(458, 125);
             grpConvert.TabIndex = 16;
             grpConvert.TabStop = false;
             grpConvert.Text = "Convert Windows Character Bundle";
@@ -118,18 +116,6 @@
             checkConvertCopyMonos.TabIndex = 12;
             checkConvertCopyMonos.Text = "Copy MonoBehaviours";
             checkConvertCopyMonos.UseVisualStyleBackColor = true;
-            // 
-            // checkConvertMergeAnims
-            // 
-            checkConvertMergeAnims.AutoSize = true;
-            checkConvertMergeAnims.Checked = true;
-            checkConvertMergeAnims.CheckState = CheckState.Checked;
-            checkConvertMergeAnims.Location = new Point(8, 122);
-            checkConvertMergeAnims.Name = "checkConvertMergeAnims";
-            checkConvertMergeAnims.Size = new Size(148, 19);
-            checkConvertMergeAnims.TabIndex = 13;
-            checkConvertMergeAnims.Text = "Merge Animation Clips";
-            checkConvertMergeAnims.UseVisualStyleBackColor = true;
             // 
             // grpBundleV
             // 
@@ -212,15 +198,15 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(488, 271);
+            ClientSize = new Size(488, 241);
             Controls.Add(grpConvert);
             Controls.Add(grpBundleV);
             Controls.Add(grpBundle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(504, 310);
-            MinimumSize = new Size(504, 310);
+            MaximumSize = new Size(504, 280);
+            MinimumSize = new Size(504, 280);
             Name = "FormCharacter";
             Text = "Character Stuff";
             FormClosed += FormCharacter_FormClosed;
@@ -249,6 +235,5 @@
         private Button btnBundleOpen;
         private Button btnBundleSave;
         private CheckBox checkConvertCopyMonos;
-        private CheckBox checkConvertMergeAnims;
     }
 }
