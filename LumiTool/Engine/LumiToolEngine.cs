@@ -1,6 +1,7 @@
 ﻿using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 using LumiTool.Data;
+using LumiTool.Forms;
 using LumiTool.Forms.Popups;
 using System.Windows.Forms;
 
@@ -360,6 +361,38 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(to.parentBundle, to);
         }
 
+        public void AdjustRendererBones(AssetsFileInstance to, AssetsFileInstance from)
+        {
+            var toRenderers = to.file.GetAssetsOfType(AssetClassID.SkinnedMeshRenderer);
+            var fromRenderers = from.file.GetAssetsOfType(AssetClassID.SkinnedMeshRenderer);
+
+            foreach (var toRenderer in toRenderers)
+            {
+                var toRendererBase = manager.GetBaseField(to, toRenderer);
+                var toGo = manager.GetBaseField(to, toRendererBase["m_GameObject"]["m_PathID"].AsLong);
+                if (toGo == null)
+                    return;
+
+                var fromRenderer = fromRenderers.Find(b => managerV.GetBaseField(from, managerV.GetBaseField(from, b)["m_GameObject"]["m_PathID"].AsLong)["m_Name"].AsString == toGo["m_Name"].AsString);
+                if (fromRenderer == null)
+                    return;
+
+                var fromRendererBase = managerV.GetBaseField(from, fromRenderer);
+
+                toRendererBase["m_Bones"]["Array"].Children = fromRendererBase["m_Bones"]["Array"].Children;
+                for (int i=0; i<fromRendererBase["m_Bones"]["Array"].Children.Count; i++)
+                {
+                    var fromBone = fromRendererBase["m_Bones"]["Array"].Children[i];
+                    var toBone = toRendererBase["m_Bones"]["Array"].Children[i];
+                    toBone["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toBone, fromBone, AssetClassID.Transform);
+                }
+
+                toRenderer.SetNewData(toRendererBase);
+            }
+
+            SetAssetsFileInBundle(to.parentBundle, to);
+        }
+
         private void CopyCurvePatterns(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
         {
             var fromMonoBase = managerV.GetBaseField(from, fromMono);
@@ -513,6 +546,10 @@ namespace LumiTool.Engine
                 if (toClipPathID != 0)
                     continue;
 
+                long toClipFileID = toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_FileID"].AsLong;
+                if (toClipFileID != 0)
+                    continue;
+
                 long clipPathID = FindAnimationClipPathIDFromName(to, from, toMonoBase["_animationPlayer"]["_clips"]["Array"][i], fromMonoBase["_animationPlayer"]["_clips"]["Array"][i]);
                 toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_PathID"].AsLong = clipPathID;
             }
@@ -523,7 +560,11 @@ namespace LumiTool.Engine
             if (fromField["m_PathID"].AsLong == 0)
                 return 0;
 
-            string clipName = managerV.GetBaseField(from, fromField["m_PathID"].AsLong)["m_Name"].AsString;
+            var animInfo = from.file.GetAssetInfo(fromField["m_PathID"].AsLong);
+            if (animInfo == null)
+                return 0;
+
+            string clipName = managerV.GetBaseField(from, animInfo)["m_Name"].AsString;
             var toClip = to.file.GetAssetsOfType(AssetClassID.AnimationClip).Find(c => manager.GetBaseField(to, c)["m_Name"].AsString == clipName);
             if (toClip == null)
                 return 0;
@@ -556,8 +597,7 @@ namespace LumiTool.Engine
             if (fromField["m_PathID"].AsLong == 0)
                 return 0;
 
-            var fromComponent = managerV.GetBaseField(from, from.file.GetAssetInfo(fromField["m_PathID"].AsLong));
-            var fromGO = managerV.GetBaseField(from, fromComponent["m_GameObject"]["m_PathID"].AsLong);
+            var fromGO = managerV.GetBaseField(from, fromField["m_PathID"].AsLong);
 
             var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(g => manager.GetBaseField(to, g)["m_Name"].AsString == fromGO["m_Name"].AsString);
             if (toGO == null)

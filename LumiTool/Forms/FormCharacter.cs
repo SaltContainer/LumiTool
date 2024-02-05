@@ -29,6 +29,7 @@ namespace LumiTool.Forms
             checkConvertDependencies.Enabled = false;
             checkConvertShaders.Enabled = false;
             checkConvertCopyMonos.Enabled = false;
+            checkConvertRendererBones.Enabled = false;
         }
 
         private void UpdateComponentsOnLoadCommon()
@@ -40,6 +41,7 @@ namespace LumiTool.Forms
             checkConvertDependencies.Enabled = active;
             checkConvertShaders.Enabled = active;
             checkConvertCopyMonos.Enabled = active;
+            checkConvertRendererBones.Enabled = active;
         }
 
         private void UpdateComponentsOnLoadEditing()
@@ -116,6 +118,7 @@ namespace LumiTool.Forms
                 if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
                 if (checkConvertShaders.Checked) engine.FixShadersOfMaterials(bundle, afileInst);
                 if (checkConvertCopyMonos.Checked) engine.CopyMonos(afileInst, afileInstV);
+                if (checkConvertRendererBones.Checked) engine.AdjustRendererBones(afileInst, afileInstV);
                 MessageBox.Show("Successfully converted the character bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)

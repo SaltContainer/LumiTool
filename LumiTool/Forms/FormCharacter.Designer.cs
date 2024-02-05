@@ -42,6 +42,7 @@
             lbBundleName = new Label();
             btnBundleOpen = new Button();
             btnBundleSave = new Button();
+            checkConvertRendererBones = new CheckBox();
             grpConvert.SuspendLayout();
             grpBundleV.SuspendLayout();
             grpBundle.SuspendLayout();
@@ -54,9 +55,10 @@
             grpConvert.Controls.Add(checkConvertDependencies);
             grpConvert.Controls.Add(checkConvertShaders);
             grpConvert.Controls.Add(checkConvertCopyMonos);
+            grpConvert.Controls.Add(checkConvertRendererBones);
             grpConvert.Location = new Point(12, 104);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(458, 125);
+            grpConvert.Size = new Size(458, 145);
             grpConvert.TabIndex = 16;
             grpConvert.TabStop = false;
             grpConvert.Text = "Convert Windows Character Bundle";
@@ -194,19 +196,31 @@
             btnBundleSave.UseVisualStyleBackColor = true;
             btnBundleSave.Click += btnBundleSave_Click;
             // 
+            // checkConvertRendererBones
+            // 
+            checkConvertRendererBones.AutoSize = true;
+            checkConvertRendererBones.Checked = true;
+            checkConvertRendererBones.CheckState = CheckState.Checked;
+            checkConvertRendererBones.Location = new Point(8, 120);
+            checkConvertRendererBones.Name = "checkConvertRendererBones";
+            checkConvertRendererBones.Size = new Size(145, 19);
+            checkConvertRendererBones.TabIndex = 13;
+            checkConvertRendererBones.Text = "Adjust Renderer Bones";
+            checkConvertRendererBones.UseVisualStyleBackColor = true;
+            // 
             // FormCharacter
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(488, 241);
+            ClientSize = new Size(488, 261);
             Controls.Add(grpConvert);
             Controls.Add(grpBundleV);
             Controls.Add(grpBundle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(504, 280);
-            MinimumSize = new Size(504, 280);
+            MaximumSize = new Size(504, 300);
+            MinimumSize = new Size(504, 300);
             Name = "FormCharacter";
             Text = "Character Stuff";
             FormClosed += FormCharacter_FormClosed;
@@ -235,5 +249,6 @@
         private Button btnBundleOpen;
         private Button btnBundleSave;
         private CheckBox checkConvertCopyMonos;
+        private CheckBox checkConvertRendererBones;
     }
 }
