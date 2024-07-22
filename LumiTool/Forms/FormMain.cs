@@ -10,8 +10,9 @@ namespace LumiTool
         private FormAbout aboutForm;
         private FormPlatform platformForm;
         private FormMono monoForm;
-        private FormMap mapForm;
-        private FormCharacter characterForm;
+        private FormBundlePrepper preperForm;
+        private FormColorVariation colorVariationForm;
+        private FormManifestRefresher manifestRefresherForm;
 
         public FormMain()
         {
@@ -20,8 +21,9 @@ namespace LumiTool
             aboutForm = new FormAbout();
             platformForm = new FormPlatform(engine);
             monoForm = new FormMono(engine);
-            mapForm = new FormMap(engine);
-            characterForm = new FormCharacter(engine);
+            preperForm = new FormBundlePrepper(engine);
+            colorVariationForm = new FormColorVariation(engine);
+            manifestRefresherForm = new FormManifestRefresher(engine);
 
             InitializeComponent();
         }
@@ -41,14 +43,25 @@ namespace LumiTool
             monoForm.ShowDialog();
         }
 
-        private void btnMap_Click(object sender, EventArgs e)
+        private void btnPrepper_Click(object sender, EventArgs e)
         {
-            mapForm.ShowDialog();
+            preperForm.ShowDialog();
         }
 
-        private void btnCharacter_Click(object sender, EventArgs e)
+        private void btnColorVariation_Click(object sender, EventArgs e)
         {
-            characterForm.ShowDialog();
+            //colorVariationForm.ShowDialog();
+            MessageBox.Show("This section is a work in progress.", "WIP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void btnManifestRefresher_Click(object sender, EventArgs e)
+        {
+            manifestRefresherForm.ShowDialog();
+        }
+
+        private void btnManifestEditor_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This section is a work in progress.", "WIP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

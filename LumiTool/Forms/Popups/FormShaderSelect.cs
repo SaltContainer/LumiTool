@@ -4,7 +4,7 @@ namespace LumiTool.Forms.Popups
 {
     public partial class FormShaderSelect : Form
     {
-        public Shader Result = null!;
+        public Shader Result = null;
 
         public FormShaderSelect(string materialName, List<Shader> shaders)
         {

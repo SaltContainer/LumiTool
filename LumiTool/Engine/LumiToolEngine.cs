@@ -1,9 +1,8 @@
 ﻿using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 using LumiTool.Data;
-using LumiTool.Forms;
 using LumiTool.Forms.Popups;
-using System.Windows.Forms;
+using SmartPoint.AssetAssistant;
 
 namespace LumiTool.Engine
 {
@@ -12,6 +11,7 @@ namespace LumiTool.Engine
         private AssetsManager manager;
         private AssetsManager managerV;
         private TemplateFieldToTypeTree typeTreeConverter;
+        private ManifestEngine manifestEngine;
 
         private Dictionary<long, Shader> foundShaders = new Dictionary<long, Shader>();
 
@@ -93,6 +93,7 @@ namespace LumiTool.Engine
             manager = new AssetsManager();
             managerV = new AssetsManager();
             typeTreeConverter = new TemplateFieldToTypeTree();
+            manifestEngine = new ManifestEngine();
         }
 
         public void UnloadBundles()
@@ -361,7 +362,7 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(to.parentBundle, to);
         }
 
-        public void AdjustRendererBones(AssetsFileInstance to, AssetsFileInstance from)
+        public void AdjustRenderers(AssetsFileInstance to, AssetsFileInstance from)
         {
             var toRenderers = to.file.GetAssetsOfType(AssetClassID.SkinnedMeshRenderer);
             var fromRenderers = from.file.GetAssetsOfType(AssetClassID.SkinnedMeshRenderer);
@@ -378,19 +379,36 @@ namespace LumiTool.Engine
                     return;
 
                 var fromRendererBase = managerV.GetBaseField(from, fromRenderer);
+                if (fromRendererBase == null)
+                    return;
+
+                toRendererBase["m_Materials"]["Array"].Children = fromRendererBase["m_Materials"]["Array"].Children;
 
                 toRendererBase["m_Bones"]["Array"].Children = fromRendererBase["m_Bones"]["Array"].Children;
                 for (int i=0; i<fromRendererBase["m_Bones"]["Array"].Children.Count; i++)
                 {
                     var fromBone = fromRendererBase["m_Bones"]["Array"].Children[i];
                     var toBone = toRendererBase["m_Bones"]["Array"].Children[i];
-                    toBone["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toBone, fromBone, AssetClassID.Transform);
+                    
+                    FindComponentPtrFromGameObjectName(to, from, toBone, fromBone, AssetClassID.Transform, out int fileID, out long pathID);
+                    toBone["m_FileID"].AsInt = fileID;
+                    toBone["m_PathID"].AsLong = pathID;
                 }
 
                 toRenderer.SetNewData(toRendererBase);
             }
 
             SetAssetsFileInBundle(to.parentBundle, to);
+        }
+
+        public AssetBundleDownloadManifest LoadManifest(string path)
+        {
+            return manifestEngine.LoadManifest(path);
+        }
+
+        public void SaveManifest(AssetBundleDownloadManifest manifest, string path)
+        {
+            manifestEngine.SaveManifest(manifest, path);
         }
 
         private void CopyCurvePatterns(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
@@ -453,16 +471,35 @@ namespace LumiTool.Engine
 
             MergeAnimationClipsOfEntity(to, from, toMonoBase, fromMonoBase);
 
+            int fileID;
+            long pathID;
+
             toMonoBase["_variations"]["Array"].Children = fromMonoBase["_variations"]["Array"].Children;
             for (int i=0; i<fromMonoBase["_variations"]["Array"].Children.Count; i++)
             {
                 var fromVariation = fromMonoBase["_variations"]["Array"].Children[i];
                 var toVariation = toMonoBase["_variations"]["Array"].Children[i];
-                toVariation["root"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["root"], fromVariation["root"], AssetClassID.Transform);
-                toVariation["neck"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["neck"], fromVariation["neck"], AssetClassID.Transform);
-                toVariation["lhand"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["lhand"], fromVariation["lhand"], AssetClassID.Transform);
-                toVariation["rhand"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["rhand"], fromVariation["rhand"], AssetClassID.Transform);
-                toVariation["faceRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toVariation["faceRenderer"], fromVariation["faceRenderer"], AssetClassID.SkinnedMeshRenderer);
+
+                FindComponentPtrFromGameObjectName(to, from, toVariation["root"], fromVariation["root"], AssetClassID.Transform, out fileID, out pathID);
+                toVariation["root"]["m_FileID"].AsInt = fileID;
+                toVariation["root"]["m_PathID"].AsLong = pathID;
+
+                FindComponentPtrFromGameObjectName(to, from, toVariation["neck"], fromVariation["neck"], AssetClassID.Transform, out fileID, out pathID);
+                toVariation["neck"]["m_FileID"].AsInt = fileID;
+                toVariation["neck"]["m_PathID"].AsLong = pathID;
+
+                FindComponentPtrFromGameObjectName(to, from, toVariation["lhand"], fromVariation["lhand"], AssetClassID.Transform, out fileID, out pathID);
+                toVariation["lhand"]["m_FileID"].AsInt = fileID;
+                toVariation["lhand"]["m_PathID"].AsLong = pathID;
+
+                FindComponentPtrFromGameObjectName(to, from, toVariation["rhand"], fromVariation["rhand"], AssetClassID.Transform, out fileID, out pathID);
+                toVariation["rhand"]["m_FileID"].AsInt = fileID;
+                toVariation["rhand"]["m_PathID"].AsLong = pathID;
+
+                FindComponentPtrFromGameObjectName(to, from, toVariation["faceRenderer"], fromVariation["faceRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+                toVariation["faceRenderer"]["m_FileID"].AsInt = fileID;
+                toVariation["faceRenderer"]["m_PathID"].AsLong = pathID;
+
                 toVariation["eyeMaterialIndex"].AsInt = fromVariation["eyeMaterialIndex"].AsInt;
                 toVariation["mouthMaterialIndex"].AsInt = fromVariation["mouthMaterialIndex"].AsInt;
             }
@@ -471,7 +508,9 @@ namespace LumiTool.Engine
             toMonoBase["_mouthPatternIndex"].AsInt = fromMonoBase["_mouthPatternIndex"].AsInt;
             toMonoBase["_currentVariation"].AsInt = fromMonoBase["_currentVariation"].AsInt;
 
-            toMonoBase["_watchRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_watchRenderer"], fromMonoBase["_watchRenderer"], AssetClassID.SkinnedMeshRenderer);
+            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_watchRenderer"], fromMonoBase["_watchRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+            toMonoBase["_watchRenderer"]["m_FileID"].AsInt = fileID;
+            toMonoBase["_watchRenderer"]["m_PathID"].AsLong = pathID;
 
             toMonoBase["NeckAngle"]["x"].AsFloat = fromMonoBase["NeckAngle"]["x"].AsFloat;
             toMonoBase["NeckAngle"]["y"].AsFloat = fromMonoBase["NeckAngle"]["y"].AsFloat;
@@ -490,12 +529,17 @@ namespace LumiTool.Engine
 
         private void CopyFieldPlayerEntityFields(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toMonoBase, AssetTypeValueField fromMonoBase)
         {
+            int fileID;
+            long pathID;
+
             toMonoBase["_hatRenderers"]["Array"].Children = fromMonoBase["_hatRenderers"]["Array"].Children;
             for (int i=0; i<fromMonoBase["_hatRenderers"]["Array"].Children.Count; i++)
             {
                 var fromRenderer = fromMonoBase["_hatRenderers"]["Array"].Children[i];
                 var toRenderer = toMonoBase["_hatRenderers"]["Array"].Children[i];
-                toRenderer["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer);
+                FindComponentPtrFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+                toRenderer["m_FileID"].AsInt = fileID;
+                toRenderer["m_PathID"].AsLong = pathID;
             }
 
             toMonoBase["_shoesRenderers"]["Array"].Children = fromMonoBase["_shoesRenderers"]["Array"].Children;
@@ -503,25 +547,47 @@ namespace LumiTool.Engine
             {
                 var fromRenderer = fromMonoBase["_shoesRenderers"]["Array"].Children[i];
                 var toRenderer = toMonoBase["_shoesRenderers"]["Array"].Children[i];
-                toRenderer["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer);
+                FindComponentPtrFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+                toRenderer["m_FileID"].AsInt = fileID;
+                toRenderer["m_PathID"].AsLong = pathID;
             }
 
-            toMonoBase["_meshGroup"]["m_PathID"].AsLong = FindGameObjectPathIDFromName(to, from, toMonoBase["_meshGroup"], fromMonoBase["_meshGroup"]);
-            toMonoBase["_bicycleObject"]["m_PathID"].AsLong = FindGameObjectPathIDFromName(to, from, toMonoBase["_bicycleObject"], fromMonoBase["_bicycleObject"]);
+            FindGameObjectPtrFromName(to, from, toMonoBase["_meshGroup"], fromMonoBase["_meshGroup"], out fileID, out pathID);
+            toMonoBase["_meshGroup"]["m_FileID"].AsInt = fileID;
+            toMonoBase["_meshGroup"]["m_PathID"].AsLong = pathID;
+
+            FindGameObjectPtrFromName(to, from, toMonoBase["_bicycleObject"], fromMonoBase["_bicycleObject"], out fileID, out pathID);
+            toMonoBase["_bicycleObject"]["m_FileID"].AsInt = fileID;
+            toMonoBase["_bicycleObject"]["m_PathID"].AsLong = pathID;
 
             toMonoBase["_rodRenderers"]["Array"].Children = fromMonoBase["_rodRenderers"]["Array"].Children;
             for (int i = 0; i < fromMonoBase["_rodRenderers"]["Array"].Children.Count; i++)
             {
                 var fromRenderer = fromMonoBase["_rodRenderers"]["Array"].Children[i];
                 var toRenderer = toMonoBase["_rodRenderers"]["Array"].Children[i];
-                toRenderer["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer);
+                FindComponentPtrFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+                toRenderer["m_FileID"].AsInt = fileID;
+                toRenderer["m_PathID"].AsLong = pathID;
             }
 
-            toMonoBase["_podRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_podRenderer"], fromMonoBase["_podRenderer"], AssetClassID.SkinnedMeshRenderer);
-            toMonoBase["_beadaruRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_beadaruRenderer"], fromMonoBase["_beadaruRenderer"], AssetClassID.SkinnedMeshRenderer);
-            toMonoBase["_mukuhawkRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_mukuhawkRenderer"], fromMonoBase["_mukuhawkRenderer"], AssetClassID.SkinnedMeshRenderer);
+            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_podRenderer"], fromMonoBase["_podRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+            toMonoBase["_podRenderer"]["m_FileID"].AsInt = fileID;
+            toMonoBase["_podRenderer"]["m_PathID"].AsLong = pathID;
+
+            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_beadaruRenderer"], fromMonoBase["_beadaruRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+            toMonoBase["_beadaruRenderer"]["m_FileID"].AsInt = fileID;
+            toMonoBase["_beadaruRenderer"]["m_PathID"].AsLong = pathID;
+
+            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_mukuhawkRenderer"], fromMonoBase["_mukuhawkRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+            toMonoBase["_mukuhawkRenderer"]["m_FileID"].AsInt = fileID;
+            toMonoBase["_mukuhawkRenderer"]["m_PathID"].AsLong = pathID;
+
             toMonoBase["_bicycleColors"]["Array"].Children = fromMonoBase["_bicycleColors"]["Array"].Children;
-            toMonoBase["_bicycleRenderer"]["m_PathID"].AsLong = FindComponentPathIDFromGameObjectName(to, from, toMonoBase["_bicycleRenderer"], fromMonoBase["_bicycleRenderer"], AssetClassID.SkinnedMeshRenderer);
+
+            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_bicycleRenderer"], fromMonoBase["_bicycleRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
+            toMonoBase["_bicycleRenderer"]["m_FileID"].AsInt = fileID;
+            toMonoBase["_bicycleRenderer"]["m_PathID"].AsLong = pathID;
+
             toMonoBase["_bicycleMaterialIndex"].AsInt = fromMonoBase["_bicycleMaterialIndex"].AsInt;
 
             toMonoBase["InputMoveVector"]["x"].AsFloat = fromMonoBase["InputMoveVector"]["x"].AsFloat;
@@ -550,60 +616,105 @@ namespace LumiTool.Engine
                 if (toClipFileID != 0)
                     continue;
 
-                long clipPathID = FindAnimationClipPathIDFromName(to, from, toMonoBase["_animationPlayer"]["_clips"]["Array"][i], fromMonoBase["_animationPlayer"]["_clips"]["Array"][i]);
+                FindAnimationClipPtrFromName(to, from, toMonoBase["_animationPlayer"]["_clips"]["Array"][i], fromMonoBase["_animationPlayer"]["_clips"]["Array"][i], out int clipFileID, out long clipPathID);
+                toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_FileID"].AsInt = clipFileID;
                 toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_PathID"].AsLong = clipPathID;
             }
         }
 
-        private long FindAnimationClipPathIDFromName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField)
+        private void FindAnimationClipPtrFromName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField, out int fileID, out long pathID)
         {
-            if (fromField["m_PathID"].AsLong == 0)
-                return 0;
+            fileID = 0;
+            pathID = 0;
 
+            // No clip in "from" bundle
+            if (fromField["m_PathID"].AsLong == 0)
+                return;
+
+            // Clip in "from" bundle is in dependency
+            if (fromField["m_FileID"].AsInt != 0)
+            {
+                fileID = fromField["m_FileID"].AsInt;
+                pathID = fromField["m_PathID"].AsLong;
+                return;
+            }
+
+            // Can't find clip in "from" bundle somehow
             var animInfo = from.file.GetAssetInfo(fromField["m_PathID"].AsLong);
             if (animInfo == null)
-                return 0;
+                return;
 
+            // Can't find clip of same name in "to" bundle
             string clipName = managerV.GetBaseField(from, animInfo)["m_Name"].AsString;
             var toClip = to.file.GetAssetsOfType(AssetClassID.AnimationClip).Find(c => manager.GetBaseField(to, c)["m_Name"].AsString == clipName);
             if (toClip == null)
-                return 0;
+                return;
 
-            return toClip.PathId;
+            // Found clip in "to" bundle
+            pathID = toClip.PathId;
         }
 
-        private long FindComponentPathIDFromGameObjectName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField, AssetClassID klass)
+        private void FindComponentPtrFromGameObjectName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField, AssetClassID klass, out int fileID, out long pathID)
         {
+            fileID = 0;
+            pathID = 0;
+
+            // No component in "from" bundle
             if (fromField["m_PathID"].AsLong == 0)
-                return 0;
+                return;
+
+            // Component in "from" bundle is in dependency
+            if (fromField["m_FileID"].AsInt != 0)
+            {
+                fileID = fromField["m_FileID"].AsInt;
+                pathID = fromField["m_PathID"].AsLong;
+                return;
+            }
 
             var fromComponent = managerV.GetBaseField(from, from.file.GetAssetInfo(fromField["m_PathID"].AsLong));
             var fromGO = managerV.GetBaseField(from, fromComponent["m_GameObject"]["m_PathID"].AsLong);
 
+            // Can't find GameObject of same name in "to" bundle
             var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(g => manager.GetBaseField(to, g)["m_Name"].AsString == fromGO["m_Name"].AsString);
             if (toGO == null)
-                return 0;
+                return;
 
+            // Can't find component of proper pathID in "to" bundle
             var toGOBase = manager.GetBaseField(to, toGO);
             var toComponent = to.file.GetAssetsOfType(klass).Find(a => toGOBase["m_Component"]["Array"].Children.Any(c => c["component"]["m_PathID"].AsLong == a.PathId));
             if (toComponent == null)
-                return 0;
+                return;
 
-            return toComponent.PathId;
+            // Found component in "to" bundle
+            pathID = toComponent.PathId;
         }
 
-        private long FindGameObjectPathIDFromName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField)
+        private void FindGameObjectPtrFromName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField, out int fileID, out long pathID)
         {
+            fileID = 0;
+            pathID = 0;
+
+            // No GameObject in "from" bundle
             if (fromField["m_PathID"].AsLong == 0)
-                return 0;
+                return;
+
+            // GameObject in "from" bundle is in dependency
+            if (fromField["m_FileID"].AsInt != 0)
+            {
+                fileID = fromField["m_FileID"].AsInt;
+                pathID = fromField["m_PathID"].AsLong;
+                return;
+            }
 
             var fromGO = managerV.GetBaseField(from, fromField["m_PathID"].AsLong);
 
+            // Can't find GameObject of same name in "to" bundle
             var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(g => manager.GetBaseField(to, g)["m_Name"].AsString == fromGO["m_Name"].AsString);
             if (toGO == null)
-                return 0;
+                return;
 
-            return toGO.PathId;
+            // Found GameObject in "to" bundle
+            pathID = toGO.PathId;
         }
 
         private void ClearShaderPathIDs()

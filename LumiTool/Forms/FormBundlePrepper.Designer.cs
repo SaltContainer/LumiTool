@@ -1,6 +1,6 @@
 ﻿namespace LumiTool.Forms
 {
-    partial class FormMap
+    partial class FormBundlePrepper
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMap));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBundlePrepper));
             grpBundle = new GroupBox();
             lbBundleName = new Label();
             btnBundleOpen = new Button();
@@ -56,7 +56,7 @@
             grpBundle.Size = new Size(260, 86);
             grpBundle.TabIndex = 2;
             grpBundle.TabStop = false;
-            grpBundle.Text = "Loaded Bundle";
+            grpBundle.Text = "Loaded Rebuilt Bundle";
             // 
             // lbBundleName
             // 
@@ -178,9 +178,9 @@
             grpConvert.Size = new Size(458, 105);
             grpConvert.TabIndex = 13;
             grpConvert.TabStop = false;
-            grpConvert.Text = "Convert Windows Map Bundle";
+            grpConvert.Text = "Prepare Rebuilt Bundle";
             // 
-            // FormMap
+            // FormBundlePrepper
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -193,8 +193,8 @@
             MaximizeBox = false;
             MaximumSize = new Size(504, 260);
             MinimumSize = new Size(504, 260);
-            Name = "FormMap";
-            Text = "Map Stuff";
+            Name = "FormBundlePrepper";
+            Text = "Bundle Prepper";
             FormClosed += FormMap_FormClosed;
             Shown += FormMap_Shown;
             grpBundle.ResumeLayout(false);

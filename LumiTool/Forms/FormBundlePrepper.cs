@@ -4,15 +4,15 @@ using LumiTool.Engine;
 
 namespace LumiTool.Forms
 {
-    public partial class FormCharacter : Form
+    public partial class FormBundlePrepper : Form
     {
         LumiToolEngine engine;
-        BundleFileInstance bundle = null!;
-        AssetsFileInstance afileInst = null!;
-        BundleFileInstance bundleV = null!;
-        AssetsFileInstance afileInstV = null!;
+        BundleFileInstance bundle = null;
+        AssetsFileInstance afileInst = null;
+        BundleFileInstance bundleV = null;
+        AssetsFileInstance afileInstV = null;
 
-        public FormCharacter(LumiToolEngine engine)
+        public FormBundlePrepper(LumiToolEngine engine)
         {
             InitializeComponent();
 
@@ -28,8 +28,6 @@ namespace LumiTool.Forms
             checkConvertPlatform.Enabled = false;
             checkConvertDependencies.Enabled = false;
             checkConvertShaders.Enabled = false;
-            checkConvertCopyMonos.Enabled = false;
-            checkConvertRendererBones.Enabled = false;
         }
 
         private void UpdateComponentsOnLoadCommon()
@@ -40,8 +38,6 @@ namespace LumiTool.Forms
             checkConvertPlatform.Enabled = active;
             checkConvertDependencies.Enabled = active;
             checkConvertShaders.Enabled = active;
-            checkConvertCopyMonos.Enabled = active;
-            checkConvertRendererBones.Enabled = active;
         }
 
         private void UpdateComponentsOnLoadEditing()
@@ -96,17 +92,17 @@ namespace LumiTool.Forms
             }
         }
 
-        private void FormCharacter_Shown(object sender, EventArgs e)
+        private void FormMap_Shown(object sender, EventArgs e)
         {
             UpdateComponentsOnStart();
         }
 
-        private void FormCharacter_FormClosed(object sender, FormClosedEventArgs e)
+        private void FormMap_FormClosed(object sender, FormClosedEventArgs e)
         {
-            bundle = null!;
-            afileInst = null!;
-            bundleV = null!;
-            afileInstV = null!;
+            bundle = null;
+            afileInst = null;
+            bundleV = null;
+            afileInstV = null;
             engine.UnloadBundles();
         }
 
@@ -117,9 +113,7 @@ namespace LumiTool.Forms
                 if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
                 if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
                 if (checkConvertShaders.Checked) engine.FixShadersOfMaterials(bundle, afileInst);
-                if (checkConvertCopyMonos.Checked) engine.CopyMonos(afileInst, afileInstV);
-                if (checkConvertRendererBones.Checked) engine.AdjustRendererBones(afileInst, afileInstV);
-                MessageBox.Show("Successfully converted the character bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Successfully converted the map bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {

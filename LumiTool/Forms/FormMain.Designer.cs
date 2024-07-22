@@ -31,9 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             btnPlatform = new Button();
             btnMono = new Button();
-            btnMap = new Button();
-            btnCharacter = new Button();
+            btnPrepper = new Button();
+            btnColorVariation = new Button();
             btnAbout = new Button();
+            btnManifestRefresher = new Button();
+            btnManifestEditor = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -57,27 +59,26 @@
             btnMono.UseVisualStyleBackColor = true;
             btnMono.Click += btnMono_Click;
             // 
-            // btnMap
+            // btnPrepper
             // 
-            btnMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnMap.Location = new Point(12, 130);
-            btnMap.Name = "btnMap";
-            btnMap.Size = new Size(164, 59);
-            btnMap.TabIndex = 2;
-            btnMap.Text = "Map Stuff";
-            btnMap.UseVisualStyleBackColor = true;
-            btnMap.Click += btnMap_Click;
+            btnPrepper.Location = new Point(12, 130);
+            btnPrepper.Name = "btnPrepper";
+            btnPrepper.Size = new Size(164, 59);
+            btnPrepper.TabIndex = 2;
+            btnPrepper.Text = "Bundle Prepper";
+            btnPrepper.UseVisualStyleBackColor = true;
+            btnPrepper.Click += btnPrepper_Click;
             // 
-            // btnCharacter
+            // btnColorVariation
             // 
-            btnCharacter.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCharacter.Location = new Point(182, 130);
-            btnCharacter.Name = "btnCharacter";
-            btnCharacter.Size = new Size(164, 59);
-            btnCharacter.TabIndex = 3;
-            btnCharacter.Text = "Character Stuff";
-            btnCharacter.UseVisualStyleBackColor = true;
-            btnCharacter.Click += btnCharacter_Click;
+            btnColorVariation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnColorVariation.Location = new Point(182, 130);
+            btnColorVariation.Name = "btnColorVariation";
+            btnColorVariation.Size = new Size(164, 59);
+            btnColorVariation.TabIndex = 3;
+            btnColorVariation.Text = "ColorVariation Generator";
+            btnColorVariation.UseVisualStyleBackColor = true;
+            btnColorVariation.Click += btnColorVariation_Click;
             // 
             // btnAbout
             // 
@@ -90,21 +91,44 @@
             btnAbout.UseVisualStyleBackColor = true;
             btnAbout.Click += btnAbout_Click;
             // 
+            // btnManifestRefresher
+            // 
+            btnManifestRefresher.Location = new Point(12, 195);
+            btnManifestRefresher.Name = "btnManifestRefresher";
+            btnManifestRefresher.Size = new Size(164, 59);
+            btnManifestRefresher.TabIndex = 5;
+            btnManifestRefresher.Text = "AssetAssistant Manifest Refresher";
+            btnManifestRefresher.UseVisualStyleBackColor = true;
+            btnManifestRefresher.Click += btnManifestRefresher_Click;
+            // 
+            // btnManifestEditor
+            // 
+            btnManifestEditor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnManifestEditor.Location = new Point(182, 195);
+            btnManifestEditor.Name = "btnManifestEditor";
+            btnManifestEditor.Size = new Size(164, 59);
+            btnManifestEditor.TabIndex = 6;
+            btnManifestEditor.Text = "AssetAssistant Manifest Editor";
+            btnManifestEditor.UseVisualStyleBackColor = true;
+            btnManifestEditor.Click += btnManifestEditor_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(358, 201);
+            ClientSize = new Size(358, 266);
+            Controls.Add(btnManifestEditor);
+            Controls.Add(btnManifestRefresher);
             Controls.Add(btnAbout);
             Controls.Add(btnPlatform);
             Controls.Add(btnMono);
-            Controls.Add(btnMap);
-            Controls.Add(btnCharacter);
+            Controls.Add(btnPrepper);
+            Controls.Add(btnColorVariation);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(374, 240);
-            MinimumSize = new Size(374, 240);
+            MaximumSize = new Size(374, 305);
+            MinimumSize = new Size(374, 305);
             Name = "FormMain";
             Text = "LumiTool";
             ResumeLayout(false);
@@ -114,8 +138,10 @@
 
         private Button btnPlatform;
         private Button btnMono;
-        private Button btnMap;
-        private Button btnCharacter;
+        private Button btnPrepper;
+        private Button btnColorVariation;
         private Button btnAbout;
+        private Button btnManifestRefresher;
+        private Button btnManifestEditor;
     }
 }

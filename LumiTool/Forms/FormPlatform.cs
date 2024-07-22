@@ -7,8 +7,8 @@ namespace LumiTool.Forms
     public partial class FormPlatform : Form
     {
         LumiToolEngine engine;
-        BundleFileInstance bundle = null!;
-        AssetsFileInstance afileInst = null!;
+        BundleFileInstance bundle = null;
+        AssetsFileInstance afileInst = null;
 
         public FormPlatform(LumiToolEngine engine)
         {
@@ -71,8 +71,8 @@ namespace LumiTool.Forms
 
         private void FormPlatform_FormClosed(object sender, FormClosedEventArgs e)
         {
-            bundle = null!;
-            afileInst = null!;
+            bundle = null;
+            afileInst = null;
             engine.UnloadBundles();
         }
     }
