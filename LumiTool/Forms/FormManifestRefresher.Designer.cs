@@ -28,13 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManifestRefresher));
             grpManifest = new GroupBox();
             lbManifestName = new Label();
             btnManifestOpen = new Button();
             btnManifestSave = new Button();
-            btnTest = new Button();
+            btnRefresh = new Button();
+            grpMod = new GroupBox();
+            lbModPath = new Label();
+            btnModOpen = new Button();
+            grpVanilla = new GroupBox();
+            lbVanillaPath = new Label();
+            btnVanillaOpen = new Button();
+            ttManifestRefresher = new ToolTip(components);
             grpManifest.SuspendLayout();
+            grpMod.SuspendLayout();
+            grpVanilla.SuspendLayout();
             SuspendLayout();
             // 
             // grpManifest
@@ -82,32 +92,102 @@
             btnManifestSave.UseVisualStyleBackColor = true;
             btnManifestSave.Click += btnManifestSave_Click;
             // 
-            // btnTest
+            // btnRefresh
             // 
-            btnTest.Location = new Point(64, 146);
-            btnTest.Name = "btnTest";
-            btnTest.Size = new Size(131, 47);
-            btnTest.TabIndex = 4;
-            btnTest.Text = "Testing!!";
-            btnTest.UseVisualStyleBackColor = true;
-            btnTest.Click += btnTest_Click;
+            btnRefresh.Location = new Point(12, 316);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(260, 48);
+            btnRefresh.TabIndex = 4;
+            btnRefresh.Text = "Refresh Manifest";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefresh_Click;
+            // 
+            // grpMod
+            // 
+            grpMod.Controls.Add(lbModPath);
+            grpMod.Controls.Add(btnModOpen);
+            grpMod.Location = new Point(12, 104);
+            grpMod.Name = "grpMod";
+            grpMod.Size = new Size(260, 100);
+            grpMod.TabIndex = 4;
+            grpMod.TabStop = false;
+            grpMod.Text = "Loaded Mod RomFS";
+            // 
+            // lbModPath
+            // 
+            lbModPath.AutoEllipsis = true;
+            lbModPath.Location = new Point(6, 19);
+            lbModPath.Name = "lbModPath";
+            lbModPath.Size = new Size(248, 32);
+            lbModPath.TabIndex = 1;
+            lbModPath.Text = "Path: ";
+            // 
+            // btnModOpen
+            // 
+            btnModOpen.Image = Resources.Resources.folder;
+            btnModOpen.Location = new Point(6, 54);
+            btnModOpen.Name = "btnModOpen";
+            btnModOpen.Size = new Size(248, 40);
+            btnModOpen.TabIndex = 0;
+            btnModOpen.Text = "Open";
+            btnModOpen.TextAlign = ContentAlignment.MiddleRight;
+            btnModOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnModOpen.UseVisualStyleBackColor = true;
+            btnModOpen.Click += btnModOpen_Click;
+            // 
+            // grpVanilla
+            // 
+            grpVanilla.Controls.Add(lbVanillaPath);
+            grpVanilla.Controls.Add(btnVanillaOpen);
+            grpVanilla.Location = new Point(12, 210);
+            grpVanilla.Name = "grpVanilla";
+            grpVanilla.Size = new Size(260, 100);
+            grpVanilla.TabIndex = 5;
+            grpVanilla.TabStop = false;
+            grpVanilla.Text = "Loaded Mod RomFS";
+            // 
+            // lbVanillaPath
+            // 
+            lbVanillaPath.AutoEllipsis = true;
+            lbVanillaPath.Location = new Point(6, 19);
+            lbVanillaPath.Name = "lbVanillaPath";
+            lbVanillaPath.Size = new Size(248, 32);
+            lbVanillaPath.TabIndex = 1;
+            lbVanillaPath.Text = "Path: ";
+            // 
+            // btnVanillaOpen
+            // 
+            btnVanillaOpen.Image = Resources.Resources.folder;
+            btnVanillaOpen.Location = new Point(6, 54);
+            btnVanillaOpen.Name = "btnVanillaOpen";
+            btnVanillaOpen.Size = new Size(248, 40);
+            btnVanillaOpen.TabIndex = 0;
+            btnVanillaOpen.Text = "Open";
+            btnVanillaOpen.TextAlign = ContentAlignment.MiddleRight;
+            btnVanillaOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnVanillaOpen.UseVisualStyleBackColor = true;
+            btnVanillaOpen.Click += btnVanillaOpen_Click;
             // 
             // FormManifestRefresher
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(284, 246);
-            Controls.Add(btnTest);
+            ClientSize = new Size(284, 376);
+            Controls.Add(btnRefresh);
+            Controls.Add(grpVanilla);
+            Controls.Add(grpMod);
             Controls.Add(grpManifest);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MaximumSize = new Size(300, 285);
-            MinimumSize = new Size(300, 285);
+            MaximumSize = new Size(300, 415);
+            MinimumSize = new Size(300, 415);
             Name = "FormManifestRefresher";
             Text = "Manifest Refresher";
             FormClosed += FormManifestRefresher_FormClosed;
             Shown += FormManifestRefresher_Shown;
             grpManifest.ResumeLayout(false);
             grpManifest.PerformLayout();
+            grpMod.ResumeLayout(false);
+            grpVanilla.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -117,6 +197,13 @@
         private Label lbManifestName;
         private Button btnManifestOpen;
         private Button btnManifestSave;
-        private Button btnTest;
+        private Button btnRefresh;
+        private GroupBox grpMod;
+        private Label lbModPath;
+        private Button btnModOpen;
+        private GroupBox grpVanilla;
+        private Label lbVanillaPath;
+        private Button btnVanillaOpen;
+        private ToolTip ttManifestRefresher;
     }
 }

@@ -6,7 +6,11 @@ namespace LumiTool.Forms
     public partial class FormManifestRefresher : Form
     {
         LumiToolEngine engine;
-        AssetBundleDownloadManifest manifest;
+        AssetBundleDownloadManifest manifest = null;
+        string moddedPath = string.Empty;
+        string vanillaPath = string.Empty;
+
+        string ManifestPath => manifest?.projectName ?? string.Empty;
 
         public FormManifestRefresher(LumiToolEngine engine)
         {
@@ -18,13 +22,27 @@ namespace LumiTool.Forms
         private void UpdateComponentsOnStart()
         {
             lbManifestName.Text = "Manifest Name: ";
+            lbModPath.Text = "Path: ";
+            lbVanillaPath.Text = "Path: ";
             btnManifestSave.Enabled = false;
+            btnRefresh.Enabled = false;
         }
 
         private void UpdateComponentsOnLoad()
         {
-            lbManifestName.Text = "Manifest Name: " + manifest.projectName;
-            btnManifestSave.Enabled = true;
+            lbManifestName.Text = "Manifest Name: " + ManifestPath;
+            ttManifestRefresher.SetToolTip(lbManifestName, ManifestPath);
+            lbModPath.Text = "Path: " + moddedPath;
+            ttManifestRefresher.SetToolTip(lbModPath, moddedPath);
+            lbVanillaPath.Text = "Path: " + vanillaPath;
+            ttManifestRefresher.SetToolTip(lbVanillaPath, vanillaPath);
+            btnManifestSave.Enabled = CheckAllLoaded();
+            btnRefresh.Enabled = CheckAllLoaded();
+        }
+
+        private bool CheckAllLoaded()
+        {
+            return manifest != null && moddedPath != string.Empty && vanillaPath != string.Empty;
         }
 
         private void btnManifestOpen_Click(object sender, EventArgs e)
@@ -51,6 +69,30 @@ namespace LumiTool.Forms
             }
         }
 
+        private void btnModOpen_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    moddedPath = folderBrowserDialog.SelectedPath;
+                    UpdateComponentsOnLoad();
+                }
+            }
+        }
+
+        private void btnVanillaOpen_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    vanillaPath = folderBrowserDialog.SelectedPath;
+                    UpdateComponentsOnLoad();
+                }
+            }
+        }
+
         private void FormManifestRefresher_Shown(object sender, EventArgs e)
         {
             UpdateComponentsOnStart();
@@ -59,12 +101,13 @@ namespace LumiTool.Forms
         private void FormManifestRefresher_FormClosed(object sender, FormClosedEventArgs e)
         {
             manifest = null;
+            moddedPath = string.Empty;
+            vanillaPath = string.Empty;
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            foreach (var record in manifest.records)
-                record.size = -1;
+
         }
     }
 }
