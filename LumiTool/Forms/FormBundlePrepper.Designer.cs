@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBundlePrepper));
             grpBundle = new GroupBox();
             lbBundleName = new Label();
@@ -41,6 +42,8 @@
             checkConvertDependencies = new CheckBox();
             checkConvertShaders = new CheckBox();
             grpConvert = new GroupBox();
+            checkTpk = new CheckBox();
+            ttBundlePrepper = new ToolTip(components);
             grpBundle.SuspendLayout();
             grpBundleV.SuspendLayout();
             grpConvert.SuspendLayout();
@@ -48,29 +51,30 @@
             // 
             // grpBundle
             // 
+            grpBundle.Controls.Add(checkTpk);
             grpBundle.Controls.Add(lbBundleName);
             grpBundle.Controls.Add(btnBundleOpen);
             grpBundle.Controls.Add(btnBundleSave);
             grpBundle.Location = new Point(12, 12);
             grpBundle.Name = "grpBundle";
-            grpBundle.Size = new Size(260, 86);
+            grpBundle.Size = new Size(260, 105);
             grpBundle.TabIndex = 2;
             grpBundle.TabStop = false;
             grpBundle.Text = "Loaded Rebuilt Bundle";
             // 
             // lbBundleName
             // 
-            lbBundleName.AutoSize = true;
+            lbBundleName.AutoEllipsis = true;
             lbBundleName.Location = new Point(6, 19);
             lbBundleName.Name = "lbBundleName";
-            lbBundleName.Size = new Size(85, 15);
+            lbBundleName.Size = new Size(248, 15);
             lbBundleName.TabIndex = 1;
             lbBundleName.Text = "Bundle Name: ";
             // 
             // btnBundleOpen
             // 
             btnBundleOpen.Image = Resources.Resources.folder;
-            btnBundleOpen.Location = new Point(6, 40);
+            btnBundleOpen.Location = new Point(6, 59);
             btnBundleOpen.Name = "btnBundleOpen";
             btnBundleOpen.Size = new Size(121, 40);
             btnBundleOpen.TabIndex = 0;
@@ -82,7 +86,7 @@
             // btnBundleSave
             // 
             btnBundleSave.Image = Resources.Resources.save;
-            btnBundleSave.Location = new Point(133, 40);
+            btnBundleSave.Location = new Point(133, 59);
             btnBundleSave.Name = "btnBundleSave";
             btnBundleSave.Size = new Size(121, 40);
             btnBundleSave.TabIndex = 2;
@@ -97,24 +101,24 @@
             grpBundleV.Controls.Add(btnBundleVOpen);
             grpBundleV.Location = new Point(278, 12);
             grpBundleV.Name = "grpBundleV";
-            grpBundleV.Size = new Size(198, 86);
+            grpBundleV.Size = new Size(198, 105);
             grpBundleV.TabIndex = 3;
             grpBundleV.TabStop = false;
             grpBundleV.Text = "Loaded Vanilla Bundle";
             // 
             // lbBundleVName
             // 
-            lbBundleVName.AutoSize = true;
+            lbBundleVName.AutoEllipsis = true;
             lbBundleVName.Location = new Point(6, 19);
             lbBundleVName.Name = "lbBundleVName";
-            lbBundleVName.Size = new Size(85, 15);
+            lbBundleVName.Size = new Size(186, 37);
             lbBundleVName.TabIndex = 1;
             lbBundleVName.Text = "Bundle Name: ";
             // 
             // btnBundleVOpen
             // 
             btnBundleVOpen.Image = Resources.Resources.folder;
-            btnBundleVOpen.Location = new Point(6, 40);
+            btnBundleVOpen.Location = new Point(6, 59);
             btnBundleVOpen.Name = "btnBundleVOpen";
             btnBundleVOpen.Size = new Size(186, 40);
             btnBundleVOpen.TabIndex = 0;
@@ -173,26 +177,36 @@
             grpConvert.Controls.Add(checkConvertPlatform);
             grpConvert.Controls.Add(checkConvertDependencies);
             grpConvert.Controls.Add(checkConvertShaders);
-            grpConvert.Location = new Point(12, 104);
+            grpConvert.Location = new Point(12, 123);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(458, 105);
+            grpConvert.Size = new Size(458, 106);
             grpConvert.TabIndex = 13;
             grpConvert.TabStop = false;
             grpConvert.Text = "Prepare Rebuilt Bundle";
+            // 
+            // checkTpk
+            // 
+            checkTpk.AutoSize = true;
+            checkTpk.Location = new Point(8, 38);
+            checkTpk.Name = "checkTpk";
+            checkTpk.Size = new Size(179, 19);
+            checkTpk.TabIndex = 14;
+            checkTpk.Text = "Load External Type Tree (.tpk)";
+            checkTpk.UseVisualStyleBackColor = true;
             // 
             // FormBundlePrepper
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(488, 221);
+            ClientSize = new Size(488, 241);
             Controls.Add(grpConvert);
             Controls.Add(grpBundleV);
             Controls.Add(grpBundle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(504, 260);
-            MinimumSize = new Size(504, 260);
+            MaximumSize = new Size(504, 280);
+            MinimumSize = new Size(504, 280);
             Name = "FormBundlePrepper";
             Text = "Bundle Prepper";
             FormClosed += FormMap_FormClosed;
@@ -200,7 +214,6 @@
             grpBundle.ResumeLayout(false);
             grpBundle.PerformLayout();
             grpBundleV.ResumeLayout(false);
-            grpBundleV.PerformLayout();
             grpConvert.ResumeLayout(false);
             grpConvert.PerformLayout();
             ResumeLayout(false);
@@ -220,5 +233,7 @@
         private CheckBox checkConvertDependencies;
         private CheckBox checkConvertShaders;
         private GroupBox grpConvert;
+        private CheckBox checkTpk;
+        private ToolTip ttBundlePrepper;
     }
 }

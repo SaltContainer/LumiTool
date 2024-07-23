@@ -141,12 +141,22 @@ namespace LumiTool.Engine
             }
         }
 
+        public ClassDatabaseFile LoadClassPackageModded(AssetsFileInstance assetsFile)
+        {
+            manager.LoadClassPackage("classdata.tpk");
+            return manager.LoadClassDatabaseFromPackage(assetsFile.file.Metadata.UnityVersion);
+        }
+
+        public ClassDatabaseFile LoadClassPackageVanilla(AssetsFileInstance assetsFile)
+        {
+            managerV.LoadClassPackage("classdata.tpk");
+            return manager.LoadClassDatabaseFromPackage(assetsFile.file.Metadata.UnityVersion);
+        }
+
         public bool AddMonoScript(BundleFileInstance bundle, AssetsFileInstance assetsFile, string assembly, string namezpace, string klass)
         {
             AssetsFile file = assetsFile.file;
-
-            manager.LoadClassPackage("classdata.tpk");
-            var cldb = manager.LoadClassDatabaseFromPackage(file.Metadata.UnityVersion);
+            var cldb = LoadClassPackageModded(assetsFile);
 
             Random rand = new Random();
             var monoScriptPathId = rand.NextInt64();
@@ -258,9 +268,7 @@ namespace LumiTool.Engine
         public bool RegenerateMonoTypeTree(BundleFileInstance bundle, AssetsFileInstance assetsFile)
         {
             var file = assetsFile.file;
-
-            manager.LoadClassPackage("classdata.tpk");
-            var cldb = manager.LoadClassDatabaseFromPackage(file.Metadata.UnityVersion);
+            var cldb = LoadClassPackageModded(assetsFile);
 
             manager.MonoTempGenerator = new MonoCecilTempGenerator("Managed");
 
