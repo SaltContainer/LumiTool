@@ -47,35 +47,37 @@ namespace LumiTool.Forms
 
         private void btnManifestOpen_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    manifest = engine.LoadManifest(openFileDialog.FileName);
-                    UpdateComponentsOnLoad();
-                }
+                manifest = engine.LoadManifest(openFileDialog.FileName);
+                UpdateComponentsOnLoad();
             }
         }
 
         private void btnManifestSave_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            using SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    engine.SaveManifest(manifest, saveFileDialog.FileName);
-                    MessageBox.Show("Successfully saved the new manifest!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                engine.SaveManifest(manifest, saveFileDialog.FileName);
+                MessageBox.Show("Successfully saved the new manifest!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void btnModOpen_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            using FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                string assetAssistantPath = engine.FindAssetAssistantPath(folderBrowserDialog.SelectedPath);
+                if (assetAssistantPath == null)
                 {
-                    moddedPath = folderBrowserDialog.SelectedPath;
+                    MessageBox.Show("Could not find the AssetAssistant folder in the RomFS. Make sure it can be found at either \".../Data/StreamingAssets/AssetAssistant\" or \".../StreamingAssets/AssetAssistant\".", "Bad path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    moddedPath = assetAssistantPath;
                     UpdateComponentsOnLoad();
                 }
             }
@@ -83,11 +85,17 @@ namespace LumiTool.Forms
 
         private void btnVanillaOpen_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            using FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                string assetAssistantPath = engine.FindAssetAssistantPath(folderBrowserDialog.SelectedPath);
+                if (assetAssistantPath == null)
                 {
-                    vanillaPath = folderBrowserDialog.SelectedPath;
+                    MessageBox.Show("Could not find the AssetAssistant folder in the RomFS. Make sure it can be found at either \".../Data/StreamingAssets/AssetAssistant\" or \".../StreamingAssets/AssetAssistant\".", "Bad path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    vanillaPath = assetAssistantPath;
                     UpdateComponentsOnLoad();
                 }
             }

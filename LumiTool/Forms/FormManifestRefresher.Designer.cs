@@ -144,7 +144,7 @@
             grpVanilla.Size = new Size(260, 100);
             grpVanilla.TabIndex = 5;
             grpVanilla.TabStop = false;
-            grpVanilla.Text = "Loaded Mod RomFS";
+            grpVanilla.Text = "Loaded Vanilla RomFS";
             // 
             // lbVanillaPath
             // 

@@ -41,7 +41,7 @@ namespace LumiTool.Forms
 
         private void btnAddMono_Click(object sender, EventArgs e)
         {
-            bool result = engine.AddMonoScript(bundle, afileInst, txtAssembly.Text, txtNamespace.Text, txtClass.Text);
+            bool result = engine.AddMonoScript(bundle, afileInst, txtAssembly.Text, txtNamespace.Text, txtClass.Text, BundleEngine.ManagerID.Modded);
 
             if (result)
                 MessageBox.Show("Successfully added the new MonoScript. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -53,27 +53,23 @@ namespace LumiTool.Forms
         {
             engine.UnloadBundles();
 
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    bundle = engine.LoadBundle(openFileDialog.FileName);
-                    afileInst = engine.LoadAssetsFileFromBundle(bundle);
+                bundle = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Modded);
+                afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
 
-                    UpdateComponentsOnLoad();
-                }
+                UpdateComponentsOnLoad();
             }
         }
 
         private void btnBundleSave_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            using SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    engine.SaveBundleToFile(bundle, saveFileDialog.FileName);
-                    MessageBox.Show("Successfully saved the new bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                engine.SaveBundleToFile(bundle, saveFileDialog.FileName);
+                MessageBox.Show("Successfully saved the new bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

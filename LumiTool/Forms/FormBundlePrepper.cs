@@ -66,44 +66,38 @@ namespace LumiTool.Forms
 
         private void btnBundleOpen_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    bundle = engine.LoadBundle(openFileDialog.FileName);
-                    afileInst = engine.LoadAssetsFileFromBundle(bundle);
+                bundle = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Modded);
+                afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
 
-                    if (checkTpk.Checked)
-                        engine.LoadClassPackageModded(afileInst);
+                if (checkTpk.Checked)
+                    engine.LoadClassPackage(afileInst, BundleEngine.ManagerID.Modded);
 
-                    UpdateComponentsOnLoadEditing();
-                }
+                UpdateComponentsOnLoadEditing();
             }
         }
 
         private void btnBundleSave_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            using SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    engine.SaveBundleToFile(bundle, saveFileDialog.FileName);
-                    MessageBox.Show("Successfully saved the new bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                engine.SaveBundleToFile(bundle, saveFileDialog.FileName);
+                MessageBox.Show("Successfully saved the new bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void btnBundleVOpen_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    bundleV = engine.LoadBundleV(openFileDialog.FileName);
-                    afileInstV = engine.LoadAssetsFileFromBundleV(bundleV);
+                bundleV = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Vanilla);
+                afileInstV = engine.LoadAssetsFileFromBundle(bundleV, BundleEngine.ManagerID.Vanilla);
 
-                    UpdateComponentsOnLoadVanilla();
-                }
+                UpdateComponentsOnLoadVanilla();
             }
         }
 

@@ -1,21 +1,17 @@
 ﻿using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 using LumiTool.Data;
-using LumiTool.Forms.Popups;
 using SmartPoint.AssetAssistant;
 
 namespace LumiTool.Engine
 {
     public class LumiToolEngine
     {
-        private AssetsManager manager;
-        private AssetsManager managerV;
-        private TemplateFieldToTypeTree typeTreeConverter;
+        private BundleEngine bundleEngine;
         private ManifestEngine manifestEngine;
+        private FileSystemEngine fileSystemEngine;
 
-        private Dictionary<long, Shader> foundShaders = new Dictionary<long, Shader>();
-
-        public readonly List<Shader> ShaderList = new List<Shader>()
+        public static readonly List<Shader> ShaderList = new List<Shader>()
         {
             new Shader("Custom/AfterImage", -4970256172671831970),
             new Shader("Custom/Bloom Finalize", 53842323778609191),
@@ -90,323 +86,64 @@ namespace LumiTool.Engine
 
         public LumiToolEngine()
         {
-            manager = new AssetsManager();
-            managerV = new AssetsManager();
-            typeTreeConverter = new TemplateFieldToTypeTree();
+            bundleEngine = new BundleEngine();
             manifestEngine = new ManifestEngine();
+            fileSystemEngine = new FileSystemEngine();
         }
 
         public void UnloadBundles()
         {
-            manager.UnloadAll();
-            managerV.UnloadAll();
+            bundleEngine.UnloadBundles();
         }
 
-        public BundleFileInstance LoadBundle(string path)
+        public BundleFileInstance LoadBundle(string path, BundleEngine.ManagerID managerID)
         {
-            return manager.LoadBundleFile(path, true);
+            return bundleEngine.LoadBundleFile(path, managerID);
         }
 
-        public BundleFileInstance LoadBundleV(string path)
+        public AssetsFileInstance LoadAssetsFileFromBundle(BundleFileInstance bundle, BundleEngine.ManagerID managerID)
         {
-            return managerV.LoadBundleFile(path, true);
-        }
-
-        public AssetsFileInstance LoadAssetsFileFromBundle(BundleFileInstance bundle)
-        {
-            return manager.LoadAssetsFileFromBundle(bundle, 0, false);
-        }
-
-        public AssetsFileInstance LoadAssetsFileFromBundleV(BundleFileInstance bundle)
-        {
-            return managerV.LoadAssetsFileFromBundle(bundle, 0, false);
-        }
-
-        public void SetAssetsFileInBundle(BundleFileInstance bundle, AssetsFileInstance assetsFile)
-        {
-            bundle.file.BlockAndDirInfo.DirectoryInfos[0].SetNewData(assetsFile.file);
+            return bundleEngine.LoadAssetsFileFromBundle(bundle, managerID);
         }
 
         public void SetPlatformOfBundle(BundleFileInstance bundle, AssetsFileInstance assetsFile, Platform platform)
         {
-            assetsFile.file.Metadata.TargetPlatform = Convert.ToUInt32(platform);
-            SetAssetsFileInBundle(bundle, assetsFile);
+            bundleEngine.SetPlatformOfBundle(bundle, assetsFile, platform);
         }
 
         public void SaveBundleToFile(BundleFileInstance bundle, string path)
         {
-            using (AssetsFileWriter writer = new AssetsFileWriter(path))
-            {
-                bundle.file.Write(writer);
-            }
+            bundleEngine.SaveBundleToFile(bundle, path);
         }
 
-        public ClassDatabaseFile LoadClassPackageModded(AssetsFileInstance assetsFile)
+        public ClassDatabaseFile LoadClassPackage(AssetsFileInstance assetsFile, BundleEngine.ManagerID managerID)
         {
-            manager.LoadClassPackage("classdata.tpk");
-            return manager.LoadClassDatabaseFromPackage(assetsFile.file.Metadata.UnityVersion);
+            return bundleEngine.LoadClassPackage(assetsFile, managerID);
         }
 
-        public ClassDatabaseFile LoadClassPackageVanilla(AssetsFileInstance assetsFile)
+        public bool AddMonoScript(BundleFileInstance bundle, AssetsFileInstance assetsFile, string assembly, string namezpace, string klass, BundleEngine.ManagerID managerID)
         {
-            managerV.LoadClassPackage("classdata.tpk");
-            return manager.LoadClassDatabaseFromPackage(assetsFile.file.Metadata.UnityVersion);
-        }
-
-        public bool AddMonoScript(BundleFileInstance bundle, AssetsFileInstance assetsFile, string assembly, string namezpace, string klass)
-        {
-            AssetsFile file = assetsFile.file;
-            var cldb = LoadClassPackageModded(assetsFile);
-
-            Random rand = new Random();
-            var monoScriptPathId = rand.NextInt64();
-
-            var monoScriptClassId = (int)AssetClassID.MonoScript;
-            var monoScriptInfo = AssetFileInfo.Create(file, monoScriptPathId, monoScriptClassId, cldb);
-            file.Metadata.AssetInfos.Add(monoScriptInfo);
-
-            var monoScriptTemp = manager.GetTemplateBaseField(assetsFile, monoScriptInfo);
-            var monoScriptBf = ValueBuilder.DefaultValueFieldFromTemplate(monoScriptTemp);
-            monoScriptBf["m_Name"].AsString = klass;
-            monoScriptBf["m_ClassName"].AsString = klass;
-            monoScriptBf["m_Namespace"].AsString = namezpace;
-            monoScriptBf["m_AssemblyName"].AsString = assembly;
-
-            monoScriptInfo.SetNewData(monoScriptBf);
-
-            var newScriptId = file.Metadata.ScriptTypes.Count;
-
-            file.Metadata.ScriptTypes.Add(new AssetPPtr(0, monoScriptPathId));
-
-            var monoBehaviourClassId = (int)AssetClassID.MonoBehaviour;
-            var monoBehaviourTemp = manager.GetTemplateBaseField(assetsFile, null, 0, monoBehaviourClassId, (ushort)newScriptId, AssetReadFlags.SkipMonoBehaviourFields);
-
-            manager.MonoTempGenerator = new MonoCecilTempGenerator("Managed");
-            var newBaseField = manager.MonoTempGenerator.GetTemplateField(monoBehaviourTemp, assembly, namezpace, klass, new UnityVersion(file.Metadata.UnityVersion));
-
-            if (newBaseField != null)
-            {
-                var newTypeTreeItem = ConvertTemplateFieldToTypeTree(cldb, newBaseField, monoBehaviourClassId, (ushort)newScriptId);
-
-                file.Metadata.TypeTreeTypes.Add(newTypeTreeItem);
-
-                var fileOutStream = new MemoryStream();
-                var fileOutWriter = new AssetsFileWriter(fileOutStream);
-                file.Write(fileOutWriter);
-                bundle.file.BlockAndDirInfo.DirectoryInfos[0].Replacer = new ContentReplacerFromBuffer(fileOutStream.ToArray());
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void CopyMaterials(AssetsFileInstance to, AssetsFileInstance from)
-        {
-            var toMats = to.file.GetAssetsOfType(AssetClassID.Material);
-            var fromMats = from.file.GetAssetsOfType(AssetClassID.Material);
-            foreach (var fromMat in fromMats)
-            {
-                var fromMatBase = managerV.GetBaseField(from, fromMat);
-                var toMat = toMats.Find(m => manager.GetBaseField(to, m)["m_Name"].AsString == fromMatBase["m_Name"].AsString);
-                if (toMat != null)
-                {
-                    var toMatBase = manager.GetBaseField(to, toMat);
-                    CopyMaterial(toMat, fromMatBase);
-                }
-            }
-
-            SetAssetsFileInBundle(to.parentBundle, to);
+            return bundleEngine.AddMonoScript(bundle, assetsFile, assembly, namezpace, klass, managerID);
         }
 
         public void CopyDependencies(AssetsFileInstance to, AssetsFileInstance from)
         {
-            ClearDependencies(to);
-            foreach (var dep in from.file.Metadata.Externals)
-                to.file.Metadata.Externals.Add(dep);
-
-            SetAssetsFileInBundle(to.parentBundle, to);
-        }
-
-        public void RepointTexturesOfMaterials(AssetsFileInstance to, AssetsFileInstance from)
-        {
-            var toMats = to.file.GetAssetsOfType(AssetClassID.Material);
-            var fromMats = from.file.GetAssetsOfType(AssetClassID.Material);
-            var toTexs = to.file.GetAssetsOfType(AssetClassID.Texture2D);
-
-            foreach (var fromMat in fromMats)
-            {
-                var fromMatBase = managerV.GetBaseField(from, fromMat);
-                var toMat = toMats.Find(m => manager.GetBaseField(to, m)["m_Name"].AsString == fromMatBase["m_Name"].AsString);
-                if (toMat != null)
-                {
-                    var toMatBase = manager.GetBaseField(to, toMat);
-                    var toTexsOfMat = toMatBase["m_SavedProperties"]["m_TexEnvs"]["Array"];
-
-                    foreach (var toTexOfMat in toTexsOfMat)
-                    {
-                        long original = toTexOfMat["second"]["m_Texture"]["m_PathID"].AsLong;
-                        if (original == 0)
-                            continue;
-
-                        var fromTex = managerV.GetBaseField(from, original);
-
-                        var toTex = toTexs.Find(t => manager.GetBaseField(to, t)["m_Name"].AsString == fromTex["m_Name"].AsString);
-                        if (toTex != null)
-                            toTexOfMat["second"]["m_Texture"]["m_PathID"].AsLong = toTex.PathId;
-                    }
-
-                    toMat.SetNewData(toMatBase);
-                }
-            }
-
-            SetAssetsFileInBundle(to.parentBundle, to);
-        }
-
-        public bool RegenerateMonoTypeTree(BundleFileInstance bundle, AssetsFileInstance assetsFile)
-        {
-            var file = assetsFile.file;
-            var cldb = LoadClassPackageModded(assetsFile);
-
-            manager.MonoTempGenerator = new MonoCecilTempGenerator("Managed");
-
-            for (int i=0; i<file.Metadata.ScriptTypes.Count; i++)
-            {
-                var monoBehaviourClassId = (int)AssetClassID.MonoBehaviour;
-                var monoBehaviourTemp = manager.GetTemplateBaseField(assetsFile, null, 0, monoBehaviourClassId, (ushort)i, AssetReadFlags.SkipMonoBehaviourFields);
-
-                var scriptBase = manager.GetBaseField(assetsFile, file.Metadata.ScriptTypes[i].PathId);
-
-                string assembly = scriptBase["m_AssemblyName"].AsString;
-                string namezpace = scriptBase["m_Namespace"].AsString;
-                string klass = scriptBase["m_ClassName"].AsString;
-
-                var newBaseField = manager.MonoTempGenerator.GetTemplateField(monoBehaviourTemp, assembly, namezpace, klass, new UnityVersion(file.Metadata.UnityVersion));
-
-                if (newBaseField == null)
-                    return false;
-
-                var newTypeTreeItem = ConvertTemplateFieldToTypeTree(cldb, newBaseField, monoBehaviourClassId, (ushort)i);
-
-                int typeTreeIndex = file.Metadata.TypeTreeTypes.FindIndex(t => t.ScriptTypeIndex == i);
-                file.Metadata.TypeTreeTypes[typeTreeIndex] = newTypeTreeItem;
-            }
-
-            var fileOutStream = new MemoryStream();
-            var fileOutWriter = new AssetsFileWriter(fileOutStream);
-            file.Write(fileOutWriter);
-            bundle.file.BlockAndDirInfo.DirectoryInfos[0].Replacer = new ContentReplacerFromBuffer(fileOutStream.ToArray());
-
-            return true;
+            bundleEngine.CopyDependencies(to, from);
         }
 
         public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile)
         {
-            var mats = assetsFile.file.GetAssetsOfType(AssetClassID.Material);
-            int shaderFileID = GetDependencyIndexOfShadersBundles(assetsFile);
-
-            foreach (var mat in mats)
-            {
-                var matBase = manager.GetBaseField(assetsFile, mat);
-                long currentShaderPathID = matBase["m_Shader"]["m_PathID"].AsLong;
-
-                if (foundShaders.TryGetValue(currentShaderPathID, out Shader shader))
-                {
-                    AssignShaderToMaterial(mat, matBase, shaderFileID, shader.PathID);
-                }
-                else
-                {
-                    FormShaderSelect shaderSelect = new FormShaderSelect(matBase["m_Name"].AsString, ShaderList);
-                    while (shaderSelect.ShowDialog() != DialogResult.OK)
-                        MessageBox.Show("You must specify the shader used for this material!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                    foundShaders.Add(currentShaderPathID, shaderSelect.Result);
-                    AssignShaderToMaterial(mat, matBase, shaderFileID, shaderSelect.Result.PathID);
-                }
-                
-                mat.SetNewData(matBase);
-            }
-
-            SetAssetsFileInBundle(bundle, assetsFile);
-            ClearShaderPathIDs();
+            bundleEngine.FixShadersOfMaterials(bundle, assetsFile);
         }
 
-        public void CopyMonos(AssetsFileInstance to, AssetsFileInstance from)
+        public void AddDependency(AssetsFileInstance assetsFile, string path)
         {
-            var toMonos = to.file.GetAssetsOfType(AssetClassID.MonoBehaviour);
-            var fromMonos = from.file.GetAssetsOfType(AssetClassID.MonoBehaviour);
-
-            foreach (var toMono in toMonos)
-            {
-                var toMonoBase = manager.GetBaseField(to, toMono);
-                var toMonoScriptBase = manager.GetBaseField(to, to.file.GetAssetInfo(toMonoBase["m_Script"]["m_PathID"].AsLong));
-
-                string monoScriptName = toMonoScriptBase["m_Name"].AsString;
-
-                var fromMonoScript = from.file.GetAssetsOfType(AssetClassID.MonoScript).Find(s => managerV.GetBaseField(from, s)["m_Name"].AsString == monoScriptName);
-                if (fromMonoScript == null)
-                    return;
-                
-                var fromMono = fromMonos.Find(b => managerV.GetBaseField(from, b)["m_Script"]["m_PathID"].AsLong == fromMonoScript.PathId);
-                if (fromMono == null)
-                    return;
-
-                switch (monoScriptName)
-                {
-                    case "CurvePatterns":
-                        CopyCurvePatterns(to, from, toMono, fromMono);
-                        break;
-                    case "FieldCharacterEntity":
-                        CopyFieldCharacterEntity(to, from, toMono, fromMono);
-                        break;
-                    case "FieldPlayerEntity":
-                        CopyFieldPlayerEntity(to, from, toMono, fromMono);
-                        break;
-                }
-            }
-
-            SetAssetsFileInBundle(to.parentBundle, to);
+            bundleEngine.AddDependency(assetsFile, path);
         }
 
-        public void AdjustRenderers(AssetsFileInstance to, AssetsFileInstance from)
+        public void CopyMaterial(AssetFileInfo toMat, AssetTypeValueField fromMatBase)
         {
-            var toRenderers = to.file.GetAssetsOfType(AssetClassID.SkinnedMeshRenderer);
-            var fromRenderers = from.file.GetAssetsOfType(AssetClassID.SkinnedMeshRenderer);
-
-            foreach (var toRenderer in toRenderers)
-            {
-                var toRendererBase = manager.GetBaseField(to, toRenderer);
-                var toGo = manager.GetBaseField(to, toRendererBase["m_GameObject"]["m_PathID"].AsLong);
-                if (toGo == null)
-                    return;
-
-                var fromRenderer = fromRenderers.Find(b => managerV.GetBaseField(from, managerV.GetBaseField(from, b)["m_GameObject"]["m_PathID"].AsLong)["m_Name"].AsString == toGo["m_Name"].AsString);
-                if (fromRenderer == null)
-                    return;
-
-                var fromRendererBase = managerV.GetBaseField(from, fromRenderer);
-                if (fromRendererBase == null)
-                    return;
-
-                toRendererBase["m_Materials"]["Array"].Children = fromRendererBase["m_Materials"]["Array"].Children;
-
-                toRendererBase["m_Bones"]["Array"].Children = fromRendererBase["m_Bones"]["Array"].Children;
-                for (int i=0; i<fromRendererBase["m_Bones"]["Array"].Children.Count; i++)
-                {
-                    var fromBone = fromRendererBase["m_Bones"]["Array"].Children[i];
-                    var toBone = toRendererBase["m_Bones"]["Array"].Children[i];
-                    
-                    FindComponentPtrFromGameObjectName(to, from, toBone, fromBone, AssetClassID.Transform, out int fileID, out long pathID);
-                    toBone["m_FileID"].AsInt = fileID;
-                    toBone["m_PathID"].AsLong = pathID;
-                }
-
-                toRenderer.SetNewData(toRendererBase);
-            }
-
-            SetAssetsFileInBundle(to.parentBundle, to);
+            bundleEngine.CopyMaterial(toMat, fromMatBase);
         }
 
         public AssetBundleDownloadManifest LoadManifest(string path)
@@ -419,360 +156,9 @@ namespace LumiTool.Engine
             manifestEngine.SaveManifest(manifest, path);
         }
 
-        private void CopyCurvePatterns(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
+        public string? FindAssetAssistantPath(string path)
         {
-            var fromMonoBase = managerV.GetBaseField(from, fromMono);
-            var toMonoBase = manager.GetBaseField(to, toMono);
-
-            var fromMonoScriptBase = managerV.GetBaseField(from, from.file.GetAssetInfo(fromMonoBase["m_Script"]["m_PathID"].AsLong));
-            var toMonoScript = to.file.GetAssetsOfType(AssetClassID.MonoScript).Find(s => manager.GetBaseField(to, s)["m_Name"].AsString == fromMonoScriptBase["m_Name"].AsString);
-
-            if (toMonoScript == null)
-                return;
-
-            toMonoBase["m_Enabled"].AsBool = fromMonoBase["m_Enabled"].AsBool;
-            toMonoBase["curves"]["Array"].Children = fromMonoBase["curves"]["Array"].Children;
-
-            toMono.SetNewData(toMonoBase);
-        }
-
-        private void CopyFieldCharacterEntity(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
-        {
-            var fromMonoBase = managerV.GetBaseField(from, fromMono);
-            var toMonoBase = manager.GetBaseField(to, toMono);
-
-            var fromMonoScriptBase = managerV.GetBaseField(from, from.file.GetAssetInfo(fromMonoBase["m_Script"]["m_PathID"].AsLong));
-            var toMonoScript = to.file.GetAssetsOfType(AssetClassID.MonoScript).Find(s => manager.GetBaseField(to, s)["m_Name"].AsString == fromMonoScriptBase["m_Name"].AsString);
-
-            if (toMonoScript == null)
-                return;
-
-            CopyFieldCharacterEntityFields(to, from, toMonoBase, fromMonoBase);
-
-            toMono.SetNewData(toMonoBase);
-        }
-
-        private void CopyFieldPlayerEntity(AssetsFileInstance to, AssetsFileInstance from, AssetFileInfo toMono, AssetFileInfo fromMono)
-        {
-            var fromMonoBase = managerV.GetBaseField(from, fromMono);
-            var toMonoBase = manager.GetBaseField(to, toMono);
-
-            var fromMonoScriptBase = managerV.GetBaseField(from, from.file.GetAssetInfo(fromMonoBase["m_Script"]["m_PathID"].AsLong));
-            var toMonoScript = to.file.GetAssetsOfType(AssetClassID.MonoScript).Find(s => manager.GetBaseField(to, s)["m_Name"].AsString == fromMonoScriptBase["m_Name"].AsString);
-
-            if (toMonoScript == null)
-                return;
-
-            CopyFieldCharacterEntityFields(to, from, toMonoBase, fromMonoBase);
-            CopyFieldPlayerEntityFields(to, from, toMonoBase, fromMonoBase);
-
-            toMono.SetNewData(toMonoBase);
-        }
-
-        private void CopyFieldCharacterEntityFields(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toMonoBase, AssetTypeValueField fromMonoBase)
-        {
-            toMonoBase["m_Enabled"].AsBool = fromMonoBase["m_Enabled"].AsBool;
-            toMonoBase["m_Name"].AsString = fromMonoBase["m_Name"].AsString;
-            toMonoBase["_enityName"].AsString = fromMonoBase["_enityName"].AsString;
-            toMonoBase["IsIgnorePlayerCollision"].AsBool = fromMonoBase["IsIgnorePlayerCollision"].AsBool;
-            toMonoBase["HandScale"].AsFloat = fromMonoBase["HandScale"].AsFloat;
-
-            MergeAnimationClipsOfEntity(to, from, toMonoBase, fromMonoBase);
-
-            int fileID;
-            long pathID;
-
-            toMonoBase["_variations"]["Array"].Children = fromMonoBase["_variations"]["Array"].Children;
-            for (int i=0; i<fromMonoBase["_variations"]["Array"].Children.Count; i++)
-            {
-                var fromVariation = fromMonoBase["_variations"]["Array"].Children[i];
-                var toVariation = toMonoBase["_variations"]["Array"].Children[i];
-
-                FindComponentPtrFromGameObjectName(to, from, toVariation["root"], fromVariation["root"], AssetClassID.Transform, out fileID, out pathID);
-                toVariation["root"]["m_FileID"].AsInt = fileID;
-                toVariation["root"]["m_PathID"].AsLong = pathID;
-
-                FindComponentPtrFromGameObjectName(to, from, toVariation["neck"], fromVariation["neck"], AssetClassID.Transform, out fileID, out pathID);
-                toVariation["neck"]["m_FileID"].AsInt = fileID;
-                toVariation["neck"]["m_PathID"].AsLong = pathID;
-
-                FindComponentPtrFromGameObjectName(to, from, toVariation["lhand"], fromVariation["lhand"], AssetClassID.Transform, out fileID, out pathID);
-                toVariation["lhand"]["m_FileID"].AsInt = fileID;
-                toVariation["lhand"]["m_PathID"].AsLong = pathID;
-
-                FindComponentPtrFromGameObjectName(to, from, toVariation["rhand"], fromVariation["rhand"], AssetClassID.Transform, out fileID, out pathID);
-                toVariation["rhand"]["m_FileID"].AsInt = fileID;
-                toVariation["rhand"]["m_PathID"].AsLong = pathID;
-
-                FindComponentPtrFromGameObjectName(to, from, toVariation["faceRenderer"], fromVariation["faceRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-                toVariation["faceRenderer"]["m_FileID"].AsInt = fileID;
-                toVariation["faceRenderer"]["m_PathID"].AsLong = pathID;
-
-                toVariation["eyeMaterialIndex"].AsInt = fromVariation["eyeMaterialIndex"].AsInt;
-                toVariation["mouthMaterialIndex"].AsInt = fromVariation["mouthMaterialIndex"].AsInt;
-            }
-
-            toMonoBase["_eyePatternIndex"].AsInt = fromMonoBase["_eyePatternIndex"].AsInt;
-            toMonoBase["_mouthPatternIndex"].AsInt = fromMonoBase["_mouthPatternIndex"].AsInt;
-            toMonoBase["_currentVariation"].AsInt = fromMonoBase["_currentVariation"].AsInt;
-
-            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_watchRenderer"], fromMonoBase["_watchRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-            toMonoBase["_watchRenderer"]["m_FileID"].AsInt = fileID;
-            toMonoBase["_watchRenderer"]["m_PathID"].AsLong = pathID;
-
-            toMonoBase["NeckAngle"]["x"].AsFloat = fromMonoBase["NeckAngle"]["x"].AsFloat;
-            toMonoBase["NeckAngle"]["y"].AsFloat = fromMonoBase["NeckAngle"]["y"].AsFloat;
-            toMonoBase["NeckAngle"]["z"].AsFloat = fromMonoBase["NeckAngle"]["z"].AsFloat;
-
-            toMonoBase["_updateNeckAngle"]["x"].AsFloat = fromMonoBase["_updateNeckAngle"]["x"].AsFloat;
-            toMonoBase["_updateNeckAngle"]["y"].AsFloat = fromMonoBase["_updateNeckAngle"]["y"].AsFloat;
-            toMonoBase["_updateNeckAngle"]["z"].AsFloat = fromMonoBase["_updateNeckAngle"]["z"].AsFloat;
-
-            toMonoBase["_updateNeckAngle2"]["x"].AsFloat = fromMonoBase["_updateNeckAngle2"]["x"].AsFloat;
-            toMonoBase["_updateNeckAngle2"]["y"].AsFloat = fromMonoBase["_updateNeckAngle2"]["y"].AsFloat;
-            toMonoBase["_updateNeckAngle2"]["z"].AsFloat = fromMonoBase["_updateNeckAngle2"]["z"].AsFloat;
-
-            toMonoBase["SubductionDepth"].AsFloat = fromMonoBase["SubductionDepth"].AsFloat;
-        }
-
-        private void CopyFieldPlayerEntityFields(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toMonoBase, AssetTypeValueField fromMonoBase)
-        {
-            int fileID;
-            long pathID;
-
-            toMonoBase["_hatRenderers"]["Array"].Children = fromMonoBase["_hatRenderers"]["Array"].Children;
-            for (int i=0; i<fromMonoBase["_hatRenderers"]["Array"].Children.Count; i++)
-            {
-                var fromRenderer = fromMonoBase["_hatRenderers"]["Array"].Children[i];
-                var toRenderer = toMonoBase["_hatRenderers"]["Array"].Children[i];
-                FindComponentPtrFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-                toRenderer["m_FileID"].AsInt = fileID;
-                toRenderer["m_PathID"].AsLong = pathID;
-            }
-
-            toMonoBase["_shoesRenderers"]["Array"].Children = fromMonoBase["_shoesRenderers"]["Array"].Children;
-            for (int i = 0; i < fromMonoBase["_shoesRenderers"]["Array"].Children.Count; i++)
-            {
-                var fromRenderer = fromMonoBase["_shoesRenderers"]["Array"].Children[i];
-                var toRenderer = toMonoBase["_shoesRenderers"]["Array"].Children[i];
-                FindComponentPtrFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-                toRenderer["m_FileID"].AsInt = fileID;
-                toRenderer["m_PathID"].AsLong = pathID;
-            }
-
-            FindGameObjectPtrFromName(to, from, toMonoBase["_meshGroup"], fromMonoBase["_meshGroup"], out fileID, out pathID);
-            toMonoBase["_meshGroup"]["m_FileID"].AsInt = fileID;
-            toMonoBase["_meshGroup"]["m_PathID"].AsLong = pathID;
-
-            FindGameObjectPtrFromName(to, from, toMonoBase["_bicycleObject"], fromMonoBase["_bicycleObject"], out fileID, out pathID);
-            toMonoBase["_bicycleObject"]["m_FileID"].AsInt = fileID;
-            toMonoBase["_bicycleObject"]["m_PathID"].AsLong = pathID;
-
-            toMonoBase["_rodRenderers"]["Array"].Children = fromMonoBase["_rodRenderers"]["Array"].Children;
-            for (int i = 0; i < fromMonoBase["_rodRenderers"]["Array"].Children.Count; i++)
-            {
-                var fromRenderer = fromMonoBase["_rodRenderers"]["Array"].Children[i];
-                var toRenderer = toMonoBase["_rodRenderers"]["Array"].Children[i];
-                FindComponentPtrFromGameObjectName(to, from, toRenderer, fromRenderer, AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-                toRenderer["m_FileID"].AsInt = fileID;
-                toRenderer["m_PathID"].AsLong = pathID;
-            }
-
-            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_podRenderer"], fromMonoBase["_podRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-            toMonoBase["_podRenderer"]["m_FileID"].AsInt = fileID;
-            toMonoBase["_podRenderer"]["m_PathID"].AsLong = pathID;
-
-            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_beadaruRenderer"], fromMonoBase["_beadaruRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-            toMonoBase["_beadaruRenderer"]["m_FileID"].AsInt = fileID;
-            toMonoBase["_beadaruRenderer"]["m_PathID"].AsLong = pathID;
-
-            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_mukuhawkRenderer"], fromMonoBase["_mukuhawkRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-            toMonoBase["_mukuhawkRenderer"]["m_FileID"].AsInt = fileID;
-            toMonoBase["_mukuhawkRenderer"]["m_PathID"].AsLong = pathID;
-
-            toMonoBase["_bicycleColors"]["Array"].Children = fromMonoBase["_bicycleColors"]["Array"].Children;
-
-            FindComponentPtrFromGameObjectName(to, from, toMonoBase["_bicycleRenderer"], fromMonoBase["_bicycleRenderer"], AssetClassID.SkinnedMeshRenderer, out fileID, out pathID);
-            toMonoBase["_bicycleRenderer"]["m_FileID"].AsInt = fileID;
-            toMonoBase["_bicycleRenderer"]["m_PathID"].AsLong = pathID;
-
-            toMonoBase["_bicycleMaterialIndex"].AsInt = fromMonoBase["_bicycleMaterialIndex"].AsInt;
-
-            toMonoBase["InputMoveVector"]["x"].AsFloat = fromMonoBase["InputMoveVector"]["x"].AsFloat;
-            toMonoBase["InputMoveVector"]["y"].AsFloat = fromMonoBase["InputMoveVector"]["y"].AsFloat;
-            toMonoBase["InputMoveVector"]["z"].AsFloat = fromMonoBase["InputMoveVector"]["z"].AsFloat;
-
-            toMonoBase["FormType"].AsInt = fromMonoBase["FormType"].AsInt;
-            toMonoBase["ForcePlayNaminoriEffect"].AsBool = fromMonoBase["ForcePlayNaminoriEffect"].AsBool;
-        }
-
-        private void MergeAnimationClipsOfEntity(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toMonoBase, AssetTypeValueField fromMonoBase)
-        {
-            for (int i=toMonoBase["_animationPlayer"]["_clips"]["Array"].Children.Count; i<fromMonoBase["_animationPlayer"]["_clips"]["Array"].Children.Count; i++)
-            {
-                var newClip = ValueBuilder.DefaultValueFieldFromArrayTemplate(toMonoBase["_animationPlayer"]["_clips"]["Array"]);
-                toMonoBase["_animationPlayer"]["_clips"]["Array"].Children.Add(newClip);
-            }
-
-            for (int i=0; i<toMonoBase["_animationPlayer"]["_clips"]["Array"].Children.Count; i++)
-            {
-                long toClipPathID = toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_PathID"].AsLong;
-                if (toClipPathID != 0)
-                    continue;
-
-                long toClipFileID = toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_FileID"].AsLong;
-                if (toClipFileID != 0)
-                    continue;
-
-                FindAnimationClipPtrFromName(to, from, toMonoBase["_animationPlayer"]["_clips"]["Array"][i], fromMonoBase["_animationPlayer"]["_clips"]["Array"][i], out int clipFileID, out long clipPathID);
-                toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_FileID"].AsInt = clipFileID;
-                toMonoBase["_animationPlayer"]["_clips"]["Array"][i]["m_PathID"].AsLong = clipPathID;
-            }
-        }
-
-        private void FindAnimationClipPtrFromName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField, out int fileID, out long pathID)
-        {
-            fileID = 0;
-            pathID = 0;
-
-            // No clip in "from" bundle
-            if (fromField["m_PathID"].AsLong == 0)
-                return;
-
-            // Clip in "from" bundle is in dependency
-            if (fromField["m_FileID"].AsInt != 0)
-            {
-                fileID = fromField["m_FileID"].AsInt;
-                pathID = fromField["m_PathID"].AsLong;
-                return;
-            }
-
-            // Can't find clip in "from" bundle somehow
-            var animInfo = from.file.GetAssetInfo(fromField["m_PathID"].AsLong);
-            if (animInfo == null)
-                return;
-
-            // Can't find clip of same name in "to" bundle
-            string clipName = managerV.GetBaseField(from, animInfo)["m_Name"].AsString;
-            var toClip = to.file.GetAssetsOfType(AssetClassID.AnimationClip).Find(c => manager.GetBaseField(to, c)["m_Name"].AsString == clipName);
-            if (toClip == null)
-                return;
-
-            // Found clip in "to" bundle
-            pathID = toClip.PathId;
-        }
-
-        private void FindComponentPtrFromGameObjectName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField, AssetClassID klass, out int fileID, out long pathID)
-        {
-            fileID = 0;
-            pathID = 0;
-
-            // No component in "from" bundle
-            if (fromField["m_PathID"].AsLong == 0)
-                return;
-
-            // Component in "from" bundle is in dependency
-            if (fromField["m_FileID"].AsInt != 0)
-            {
-                fileID = fromField["m_FileID"].AsInt;
-                pathID = fromField["m_PathID"].AsLong;
-                return;
-            }
-
-            var fromComponent = managerV.GetBaseField(from, from.file.GetAssetInfo(fromField["m_PathID"].AsLong));
-            var fromGO = managerV.GetBaseField(from, fromComponent["m_GameObject"]["m_PathID"].AsLong);
-
-            // Can't find GameObject of same name in "to" bundle
-            var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(g => manager.GetBaseField(to, g)["m_Name"].AsString == fromGO["m_Name"].AsString);
-            if (toGO == null)
-                return;
-
-            // Can't find component of proper pathID in "to" bundle
-            var toGOBase = manager.GetBaseField(to, toGO);
-            var toComponent = to.file.GetAssetsOfType(klass).Find(a => toGOBase["m_Component"]["Array"].Children.Any(c => c["component"]["m_PathID"].AsLong == a.PathId));
-            if (toComponent == null)
-                return;
-
-            // Found component in "to" bundle
-            pathID = toComponent.PathId;
-        }
-
-        private void FindGameObjectPtrFromName(AssetsFileInstance to, AssetsFileInstance from, AssetTypeValueField toField, AssetTypeValueField fromField, out int fileID, out long pathID)
-        {
-            fileID = 0;
-            pathID = 0;
-
-            // No GameObject in "from" bundle
-            if (fromField["m_PathID"].AsLong == 0)
-                return;
-
-            // GameObject in "from" bundle is in dependency
-            if (fromField["m_FileID"].AsInt != 0)
-            {
-                fileID = fromField["m_FileID"].AsInt;
-                pathID = fromField["m_PathID"].AsLong;
-                return;
-            }
-
-            var fromGO = managerV.GetBaseField(from, fromField["m_PathID"].AsLong);
-
-            // Can't find GameObject of same name in "to" bundle
-            var toGO = to.file.GetAssetsOfType(AssetClassID.GameObject).Find(g => manager.GetBaseField(to, g)["m_Name"].AsString == fromGO["m_Name"].AsString);
-            if (toGO == null)
-                return;
-
-            // Found GameObject in "to" bundle
-            pathID = toGO.PathId;
-        }
-
-        private void ClearShaderPathIDs()
-        {
-            foundShaders.Clear();
-        }
-
-        private int GetDependencyIndexOfShadersBundles(AssetsFileInstance assetsFile)
-        {
-            return assetsFile.file.Metadata.Externals.FindIndex(d => d.PathName == "archive:/CAB-1dc8d26be8722a766953ce9d8a444e8c/CAB-1dc8d26be8722a766953ce9d8a444e8c") + 1;
-        }
-
-        private void AssignShaderToMaterial(AssetFileInfo mat, AssetTypeValueField matBase, long fileID, long pathID)
-        {
-            if (fileID != -1)
-                matBase["m_Shader"]["m_FileID"].AsLong = fileID;
-
-            matBase["m_Shader"]["m_PathID"].AsLong = pathID;
-
-            mat.SetNewData(matBase);
-        }
-
-        private void ClearDependencies(AssetsFileInstance assetsFile)
-        {
-            assetsFile.file.Metadata.Externals.Clear();
-        }
-
-        private void AddDependency(AssetsFileInstance assetsFile, string path)
-        {
-            var deps = assetsFile.file.Metadata.Externals;
-            AssetsFileExternal dep = new AssetsFileExternal()
-            {
-                VirtualAssetPathName = "",
-                PathName = path,
-                OriginalPathName = "",
-                Type = AssetsFileExternalType.Normal,
-                Guid = default,
-            };
-            deps.Add(dep);
-        }
-
-        private void CopyMaterial(AssetFileInfo toMat, AssetTypeValueField fromMatBase)
-        {
-            byte[] fromData = fromMatBase.WriteToByteArray();
-            toMat.SetNewData(fromData);
-        }
-
-        private TypeTreeType ConvertTemplateFieldToTypeTree(ClassDatabaseFile cldbFile, AssetTypeTemplateField templateField, int typeId, ushort scriptIndex)
-        {
-            return typeTreeConverter.ConvertInternal(cldbFile, templateField, typeId, scriptIndex);
+            return fileSystemEngine.FindAssetAssistantPath(path);
         }
     }
 }
