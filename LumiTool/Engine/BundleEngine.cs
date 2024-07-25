@@ -199,6 +199,61 @@ namespace LumiTool.Engine
             toMat.SetNewData(fromData);
         }
 
+        public bool ChangeShadersBundlePathIDs(BundleFileInstance toBundle, AssetsFileInstance toAssetsFile, BundleFileInstance fromBundle, AssetsFileInstance fromAssetsFile)
+        {
+            bool allChanged = true;
+
+            var shaders = toAssetsFile.file.GetAssetsOfType(AssetClassID.Shader);
+            var shadersV = fromAssetsFile.file.GetAssetsOfType(AssetClassID.Shader);
+            var shadersBaseV = shadersV.Select(s => managerV.GetBaseField(fromAssetsFile, s)).ToList();
+
+            foreach (var shader in shaders)
+            {
+                var shaderBase = manager.GetBaseField(toAssetsFile, shader);
+                var shaderIndex = FindShaderOfName(shadersBaseV, shaderBase["m_ParsedForm"]["m_Name"].AsString);
+                if (shaderIndex < 0)
+                {
+                    allChanged = false;
+                    continue;
+                }
+
+                long newPathId = shadersV[shaderIndex].PathId;
+                shader.SetRemoved();
+
+                var newShaderInfo = AssetFileInfo.Create(toAssetsFile.file, newPathId, (int)AssetClassID.Shader, null);
+                newShaderInfo.SetNewData(shaderBase);
+                toAssetsFile.file.Metadata.AddAssetInfo(newShaderInfo);
+            }
+
+            var mats = toAssetsFile.file.GetAssetsOfType(AssetClassID.Material);
+            var matsV = fromAssetsFile.file.GetAssetsOfType(AssetClassID.Material);
+            var matsBaseV = matsV.Select(m => managerV.GetBaseField(fromAssetsFile, m)).ToList();
+
+            foreach (var mat in mats)
+            {
+                var matBase = manager.GetBaseField(toAssetsFile, mat);
+                var matIndex = FindObjectOfName(matsBaseV, matBase["m_Name"].AsString);
+                if (matIndex < 0)
+                {
+                    allChanged = false;
+                    continue;
+                }
+
+                long newPathId = matsV[matIndex].PathId;
+                mat.SetRemoved();
+
+                var newMatInfo = AssetFileInfo.Create(toAssetsFile.file, newPathId, (int)AssetClassID.Material, null);
+                newMatInfo.SetNewData(matBase);
+                toAssetsFile.file.Metadata.AddAssetInfo(newMatInfo);
+            }
+
+            var fromPreloadTable = managerV.GetBaseField(fromAssetsFile, fromAssetsFile.file.GetAssetInfo(1));
+            toAssetsFile.file.GetAssetInfo(1).SetNewData(fromPreloadTable);
+
+            SetAssetsFileInBundle(toBundle, toAssetsFile);
+            return allChanged;
+        }
+
         private int GetDependencyIndexOfShadersBundles(AssetsFileInstance assetsFile)
         {
             return assetsFile.file.Metadata.Externals.FindIndex(d => d.PathName == "archive:/CAB-1dc8d26be8722a766953ce9d8a444e8c/CAB-1dc8d26be8722a766953ce9d8a444e8c") + 1;
@@ -227,6 +282,16 @@ namespace LumiTool.Engine
         private void SetAssetsFileInBundle(BundleFileInstance bundle, AssetsFileInstance assetsFile)
         {
             bundle.file.BlockAndDirInfo.DirectoryInfos[0].SetNewData(assetsFile.file);
+        }
+
+        private int FindShaderOfName(List<AssetTypeValueField> shaderBaseFields, string name)
+        {
+            return shaderBaseFields.FindIndex(s => s["m_ParsedForm"]["m_Name"].AsString == name);
+        }
+
+        private int FindObjectOfName(List<AssetTypeValueField> objBaseFields, string name)
+        {
+            return objBaseFields.FindIndex(s => s["m_Name"].AsString == name);
         }
 
         public enum ManagerID

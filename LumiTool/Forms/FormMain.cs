@@ -13,6 +13,7 @@ namespace LumiTool
         private FormBundlePrepper preperForm;
         private FormColorVariation colorVariationForm;
         private FormManifestRefresher manifestRefresherForm;
+        private FormShaderPathIDFixer shaderPathIDFixerForm;
 
         public FormMain()
         {
@@ -24,44 +25,50 @@ namespace LumiTool
             preperForm = new FormBundlePrepper(engine);
             colorVariationForm = new FormColorVariation(engine);
             manifestRefresherForm = new FormManifestRefresher(engine);
+            shaderPathIDFixerForm = new FormShaderPathIDFixer(engine);
 
             InitializeComponent();
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            aboutForm.ShowDialog();
+            aboutForm.ShowDialog(this);
         }
 
         private void btnPlatform_Click(object sender, EventArgs e)
         {
-            platformForm.ShowDialog();
+            platformForm.ShowDialog(this);
         }
 
         private void btnMono_Click(object sender, EventArgs e)
         {
-            monoForm.ShowDialog();
+            monoForm.ShowDialog(this);
         }
 
         private void btnPrepper_Click(object sender, EventArgs e)
         {
-            preperForm.ShowDialog();
+            preperForm.ShowDialog(this);
         }
 
         private void btnColorVariation_Click(object sender, EventArgs e)
         {
-            //colorVariationForm.ShowDialog();
+            //colorVariationForm.ShowDialog(this);
             MessageBox.Show("This section is a work in progress.", "WIP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void btnManifestRefresher_Click(object sender, EventArgs e)
         {
-            manifestRefresherForm.ShowDialog();
+            manifestRefresherForm.ShowDialog(this);
         }
 
         private void btnManifestEditor_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This section is a work in progress.", "WIP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void btnShaderPathIDFixer_Click(object sender, EventArgs e)
+        {
+            shaderPathIDFixerForm.ShowDialog(this);
         }
     }
 }

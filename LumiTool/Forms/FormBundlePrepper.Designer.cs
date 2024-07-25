@@ -209,8 +209,8 @@
             MinimumSize = new Size(504, 280);
             Name = "FormBundlePrepper";
             Text = "Bundle Prepper";
-            FormClosed += FormMap_FormClosed;
-            Shown += FormMap_Shown;
+            FormClosed += FormBundlePrepper_FormClosed;
+            Shown += FormBundlePrepper_Shown;
             grpBundle.ResumeLayout(false);
             grpBundle.PerformLayout();
             grpBundleV.ResumeLayout(false);

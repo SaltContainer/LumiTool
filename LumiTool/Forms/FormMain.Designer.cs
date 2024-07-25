@@ -36,6 +36,7 @@
             btnAbout = new Button();
             btnManifestRefresher = new Button();
             btnManifestEditor = new Button();
+            btnShaderPathIDFixer = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -50,7 +51,6 @@
             // 
             // btnMono
             // 
-            btnMono.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnMono.Location = new Point(182, 65);
             btnMono.Name = "btnMono";
             btnMono.Size = new Size(164, 59);
@@ -71,7 +71,6 @@
             // 
             // btnColorVariation
             // 
-            btnColorVariation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnColorVariation.Location = new Point(182, 130);
             btnColorVariation.Name = "btnColorVariation";
             btnColorVariation.Size = new Size(164, 59);
@@ -83,7 +82,7 @@
             // btnAbout
             // 
             btnAbout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAbout.Location = new Point(271, 12);
+            btnAbout.Location = new Point(441, 12);
             btnAbout.Name = "btnAbout";
             btnAbout.Size = new Size(75, 47);
             btnAbout.TabIndex = 4;
@@ -103,7 +102,6 @@
             // 
             // btnManifestEditor
             // 
-            btnManifestEditor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnManifestEditor.Location = new Point(182, 195);
             btnManifestEditor.Name = "btnManifestEditor";
             btnManifestEditor.Size = new Size(164, 59);
@@ -112,11 +110,22 @@
             btnManifestEditor.UseVisualStyleBackColor = true;
             btnManifestEditor.Click += btnManifestEditor_Click;
             // 
+            // btnShaderPathIDFixer
+            // 
+            btnShaderPathIDFixer.Location = new Point(352, 65);
+            btnShaderPathIDFixer.Name = "btnShaderPathIDFixer";
+            btnShaderPathIDFixer.Size = new Size(164, 59);
+            btnShaderPathIDFixer.TabIndex = 7;
+            btnShaderPathIDFixer.Text = "Shader Bundle PathID Fixer";
+            btnShaderPathIDFixer.UseVisualStyleBackColor = true;
+            btnShaderPathIDFixer.Click += btnShaderPathIDFixer_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(358, 266);
+            ClientSize = new Size(528, 266);
+            Controls.Add(btnShaderPathIDFixer);
             Controls.Add(btnManifestEditor);
             Controls.Add(btnManifestRefresher);
             Controls.Add(btnAbout);
@@ -127,8 +136,8 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(374, 305);
-            MinimumSize = new Size(374, 305);
+            MaximumSize = new Size(544, 305);
+            MinimumSize = new Size(544, 305);
             Name = "FormMain";
             Text = "LumiTool";
             ResumeLayout(false);
@@ -143,5 +152,6 @@
         private Button btnAbout;
         private Button btnManifestRefresher;
         private Button btnManifestEditor;
+        private Button btnShaderPathIDFixer;
     }
 }

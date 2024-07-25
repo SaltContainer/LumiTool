@@ -1,10 +1,9 @@
 ﻿using AssetsTools.NET.Extra;
-using LumiTool.Data;
 using LumiTool.Engine;
 
 namespace LumiTool.Forms
 {
-    public partial class FormBundlePrepper : Form
+    public partial class FormShaderPathIDFixer : Form
     {
         LumiToolEngine engine;
         BundleFileInstance bundle = null;
@@ -12,16 +11,11 @@ namespace LumiTool.Forms
         BundleFileInstance bundleV = null;
         AssetsFileInstance afileInstV = null;
 
-        public FormBundlePrepper(LumiToolEngine engine)
+        public FormShaderPathIDFixer(LumiToolEngine engine)
         {
             InitializeComponent();
 
             this.engine = engine;
-
-            ttBundlePrepper.SetToolTip(checkTpk, "Checking this before loading the rebuilt bundle will load\nthe classdata.tpk file in the same folder as the executable.\nUse this if you built the bundle without a type tree.");
-            ttBundlePrepper.SetToolTip(checkConvertPlatform, "Changes the platform metadata of the rebuilt bundle to Switch.");
-            ttBundlePrepper.SetToolTip(checkConvertDependencies, "Copies the dependencies of the vanilla bundle onto the rebuilt bundle.\nOff by default.\nThis is the only option that actually looks at the vanilla bundle.");
-            ttBundlePrepper.SetToolTip(checkConvertShaders, "When on, each material asset's shader will be remapped.\nThe user will be asked to identify the proper shader from a pre-set list\nfor each different shader that was detected.");
         }
 
         private void UpdateComponentsOnStart()
@@ -29,38 +23,30 @@ namespace LumiTool.Forms
             lbBundleName.Text = "Bundle Name: ";
             lbBundleVName.Text = "Bundle Name: ";
             btnBundleSave.Enabled = false;
-            btnConvertApply.Enabled = false;
-            checkConvertPlatform.Enabled = false;
-            checkConvertDependencies.Enabled = false;
-            checkConvertShaders.Enabled = false;
-            checkTpk.Enabled = true;
+            btnFix.Enabled = false;
 
-            ttBundlePrepper.SetToolTip(lbBundleName, "");
-            ttBundlePrepper.SetToolTip(lbBundleVName, "");
+            ttShaderPathIDFixer.SetToolTip(lbBundleName, "");
+            ttShaderPathIDFixer.SetToolTip(lbBundleVName, "");
         }
 
         private void UpdateComponentsOnLoadCommon()
         {
             bool active = bundle != null && bundleV != null;
             btnBundleSave.Enabled = active;
-            btnConvertApply.Enabled = active;
-            checkConvertPlatform.Enabled = active;
-            checkConvertDependencies.Enabled = active;
-            checkConvertShaders.Enabled = active;
+            btnFix.Enabled = active;
         }
 
         private void UpdateComponentsOnLoadEditing()
         {
             lbBundleName.Text = "Bundle Name: " + bundle.name;
-            ttBundlePrepper.SetToolTip(lbBundleName, bundle.name);
-            checkTpk.Enabled = false;
+            ttShaderPathIDFixer.SetToolTip(lbBundleName, bundle.name);
             UpdateComponentsOnLoadCommon();
         }
 
         private void UpdateComponentsOnLoadVanilla()
         {
             lbBundleVName.Text = "Bundle Name: " + bundleV.name;
-            ttBundlePrepper.SetToolTip(lbBundleVName, bundleV.name);
+            ttShaderPathIDFixer.SetToolTip(lbBundleVName, bundleV.name);
             UpdateComponentsOnLoadCommon();
         }
 
@@ -71,10 +57,6 @@ namespace LumiTool.Forms
             {
                 bundle = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Modded);
                 afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
-
-                if (checkTpk.Checked)
-                    engine.LoadClassPackage(afileInst, BundleEngine.ManagerID.Modded);
-
                 UpdateComponentsOnLoadEditing();
             }
         }
@@ -96,17 +78,16 @@ namespace LumiTool.Forms
             {
                 bundleV = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Vanilla);
                 afileInstV = engine.LoadAssetsFileFromBundle(bundleV, BundleEngine.ManagerID.Vanilla);
-
                 UpdateComponentsOnLoadVanilla();
             }
         }
 
-        private void FormBundlePrepper_Shown(object sender, EventArgs e)
+        private void FormShaderPathIDFixer_Shown(object sender, EventArgs e)
         {
             UpdateComponentsOnStart();
         }
 
-        private void FormBundlePrepper_FormClosed(object sender, FormClosedEventArgs e)
+        private void FormShaderPathIDFixer_FormClosed(object sender, FormClosedEventArgs e)
         {
             bundle = null;
             afileInst = null;
@@ -115,14 +96,14 @@ namespace LumiTool.Forms
             engine.UnloadBundles();
         }
 
-        private void btnConvertApply_Click(object sender, EventArgs e)
+        private void btnFix_Click(object sender, EventArgs e)
         {
             try
             {
-                if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
-                if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
-                if (checkConvertShaders.Checked) engine.FixShadersOfMaterials(bundle, afileInst);
-                MessageBox.Show("Successfully converted the bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (engine.ChangeShadersBundlePathIDs(bundle, afileInst, bundleV, afileInstV))
+                    MessageBox.Show("Successfully fixed the path IDs of all shaders and materials in the bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                    MessageBox.Show("Some shaders or materials could not be found, but the ones that were found were successfully fixed. You can still save your bundle.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {

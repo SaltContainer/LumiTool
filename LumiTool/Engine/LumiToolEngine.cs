@@ -160,5 +160,10 @@ namespace LumiTool.Engine
         {
             return fileSystemEngine.FindAssetAssistantPath(path);
         }
+
+        public bool ChangeShadersBundlePathIDs(BundleFileInstance toBundle, AssetsFileInstance toAssetsFile, BundleFileInstance fromBundle, AssetsFileInstance fromAssetsFile)
+        {
+            return bundleEngine.ChangeShadersBundlePathIDs(toBundle, toAssetsFile, fromBundle, fromAssetsFile);
+        }
     }
 }
