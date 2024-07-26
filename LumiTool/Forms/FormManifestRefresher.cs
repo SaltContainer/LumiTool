@@ -115,7 +115,15 @@ namespace LumiTool.Forms
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                engine.RefreshManifest(manifest, moddedPath, vanillaPath);
+                MessageBox.Show("Successfully refreshed the manifest. Don't forget to save your manifest!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was an exception when refreshing the manifest. Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SmartPoint.AssetAssistant
+﻿using System.Diagnostics;
+
+namespace SmartPoint.AssetAssistant
 {
     [Serializable]
     public class AssetBundleDownloadManifest
@@ -46,6 +48,17 @@
             _projectName = string.Empty;
             _assetBundleNamesWithVariant = Array.Empty<string>();
             _path = string.Empty;
+            _records = Array.Empty<AssetBundleRecord>();
+            _recordLookupFromAssetBundleName = new Dictionary<string, AssetBundleRecord>();
+            _dirty = false;
+        }
+
+        public AssetBundleDownloadManifest(string projectName, string[] assetBundleNamesWithVariant, string path)
+        {
+            _version = currentVersion;
+            _projectName = projectName;
+            _assetBundleNamesWithVariant = assetBundleNamesWithVariant;
+            _path = path;
             _records = Array.Empty<AssetBundleRecord>();
             _recordLookupFromAssetBundleName = new Dictionary<string, AssetBundleRecord>();
             _dirty = false;
@@ -291,6 +304,17 @@
             _dirty = true;
         }
 
+        public void RemoveRecordsWhere(Func<AssetBundleRecord, bool> predicate)
+        {
+            var removing = _records.Where(predicate).ToList();
+            foreach (var r in removing)
+            {
+                Debug.WriteLine(r.projectName + " - " + r.assetBundleName);
+            }
+            _records = _records.Where(r => !predicate(r)).ToArray();
+            _dirty = true;
+        }
+
         public void RestrictRecords(string[] assetBundleNames)
         {
             _records = _records.Where(x => Array.IndexOf(assetBundleNames, x.assetBundleName) != -1).ToArray();
@@ -359,7 +383,5 @@
 
             return deps.ToArray();
         }
-
-        public delegate void OnRecordCreated(AssetBundleRecord record);
     }
 }

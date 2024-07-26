@@ -2,12 +2,19 @@
 {
     public class FileSystemEngine
     {
+        private LumiToolEngine engine;
+
+        public FileSystemEngine(LumiToolEngine engine)
+        {
+            this.engine = engine;
+        }
+
         private readonly List<(string dir, bool optional)> pathSegments = new List<(string, bool)>()
         {
             ("Data", true), ("StreamingAssets", false), ("AssetAssistant", false)
         };
 
-        public long? BundleLength(string path)
+        public long? GetFileSizeAtPath(string path)
         {
             if (File.Exists(path))
                 return new FileInfo(path).Length;

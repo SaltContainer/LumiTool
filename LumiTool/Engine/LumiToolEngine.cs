@@ -86,9 +86,9 @@ namespace LumiTool.Engine
 
         public LumiToolEngine()
         {
-            bundleEngine = new BundleEngine();
-            manifestEngine = new ManifestEngine();
-            fileSystemEngine = new FileSystemEngine();
+            bundleEngine = new BundleEngine(this);
+            manifestEngine = new ManifestEngine(this);
+            fileSystemEngine = new FileSystemEngine(this);
         }
 
         public void UnloadBundles()
@@ -156,6 +156,11 @@ namespace LumiTool.Engine
             manifestEngine.SaveManifest(manifest, path);
         }
 
+        public void RefreshManifest(AssetBundleDownloadManifest manifest, string romfsPath, string romfsVPath)
+        {
+            manifestEngine.RefreshManifest(manifest, romfsPath, romfsVPath);
+        }
+
         public string? FindAssetAssistantPath(string path)
         {
             return fileSystemEngine.FindAssetAssistantPath(path);
@@ -164,6 +169,11 @@ namespace LumiTool.Engine
         public bool ChangeShadersBundlePathIDs(BundleFileInstance toBundle, AssetsFileInstance toAssetsFile, BundleFileInstance fromBundle, AssetsFileInstance fromAssetsFile)
         {
             return bundleEngine.ChangeShadersBundlePathIDs(toBundle, toAssetsFile, fromBundle, fromAssetsFile);
+        }
+
+        public long? GetFileSizeAtPath(string path)
+        {
+            return fileSystemEngine.GetFileSizeAtPath(path);
         }
     }
 }

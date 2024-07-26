@@ -7,12 +7,16 @@ namespace LumiTool.Engine
 {
     public class BundleEngine
     {
+        private LumiToolEngine engine;
+
         private AssetsManager manager;
         private AssetsManager managerV;
         private TemplateFieldToTypeTree typeTreeConverter;
 
-        public BundleEngine()
+        public BundleEngine(LumiToolEngine engine)
         {
+            this.engine = engine;
+
             manager = new AssetsManager();
             managerV = new AssetsManager();
             typeTreeConverter = new TemplateFieldToTypeTree();
