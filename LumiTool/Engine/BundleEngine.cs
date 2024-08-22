@@ -258,6 +258,21 @@ namespace LumiTool.Engine
             return allChanged;
         }
 
+        public void RenameBundle(BundleFileInstance bundle, AssetsFileInstance assetsFile, string newName, string newCAB)
+        {
+            string oldCAB = assetsFile.name;
+            assetsFile.name = newCAB;
+            foreach (AssetBundleDirectoryInfo dirInfo in bundle.file.BlockAndDirInfo.DirectoryInfos)
+                dirInfo.Name = dirInfo.Name.Replace(oldCAB, newCAB);
+
+            var preloadTable = manager.GetBaseField(assetsFile, assetsFile.file.GetAssetInfo(1));
+            preloadTable["m_Name"].AsString = newName;
+            preloadTable["m_AssetBundleName"].AsString = newName;
+            assetsFile.file.GetAssetInfo(1).SetNewData(preloadTable);
+
+            SetAssetsFileInBundle(bundle, assetsFile);
+        }
+
         private int GetDependencyIndexOfShadersBundles(AssetsFileInstance assetsFile)
         {
             return assetsFile.file.Metadata.Externals.FindIndex(d => d.PathName == "archive:/CAB-1dc8d26be8722a766953ce9d8a444e8c/CAB-1dc8d26be8722a766953ce9d8a444e8c") + 1;

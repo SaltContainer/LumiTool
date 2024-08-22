@@ -175,5 +175,10 @@ namespace LumiTool.Engine
         {
             return fileSystemEngine.GetFileSizeAtPath(path);
         }
+
+        public void RenameBundle(BundleFileInstance bundle, AssetsFileInstance assetsFile, string newName, string newCAB)
+        {
+            bundleEngine.RenameBundle(bundle, assetsFile, newName, newCAB);
+        }
     }
 }

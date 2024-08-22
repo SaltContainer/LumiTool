@@ -14,6 +14,7 @@ namespace LumiTool
         private FormColorVariation colorVariationForm;
         private FormManifestRefresher manifestRefresherForm;
         private FormShaderPathIDFixer shaderPathIDFixerForm;
+        private FormRenameBundle bundleRenamerForm;
 
         public FormMain()
         {
@@ -26,6 +27,7 @@ namespace LumiTool
             colorVariationForm = new FormColorVariation(engine);
             manifestRefresherForm = new FormManifestRefresher(engine);
             shaderPathIDFixerForm = new FormShaderPathIDFixer(engine);
+            bundleRenamerForm = new FormRenameBundle(engine);
 
             InitializeComponent();
         }
@@ -69,6 +71,11 @@ namespace LumiTool
         private void btnShaderPathIDFixer_Click(object sender, EventArgs e)
         {
             shaderPathIDFixerForm.ShowDialog(this);
+        }
+
+        private void btnBundleRenamer_Click(object sender, EventArgs e)
+        {
+            bundleRenamerForm.ShowDialog(this);
         }
     }
 }
