@@ -151,12 +151,15 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(to.parentBundle, to);
         }
 
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile)
+        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup)
+        {
+            FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, new Dictionary<long, Shader>());
+        }
+
+        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<long, Shader> foundShaders)
         {
             var mats = assetsFile.file.GetAssetsOfType(AssetClassID.Material);
             int shaderFileID = GetDependencyIndexOfShadersBundles(assetsFile);
-
-            Dictionary<long, Shader> foundShaders = new Dictionary<long, Shader>();
 
             foreach (var mat in mats)
             {
@@ -169,7 +172,9 @@ namespace LumiTool.Engine
                 }
                 else
                 {
-                    using FormShaderSelect shaderSelect = new FormShaderSelect(matBase["m_Name"].AsString, LumiToolEngine.ShaderList);
+                    using FormShaderSelect shaderSelect = showBundleNameInPopup ?
+                        new FormShaderSelect(matBase["m_Name"].AsString, bundle.name, LumiToolEngine.ShaderList) :
+                        new FormShaderSelect(matBase["m_Name"].AsString, LumiToolEngine.ShaderList);
                     while (shaderSelect.ShowDialog() != DialogResult.OK)
                         MessageBox.Show("You must specify the shader used for this material!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 

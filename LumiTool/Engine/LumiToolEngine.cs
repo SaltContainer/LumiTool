@@ -131,9 +131,14 @@ namespace LumiTool.Engine
             bundleEngine.CopyDependencies(to, from);
         }
 
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile)
+        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup = false)
         {
-            bundleEngine.FixShadersOfMaterials(bundle, assetsFile);
+            bundleEngine.FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup);
+        }
+
+        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<long, Shader> foundShaders)
+        {
+            bundleEngine.FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, foundShaders);
         }
 
         public void AddDependency(AssetsFileInstance assetsFile, string path)

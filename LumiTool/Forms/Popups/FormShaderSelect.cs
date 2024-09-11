@@ -12,7 +12,17 @@ namespace LumiTool.Forms.Popups
 
             DialogResult = DialogResult.Cancel;
 
-            lbText.Text = string.Format("Please select the shader that material {0} uses.", materialName);
+            lbText.Text = string.Format("Please select the shader that material \"{0}\" uses.", materialName);
+            comboShaders.DataSource = shaders;
+        }
+
+        public FormShaderSelect(string materialName, string bundleName, List<Shader> shaders)
+        {
+            InitializeComponent();
+
+            DialogResult = DialogResult.Cancel;
+
+            lbText.Text = string.Format("Please select the shader that material \"{0}\" in bundle \"{1}\" uses.", materialName, bundleName);
             comboShaders.DataSource = shaders;
         }
 

@@ -38,6 +38,7 @@
             btnManifestEditor = new Button();
             btnShaderPathIDFixer = new Button();
             btnBundleRenamer = new Button();
+            btnPrepperMass = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -72,7 +73,7 @@
             // 
             // btnColorVariation
             // 
-            btnColorVariation.Location = new Point(352, 130);
+            btnColorVariation.Location = new Point(352, 195);
             btnColorVariation.Name = "btnColorVariation";
             btnColorVariation.Size = new Size(164, 59);
             btnColorVariation.TabIndex = 6;
@@ -123,13 +124,23 @@
             // 
             // btnBundleRenamer
             // 
-            btnBundleRenamer.Location = new Point(182, 130);
+            btnBundleRenamer.Location = new Point(352, 130);
             btnBundleRenamer.Name = "btnBundleRenamer";
             btnBundleRenamer.Size = new Size(164, 59);
             btnBundleRenamer.TabIndex = 5;
             btnBundleRenamer.Text = "Bundle Renamer";
             btnBundleRenamer.UseVisualStyleBackColor = true;
             btnBundleRenamer.Click += btnBundleRenamer_Click;
+            // 
+            // btnPrepperMass
+            // 
+            btnPrepperMass.Location = new Point(182, 130);
+            btnPrepperMass.Name = "btnPrepperMass";
+            btnPrepperMass.Size = new Size(164, 59);
+            btnPrepperMass.TabIndex = 9;
+            btnPrepperMass.Text = "Bundle Prepper (Mass)";
+            btnPrepperMass.UseVisualStyleBackColor = true;
+            btnPrepperMass.Click += btnPrepperMass_Click;
             // 
             // FormMain
             // 
@@ -144,6 +155,7 @@
             Controls.Add(btnPlatform);
             Controls.Add(btnMono);
             Controls.Add(btnPrepper);
+            Controls.Add(btnPrepperMass);
             Controls.Add(btnColorVariation);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -166,5 +178,6 @@
         private Button btnManifestEditor;
         private Button btnShaderPathIDFixer;
         private Button btnBundleRenamer;
+        private Button btnPrepperMass;
     }
 }

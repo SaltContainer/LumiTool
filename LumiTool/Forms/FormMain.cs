@@ -10,7 +10,8 @@ namespace LumiTool
         private FormAbout aboutForm;
         private FormPlatform platformForm;
         private FormMono monoForm;
-        private FormBundlePrepper preperForm;
+        private FormBundlePrepper prepperForm;
+        private FormBundlePrepperMass massPrepperForm;
         private FormColorVariation colorVariationForm;
         private FormManifestRefresher manifestRefresherForm;
         private FormShaderPathIDFixer shaderPathIDFixerForm;
@@ -23,7 +24,8 @@ namespace LumiTool
             aboutForm = new FormAbout();
             platformForm = new FormPlatform(engine);
             monoForm = new FormMono(engine);
-            preperForm = new FormBundlePrepper(engine);
+            prepperForm = new FormBundlePrepper(engine);
+            massPrepperForm = new FormBundlePrepperMass(engine);
             colorVariationForm = new FormColorVariation(engine);
             manifestRefresherForm = new FormManifestRefresher(engine);
             shaderPathIDFixerForm = new FormShaderPathIDFixer(engine);
@@ -49,7 +51,12 @@ namespace LumiTool
 
         private void btnPrepper_Click(object sender, EventArgs e)
         {
-            preperForm.ShowDialog(this);
+            prepperForm.ShowDialog(this);
+        }
+
+        private void btnPrepperMass_Click(object sender, EventArgs e)
+        {
+            massPrepperForm.ShowDialog(this);
         }
 
         private void btnColorVariation_Click(object sender, EventArgs e)
