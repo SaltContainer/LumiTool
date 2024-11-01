@@ -50,6 +50,9 @@ namespace LumiTool.Forms
             btnManifestSave.Enabled = state;
 
             listRecords.Enabled = state;
+            btnAddRecord.Enabled = state;
+            btnRemoveRecord.Enabled = state;
+
             txtProjectName.Enabled = state;
             txtBundleName.Enabled = state;
             checkStreamingScene.Enabled = state;
@@ -59,17 +62,19 @@ namespace LumiTool.Forms
             txtDependencyName.Enabled = state;
             btnAddDependency.Enabled = state;
             btnRemoveDependency.Enabled = state;
+            btnRenameDependency.Enabled = state;
 
             listAssetPaths.Enabled = state;
             txtAssetPath.Enabled = state;
             btnAddAssetPath.Enabled = state;
             btnRemoveAssetPath.Enabled = state;
+            btnRenameAssetPath.Enabled = state;
         }
 
         private void ClearControls()
         {
             listRecords.DataSource = null;
-            
+
             txtProjectName.Text = string.Empty;
             txtBundleName.Text = string.Empty;
             checkStreamingScene.Checked = false;
@@ -78,7 +83,7 @@ namespace LumiTool.Forms
             listDependencies.DataSource = null;
             txtDependencyName.Text = string.Empty;
 
-            listAssetPaths .DataSource = null;
+            listAssetPaths.DataSource = null;
             txtAssetPath.Text = string.Empty;
         }
 
@@ -250,6 +255,12 @@ namespace LumiTool.Forms
             UpdateDependenciesOfRecordList(SelectedRecord);
         }
 
+        private void btnRenameDependency_Click(object sender, EventArgs e)
+        {
+            SelectedRecord.allDependencies[listDependencies.SelectedIndex] = txtDependencyName.Text;
+            UpdateDependenciesOfRecordList(SelectedRecord);
+        }
+
         private void btnAddAssetPath_Click(object sender, EventArgs e)
         {
             SelectedRecord.assetPaths = SelectedRecord.assetPaths.Append(txtAssetPath.Text).ToArray();
@@ -263,6 +274,12 @@ namespace LumiTool.Forms
                 return;
 
             SelectedRecord.assetPaths = SelectedRecord.assetPaths.Select((x, i) => (x, i)).Where((x, i) => i != listAssetPaths.SelectedIndex).Select(y => y.x).ToArray();
+            UpdateAssetPathsOfRecordList(SelectedRecord);
+        }
+
+        private void btnRenameAssetPath_Click(object sender, EventArgs e)
+        {
+            SelectedRecord.assetPaths[listAssetPaths.SelectedIndex] = txtAssetPath.Text;
             UpdateAssetPathsOfRecordList(SelectedRecord);
         }
     }

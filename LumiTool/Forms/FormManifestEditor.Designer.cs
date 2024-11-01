@@ -58,6 +58,8 @@
             txtProjectName = new TextBox();
             btnAddRecord = new Button();
             btnRemoveRecord = new Button();
+            btnRenameDependency = new Button();
+            btnRenameAssetPath = new Button();
             grpManifest.SuspendLayout();
             grpEditRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSize).BeginInit();
@@ -168,6 +170,7 @@
             // 
             // grpAssetPaths
             // 
+            grpAssetPaths.Controls.Add(btnRenameAssetPath);
             grpAssetPaths.Controls.Add(btnRemoveAssetPath);
             grpAssetPaths.Controls.Add(btnAddAssetPath);
             grpAssetPaths.Controls.Add(lbAssetPath);
@@ -215,7 +218,7 @@
             txtAssetPath.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtAssetPath.Location = new Point(94, 130);
             txtAssetPath.Name = "txtAssetPath";
-            txtAssetPath.Size = new Size(372, 23);
+            txtAssetPath.Size = new Size(285, 23);
             txtAssetPath.TabIndex = 13;
             // 
             // listAssetPaths
@@ -231,6 +234,7 @@
             // 
             // grpDependency
             // 
+            grpDependency.Controls.Add(btnRenameDependency);
             grpDependency.Controls.Add(btnRemoveDependency);
             grpDependency.Controls.Add(btnAddDependency);
             grpDependency.Controls.Add(lbDependencyName);
@@ -278,7 +282,7 @@
             txtDependencyName.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtDependencyName.Location = new Point(94, 130);
             txtDependencyName.Name = "txtDependencyName";
-            txtDependencyName.Size = new Size(372, 23);
+            txtDependencyName.Size = new Size(285, 23);
             txtDependencyName.TabIndex = 13;
             // 
             // listDependencies
@@ -349,6 +353,26 @@
             btnRemoveRecord.UseVisualStyleBackColor = true;
             btnRemoveRecord.Click += btnRemoveRecord_Click;
             // 
+            // btnRenameDependency
+            // 
+            btnRenameDependency.Location = new Point(385, 129);
+            btnRenameDependency.Name = "btnRenameDependency";
+            btnRenameDependency.Size = new Size(81, 23);
+            btnRenameDependency.TabIndex = 10;
+            btnRenameDependency.Text = "Rename";
+            btnRenameDependency.UseVisualStyleBackColor = true;
+            btnRenameDependency.Click += btnRenameDependency_Click;
+            // 
+            // btnRenameAssetPath
+            // 
+            btnRenameAssetPath.Location = new Point(385, 130);
+            btnRenameAssetPath.Name = "btnRenameAssetPath";
+            btnRenameAssetPath.Size = new Size(81, 23);
+            btnRenameAssetPath.TabIndex = 16;
+            btnRenameAssetPath.Text = "Rename";
+            btnRenameAssetPath.UseVisualStyleBackColor = true;
+            btnRenameAssetPath.Click += btnRenameAssetPath_Click;
+            // 
             // FormManifestEditor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -410,5 +434,7 @@
         private Button btnAddDependency;
         private Button btnRemoveAssetPath;
         private Button btnAddAssetPath;
+        private Button btnRenameAssetPath;
+        private Button btnRenameDependency;
     }
 }
