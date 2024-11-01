@@ -161,6 +161,11 @@ namespace LumiTool.Engine
             manifestEngine.SaveManifest(manifest, path);
         }
 
+        public void ReplaceAllRecordsOfManifest(AssetBundleDownloadManifest manifest, AssetBundleRecord[] newRecords)
+        {
+            manifestEngine.ReplaceAllRecordsOfManifest(manifest, newRecords);
+        }
+
         public void RefreshManifest(AssetBundleDownloadManifest manifest, string romfsPath, string romfsVPath)
         {
             manifestEngine.RefreshManifest(manifest, romfsPath, romfsVPath);

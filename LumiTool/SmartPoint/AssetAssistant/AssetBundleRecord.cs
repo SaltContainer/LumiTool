@@ -18,6 +18,8 @@
         [NonSerialized]
         public bool isSimulation;
 
+        public string AssetBundleName { get => assetBundleName; }
+
         public AssetBundleRecord(string _projectName, string _assetBundleName)
         {
             projectName = _projectName;
@@ -56,6 +58,11 @@
             size = other.size;
             isStreamingSceneAssetBundle = other.isStreamingSceneAssetBundle;
             isSimulation = false;
+        }
+
+        public AssetBundleRecord()
+        {
+            // Empty
         }
     }
 }

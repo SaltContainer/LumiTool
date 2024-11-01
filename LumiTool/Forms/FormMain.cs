@@ -14,6 +14,7 @@ namespace LumiTool
         private FormBundlePrepperMass massPrepperForm;
         private FormColorVariation colorVariationForm;
         private FormManifestRefresher manifestRefresherForm;
+        private FormManifestEditor manifestEditorForm;
         private FormShaderPathIDFixer shaderPathIDFixerForm;
         private FormRenameBundle bundleRenamerForm;
 
@@ -28,6 +29,7 @@ namespace LumiTool
             massPrepperForm = new FormBundlePrepperMass(engine);
             colorVariationForm = new FormColorVariation(engine);
             manifestRefresherForm = new FormManifestRefresher(engine);
+            manifestEditorForm = new FormManifestEditor(engine);
             shaderPathIDFixerForm = new FormShaderPathIDFixer(engine);
             bundleRenamerForm = new FormRenameBundle(engine);
 
@@ -72,7 +74,7 @@ namespace LumiTool
 
         private void btnManifestEditor_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This section is a work in progress.", "WIP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            manifestEditorForm.ShowDialog(this);
         }
 
         private void btnShaderPathIDFixer_Click(object sender, EventArgs e)

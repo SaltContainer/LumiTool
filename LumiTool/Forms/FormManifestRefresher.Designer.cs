@@ -177,7 +177,9 @@
             Controls.Add(grpVanilla);
             Controls.Add(grpMod);
             Controls.Add(grpManifest);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             MaximumSize = new Size(300, 415);
             MinimumSize = new Size(300, 415);
             Name = "FormManifestRefresher";

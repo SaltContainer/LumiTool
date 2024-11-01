@@ -273,6 +273,13 @@ namespace SmartPoint.AssetAssistant
             return record;
         }
 
+        public void ReplaceAllRecords(AssetBundleRecord[] newRecords)
+        {
+            _records = newRecords;
+            _dirty = true;
+            BuildLookupTables();
+        }
+
         public void Clear()
         {
             _records = Array.Empty<AssetBundleRecord>();
