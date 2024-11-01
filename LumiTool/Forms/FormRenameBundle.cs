@@ -1,5 +1,6 @@
 ﻿using AssetsTools.NET.Extra;
 using LumiTool.Engine;
+using System.Windows.Forms;
 
 namespace LumiTool.Forms
 {
@@ -38,15 +39,19 @@ namespace LumiTool.Forms
             ttRenameBundle.SetToolTip(lbBundleName, bundle.name);
         }
 
+        private void OpenBundle(string path)
+        {
+            bundle = engine.LoadBundle(path, BundleEngine.ManagerID.Modded);
+            afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
+            UpdateComponentsOnLoad();
+        }
+
         private void btnBundleOpen_Click(object sender, EventArgs e)
         {
             using OpenFileDialog openFileDialog = new OpenFileDialog();
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                bundle = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Modded);
-                afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
-                UpdateComponentsOnLoad();
-            }
+                OpenBundle(openFileDialog.FileName);
         }
 
         private void btnBundleSave_Click(object sender, EventArgs e)
@@ -82,6 +87,22 @@ namespace LumiTool.Forms
             {
                 MessageBox.Show("There was an exception when renaming the bundle. Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnBundleOpen_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void btnBundleOpen_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 1)
+                MessageBox.Show("Multiple files were dragged into the tool. The Bundle Renamer only supports one file at a time.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+                OpenBundle(files[0]);
         }
     }
 }

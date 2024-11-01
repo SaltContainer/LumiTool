@@ -41,12 +41,14 @@
             lbSize = new Label();
             numSize = new NumericUpDown();
             grpAssetPaths = new GroupBox();
+            btnRenameAssetPath = new Button();
             btnRemoveAssetPath = new Button();
             btnAddAssetPath = new Button();
             lbAssetPath = new Label();
             txtAssetPath = new TextBox();
             listAssetPaths = new ListBox();
             grpDependency = new GroupBox();
+            btnRenameDependency = new Button();
             btnRemoveDependency = new Button();
             btnAddDependency = new Button();
             lbDependencyName = new Label();
@@ -58,8 +60,6 @@
             txtProjectName = new TextBox();
             btnAddRecord = new Button();
             btnRemoveRecord = new Button();
-            btnRenameDependency = new Button();
-            btnRenameAssetPath = new Button();
             grpManifest.SuspendLayout();
             grpEditRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSize).BeginInit();
@@ -90,6 +90,7 @@
             // 
             // btnManifestOpen
             // 
+            btnManifestOpen.AllowDrop = true;
             btnManifestOpen.Image = Resources.Resources.folder;
             btnManifestOpen.Location = new Point(6, 40);
             btnManifestOpen.Name = "btnManifestOpen";
@@ -99,6 +100,8 @@
             btnManifestOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnManifestOpen.UseVisualStyleBackColor = true;
             btnManifestOpen.Click += btnManifestOpen_Click;
+            btnManifestOpen.DragDrop += btnManifestOpen_DragDrop;
+            btnManifestOpen.DragEnter += btnManifestOpen_DragEnter;
             // 
             // btnManifestSave
             // 
@@ -183,6 +186,16 @@
             grpAssetPaths.TabStop = false;
             grpAssetPaths.Text = "Asset Paths";
             // 
+            // btnRenameAssetPath
+            // 
+            btnRenameAssetPath.Location = new Point(385, 130);
+            btnRenameAssetPath.Name = "btnRenameAssetPath";
+            btnRenameAssetPath.Size = new Size(81, 23);
+            btnRenameAssetPath.TabIndex = 16;
+            btnRenameAssetPath.Text = "Rename";
+            btnRenameAssetPath.UseVisualStyleBackColor = true;
+            btnRenameAssetPath.Click += btnRenameAssetPath_Click;
+            // 
             // btnRemoveAssetPath
             // 
             btnRemoveAssetPath.Image = Resources.Resources.minus_big;
@@ -246,6 +259,16 @@
             grpDependency.TabIndex = 12;
             grpDependency.TabStop = false;
             grpDependency.Text = "Dependencies";
+            // 
+            // btnRenameDependency
+            // 
+            btnRenameDependency.Location = new Point(385, 129);
+            btnRenameDependency.Name = "btnRenameDependency";
+            btnRenameDependency.Size = new Size(81, 23);
+            btnRenameDependency.TabIndex = 10;
+            btnRenameDependency.Text = "Rename";
+            btnRenameDependency.UseVisualStyleBackColor = true;
+            btnRenameDependency.Click += btnRenameDependency_Click;
             // 
             // btnRemoveDependency
             // 
@@ -352,26 +375,6 @@
             btnRemoveRecord.Text = "Remove Record";
             btnRemoveRecord.UseVisualStyleBackColor = true;
             btnRemoveRecord.Click += btnRemoveRecord_Click;
-            // 
-            // btnRenameDependency
-            // 
-            btnRenameDependency.Location = new Point(385, 129);
-            btnRenameDependency.Name = "btnRenameDependency";
-            btnRenameDependency.Size = new Size(81, 23);
-            btnRenameDependency.TabIndex = 10;
-            btnRenameDependency.Text = "Rename";
-            btnRenameDependency.UseVisualStyleBackColor = true;
-            btnRenameDependency.Click += btnRenameDependency_Click;
-            // 
-            // btnRenameAssetPath
-            // 
-            btnRenameAssetPath.Location = new Point(385, 130);
-            btnRenameAssetPath.Name = "btnRenameAssetPath";
-            btnRenameAssetPath.Size = new Size(81, 23);
-            btnRenameAssetPath.TabIndex = 16;
-            btnRenameAssetPath.Text = "Rename";
-            btnRenameAssetPath.UseVisualStyleBackColor = true;
-            btnRenameAssetPath.Click += btnRenameAssetPath_Click;
             // 
             // FormManifestEditor
             // 

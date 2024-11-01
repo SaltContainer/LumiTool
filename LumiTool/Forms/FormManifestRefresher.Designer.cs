@@ -70,6 +70,7 @@
             // 
             // btnManifestOpen
             // 
+            btnManifestOpen.AllowDrop = true;
             btnManifestOpen.Image = Resources.Resources.folder;
             btnManifestOpen.Location = new Point(6, 40);
             btnManifestOpen.Name = "btnManifestOpen";
@@ -79,6 +80,8 @@
             btnManifestOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnManifestOpen.UseVisualStyleBackColor = true;
             btnManifestOpen.Click += btnManifestOpen_Click;
+            btnManifestOpen.DragDrop += btnManifestOpen_DragDrop;
+            btnManifestOpen.DragEnter += btnManifestOpen_DragEnter;
             // 
             // btnManifestSave
             // 

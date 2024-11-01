@@ -66,6 +66,7 @@
             // 
             // btnBundleOpen
             // 
+            btnBundleOpen.AllowDrop = true;
             btnBundleOpen.Image = Resources.Resources.folder;
             btnBundleOpen.Location = new Point(6, 40);
             btnBundleOpen.Name = "btnBundleOpen";
@@ -75,6 +76,8 @@
             btnBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleOpen.UseVisualStyleBackColor = true;
             btnBundleOpen.Click += btnBundleOpen_Click;
+            btnBundleOpen.DragDrop += btnBundleOpen_DragDrop;
+            btnBundleOpen.DragEnter += btnBundleOpen_DragEnter;
             // 
             // btnBundleSave
             // 

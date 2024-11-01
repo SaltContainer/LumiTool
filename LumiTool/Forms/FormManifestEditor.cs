@@ -1,6 +1,7 @@
 ﻿using LumiTool.Engine;
 using SmartPoint.AssetAssistant;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace LumiTool.Forms
 {
@@ -150,6 +151,12 @@ namespace LumiTool.Forms
             txtAssetPath.Text = assetPath;
         }
 
+        private void OpenManifest(string path)
+        {
+            manifest = engine.LoadManifest(path);
+            UpdateComponentsOnLoad();
+        }
+
         private void btnManifestOpen_Click(object sender, EventArgs e)
         {
             using OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -157,8 +164,7 @@ namespace LumiTool.Forms
             {
                 try
                 {
-                    manifest = engine.LoadManifest(openFileDialog.FileName);
-                    UpdateComponentsOnLoad();
+                    OpenManifest(openFileDialog.FileName);
                 }
                 catch (Exception ex)
                 {
@@ -281,6 +287,22 @@ namespace LumiTool.Forms
         {
             SelectedRecord.assetPaths[listAssetPaths.SelectedIndex] = txtAssetPath.Text;
             UpdateAssetPathsOfRecordList(SelectedRecord);
+        }
+
+        private void btnManifestOpen_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void btnManifestOpen_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 1)
+                MessageBox.Show("Multiple files were dragged into the tool. The Manifest Editor only supports one file at a time.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+                OpenManifest(files[0]);
         }
     }
 }

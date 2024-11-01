@@ -1,6 +1,7 @@
 ﻿using AssetsTools.NET.Extra;
 using LumiTool.Data;
 using LumiTool.Engine;
+using System.Windows.Forms;
 
 namespace LumiTool.Forms
 {
@@ -11,6 +12,9 @@ namespace LumiTool.Forms
         AssetsFileInstance afileInst = null;
         BundleFileInstance bundleV = null;
         AssetsFileInstance afileInstV = null;
+
+        bool NewBundleLoaded => bundle != null;
+        bool VanillaBundleLoaded => bundleV != null;
 
         public FormBundlePrepper(LumiToolEngine engine)
         {
@@ -41,12 +45,11 @@ namespace LumiTool.Forms
 
         private void UpdateComponentsOnLoadCommon()
         {
-            bool active = bundle != null && bundleV != null;
-            btnBundleSave.Enabled = active;
-            btnConvertApply.Enabled = active;
-            checkConvertPlatform.Enabled = active;
-            checkConvertDependencies.Enabled = active;
-            checkConvertShaders.Enabled = active;
+            btnBundleSave.Enabled = NewBundleLoaded;
+            btnConvertApply.Enabled = NewBundleLoaded;
+            checkConvertPlatform.Enabled = NewBundleLoaded;
+            checkConvertDependencies.Enabled = NewBundleLoaded && VanillaBundleLoaded;
+            checkConvertShaders.Enabled = NewBundleLoaded;
         }
 
         private void UpdateComponentsOnLoadEditing()
@@ -64,19 +67,31 @@ namespace LumiTool.Forms
             UpdateComponentsOnLoadCommon();
         }
 
+        private void OpenBundle(string path)
+        {
+            bundle = engine.LoadBundle(path, BundleEngine.ManagerID.Modded);
+            afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
+
+            if (checkTpk.Checked)
+                engine.LoadClassPackage(afileInst, BundleEngine.ManagerID.Modded);
+
+            UpdateComponentsOnLoadEditing();
+        }
+
+        private void OpenVBundle(string path)
+        {
+            bundleV = engine.LoadBundle(path, BundleEngine.ManagerID.Vanilla);
+            afileInstV = engine.LoadAssetsFileFromBundle(bundleV, BundleEngine.ManagerID.Vanilla);
+
+            UpdateComponentsOnLoadVanilla();
+        }
+
         private void btnBundleOpen_Click(object sender, EventArgs e)
         {
             using OpenFileDialog openFileDialog = new OpenFileDialog();
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                bundle = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Modded);
-                afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
-
-                if (checkTpk.Checked)
-                    engine.LoadClassPackage(afileInst, BundleEngine.ManagerID.Modded);
-
-                UpdateComponentsOnLoadEditing();
-            }
+                OpenBundle(openFileDialog.FileName);
         }
 
         private void btnBundleSave_Click(object sender, EventArgs e)
@@ -92,13 +107,9 @@ namespace LumiTool.Forms
         private void btnBundleVOpen_Click(object sender, EventArgs e)
         {
             using OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                bundleV = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Vanilla);
-                afileInstV = engine.LoadAssetsFileFromBundle(bundleV, BundleEngine.ManagerID.Vanilla);
 
-                UpdateComponentsOnLoadVanilla();
-            }
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                OpenVBundle(openFileDialog.FileName);
         }
 
         private void FormBundlePrepper_Shown(object sender, EventArgs e)
@@ -128,6 +139,38 @@ namespace LumiTool.Forms
             {
                 MessageBox.Show("There was an exception when converting the bundle. Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnBundleOpen_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void btnBundleOpen_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 1)
+                MessageBox.Show("Multiple files were dragged into the tool. The Bundle Prepper only supports one file at a time.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+                OpenBundle(files[0]);
+        }
+
+        private void btnBundleVOpen_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void btnBundleVOpen_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 1)
+                MessageBox.Show("Multiple files were dragged into the tool. The Bundle Prepper only supports one file at a time.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+                OpenVBundle(files[0]);
         }
     }
 }

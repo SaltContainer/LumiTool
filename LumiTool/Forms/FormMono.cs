@@ -1,5 +1,6 @@
 ﻿using AssetsTools.NET.Extra;
 using LumiTool.Engine;
+using System.Windows.Forms;
 
 namespace LumiTool.Forms
 {
@@ -39,6 +40,14 @@ namespace LumiTool.Forms
             txtClass.Enabled = true;
         }
 
+        private void OpenBundle(string path)
+        {
+            bundle = engine.LoadBundle(path, BundleEngine.ManagerID.Modded);
+            afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
+
+            UpdateComponentsOnLoad();
+        }
+
         private void btnAddMono_Click(object sender, EventArgs e)
         {
             bool result = engine.AddMonoScript(bundle, afileInst, txtAssembly.Text, txtNamespace.Text, txtClass.Text, BundleEngine.ManagerID.Modded);
@@ -54,13 +63,9 @@ namespace LumiTool.Forms
             engine.UnloadBundles();
 
             using OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                bundle = engine.LoadBundle(openFileDialog.FileName, BundleEngine.ManagerID.Modded);
-                afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
 
-                UpdateComponentsOnLoad();
-            }
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                OpenBundle(openFileDialog.FileName);
         }
 
         private void btnBundleSave_Click(object sender, EventArgs e)
@@ -83,6 +88,22 @@ namespace LumiTool.Forms
             bundle = null;
             afileInst = null;
             engine.UnloadBundles();
+        }
+
+        private void btnBundleOpen_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void btnBundleOpen_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 1)
+                MessageBox.Show("Multiple files were dragged into the tool. You can only add Monos one file at a time.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+                OpenBundle(files[0]);
         }
     }
 }

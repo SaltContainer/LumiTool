@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBundlePrepper));
             grpBundle = new GroupBox();
+            checkTpk = new CheckBox();
             lbBundleName = new Label();
             btnBundleOpen = new Button();
             btnBundleSave = new Button();
@@ -42,7 +43,6 @@
             checkConvertDependencies = new CheckBox();
             checkConvertShaders = new CheckBox();
             grpConvert = new GroupBox();
-            checkTpk = new CheckBox();
             ttBundlePrepper = new ToolTip(components);
             grpBundle.SuspendLayout();
             grpBundleV.SuspendLayout();
@@ -62,6 +62,16 @@
             grpBundle.TabStop = false;
             grpBundle.Text = "Loaded Rebuilt Bundle";
             // 
+            // checkTpk
+            // 
+            checkTpk.AutoSize = true;
+            checkTpk.Location = new Point(8, 38);
+            checkTpk.Name = "checkTpk";
+            checkTpk.Size = new Size(179, 19);
+            checkTpk.TabIndex = 14;
+            checkTpk.Text = "Load External Type Tree (.tpk)";
+            checkTpk.UseVisualStyleBackColor = true;
+            // 
             // lbBundleName
             // 
             lbBundleName.AutoEllipsis = true;
@@ -73,6 +83,7 @@
             // 
             // btnBundleOpen
             // 
+            btnBundleOpen.AllowDrop = true;
             btnBundleOpen.Image = Resources.Resources.folder;
             btnBundleOpen.Location = new Point(6, 59);
             btnBundleOpen.Name = "btnBundleOpen";
@@ -82,6 +93,8 @@
             btnBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleOpen.UseVisualStyleBackColor = true;
             btnBundleOpen.Click += btnBundleOpen_Click;
+            btnBundleOpen.DragDrop += btnBundleOpen_DragDrop;
+            btnBundleOpen.DragEnter += btnBundleOpen_DragEnter;
             // 
             // btnBundleSave
             // 
@@ -117,6 +130,7 @@
             // 
             // btnBundleVOpen
             // 
+            btnBundleVOpen.AllowDrop = true;
             btnBundleVOpen.Image = Resources.Resources.folder;
             btnBundleVOpen.Location = new Point(6, 59);
             btnBundleVOpen.Name = "btnBundleVOpen";
@@ -126,6 +140,8 @@
             btnBundleVOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleVOpen.UseVisualStyleBackColor = true;
             btnBundleVOpen.Click += btnBundleVOpen_Click;
+            btnBundleVOpen.DragDrop += btnBundleVOpen_DragDrop;
+            btnBundleVOpen.DragEnter += btnBundleVOpen_DragEnter;
             // 
             // btnConvertApply
             // 
@@ -183,16 +199,6 @@
             grpConvert.TabIndex = 13;
             grpConvert.TabStop = false;
             grpConvert.Text = "Prepare Rebuilt Bundle";
-            // 
-            // checkTpk
-            // 
-            checkTpk.AutoSize = true;
-            checkTpk.Location = new Point(8, 38);
-            checkTpk.Name = "checkTpk";
-            checkTpk.Size = new Size(179, 19);
-            checkTpk.TabIndex = 14;
-            checkTpk.Text = "Load External Type Tree (.tpk)";
-            checkTpk.UseVisualStyleBackColor = true;
             // 
             // FormBundlePrepper
             // 

@@ -45,13 +45,25 @@ namespace LumiTool.Forms
             return manifest != null && moddedPath != string.Empty && vanillaPath != string.Empty;
         }
 
+        private void OpenManifest(string path)
+        {
+            manifest = engine.LoadManifest(path);
+            UpdateComponentsOnLoad();
+        }
+
         private void btnManifestOpen_Click(object sender, EventArgs e)
         {
             using OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                manifest = engine.LoadManifest(openFileDialog.FileName);
-                UpdateComponentsOnLoad();
+                try
+                {
+                    OpenManifest(openFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error while loading the manifest. Full exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -60,8 +72,15 @@ namespace LumiTool.Forms
             using SaveFileDialog saveFileDialog = new SaveFileDialog();
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                engine.SaveManifest(manifest, saveFileDialog.FileName);
-                MessageBox.Show("Successfully saved the new manifest!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try
+                {
+                    engine.SaveManifest(manifest, saveFileDialog.FileName);
+                    MessageBox.Show("Successfully saved the new manifest!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error while saving the new manifest. Full exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -124,6 +143,22 @@ namespace LumiTool.Forms
             {
                 MessageBox.Show("There was an exception when refreshing the manifest. Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnManifestOpen_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void btnManifestOpen_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 1)
+                MessageBox.Show("Multiple files were dragged into the tool. The Manifest Refresher only supports one file at a time.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+                OpenManifest(files[0]);
         }
     }
 }
