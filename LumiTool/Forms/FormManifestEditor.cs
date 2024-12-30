@@ -1,7 +1,6 @@
 ﻿using LumiTool.Engine;
 using SmartPoint.AssetAssistant;
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace LumiTool.Forms
 {
@@ -243,6 +242,15 @@ namespace LumiTool.Forms
             records.Remove(SelectedRecord);
             UpdateRecordList();
             UpdateRecordEditing(SelectedRecord);
+        }
+
+        private void btnSaveRecord_Click(object sender, EventArgs e)
+        {
+            SelectedRecord.projectName = txtProjectName.Text;
+            SelectedRecord.assetBundleName = txtBundleName.Text;
+            SelectedRecord.isStreamingSceneAssetBundle = checkStreamingScene.Checked;
+            SelectedRecord.size = (long)numSize.Value;
+            UpdateRecordList();
         }
 
         private void btnAddDependency_Click(object sender, EventArgs e)

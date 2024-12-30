@@ -60,6 +60,7 @@
             txtProjectName = new TextBox();
             btnAddRecord = new Button();
             btnRemoveRecord = new Button();
+            btnSaveRecord = new Button();
             grpManifest.SuspendLayout();
             grpEditRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSize).BeginInit();
@@ -136,6 +137,7 @@
             // 
             // grpEditRecord
             // 
+            grpEditRecord.Controls.Add(btnSaveRecord);
             grpEditRecord.Controls.Add(lbSize);
             grpEditRecord.Controls.Add(numSize);
             grpEditRecord.Controls.Add(grpAssetPaths);
@@ -155,7 +157,7 @@
             // lbSize
             // 
             lbSize.AutoSize = true;
-            lbSize.Location = new Point(14, 107);
+            lbSize.Location = new Point(14, 125);
             lbSize.Name = "lbSize";
             lbSize.Size = new Size(74, 15);
             lbSize.TabIndex = 16;
@@ -164,11 +166,11 @@
             // numSize
             // 
             numSize.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            numSize.Location = new Point(94, 105);
+            numSize.Location = new Point(94, 123);
             numSize.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numSize.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numSize.Name = "numSize";
-            numSize.Size = new Size(394, 23);
+            numSize.Size = new Size(228, 23);
             numSize.TabIndex = 15;
             // 
             // grpAssetPaths
@@ -181,14 +183,14 @@
             grpAssetPaths.Controls.Add(listAssetPaths);
             grpAssetPaths.Location = new Point(6, 319);
             grpAssetPaths.Name = "grpAssetPaths";
-            grpAssetPaths.Size = new Size(472, 159);
+            grpAssetPaths.Size = new Size(482, 159);
             grpAssetPaths.TabIndex = 14;
             grpAssetPaths.TabStop = false;
             grpAssetPaths.Text = "Asset Paths";
             // 
             // btnRenameAssetPath
             // 
-            btnRenameAssetPath.Location = new Point(385, 130);
+            btnRenameAssetPath.Location = new Point(395, 125);
             btnRenameAssetPath.Name = "btnRenameAssetPath";
             btnRenameAssetPath.Size = new Size(81, 23);
             btnRenameAssetPath.TabIndex = 16;
@@ -199,7 +201,7 @@
             // btnRemoveAssetPath
             // 
             btnRemoveAssetPath.Image = Resources.Resources.minus_big;
-            btnRemoveAssetPath.Location = new Point(422, 72);
+            btnRemoveAssetPath.Location = new Point(432, 72);
             btnRemoveAssetPath.Name = "btnRemoveAssetPath";
             btnRemoveAssetPath.Size = new Size(44, 44);
             btnRemoveAssetPath.TabIndex = 16;
@@ -209,7 +211,7 @@
             // btnAddAssetPath
             // 
             btnAddAssetPath.Image = Resources.Resources.plus_big;
-            btnAddAssetPath.Location = new Point(422, 22);
+            btnAddAssetPath.Location = new Point(432, 22);
             btnAddAssetPath.Name = "btnAddAssetPath";
             btnAddAssetPath.Size = new Size(44, 44);
             btnAddAssetPath.TabIndex = 16;
@@ -220,7 +222,7 @@
             // 
             lbAssetPath.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lbAssetPath.AutoSize = true;
-            lbAssetPath.Location = new Point(23, 133);
+            lbAssetPath.Location = new Point(23, 129);
             lbAssetPath.Name = "lbAssetPath";
             lbAssetPath.Size = new Size(65, 15);
             lbAssetPath.TabIndex = 13;
@@ -229,9 +231,9 @@
             // txtAssetPath
             // 
             txtAssetPath.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtAssetPath.Location = new Point(94, 130);
+            txtAssetPath.Location = new Point(94, 125);
             txtAssetPath.Name = "txtAssetPath";
-            txtAssetPath.Size = new Size(285, 23);
+            txtAssetPath.Size = new Size(295, 23);
             txtAssetPath.TabIndex = 13;
             // 
             // listAssetPaths
@@ -241,7 +243,7 @@
             listAssetPaths.ItemHeight = 15;
             listAssetPaths.Location = new Point(6, 22);
             listAssetPaths.Name = "listAssetPaths";
-            listAssetPaths.Size = new Size(410, 94);
+            listAssetPaths.Size = new Size(420, 94);
             listAssetPaths.TabIndex = 0;
             listAssetPaths.SelectedIndexChanged += listAssetPaths_SelectedIndexChanged;
             // 
@@ -255,14 +257,14 @@
             grpDependency.Controls.Add(listDependencies);
             grpDependency.Location = new Point(6, 154);
             grpDependency.Name = "grpDependency";
-            grpDependency.Size = new Size(472, 159);
+            grpDependency.Size = new Size(482, 159);
             grpDependency.TabIndex = 12;
             grpDependency.TabStop = false;
             grpDependency.Text = "Dependencies";
             // 
             // btnRenameDependency
             // 
-            btnRenameDependency.Location = new Point(385, 129);
+            btnRenameDependency.Location = new Point(395, 125);
             btnRenameDependency.Name = "btnRenameDependency";
             btnRenameDependency.Size = new Size(81, 23);
             btnRenameDependency.TabIndex = 10;
@@ -273,7 +275,7 @@
             // btnRemoveDependency
             // 
             btnRemoveDependency.Image = Resources.Resources.minus_big;
-            btnRemoveDependency.Location = new Point(422, 72);
+            btnRemoveDependency.Location = new Point(432, 72);
             btnRemoveDependency.Name = "btnRemoveDependency";
             btnRemoveDependency.Size = new Size(44, 44);
             btnRemoveDependency.TabIndex = 15;
@@ -283,7 +285,7 @@
             // btnAddDependency
             // 
             btnAddDependency.Image = Resources.Resources.plus_big;
-            btnAddDependency.Location = new Point(422, 22);
+            btnAddDependency.Location = new Point(432, 22);
             btnAddDependency.Name = "btnAddDependency";
             btnAddDependency.Size = new Size(44, 44);
             btnAddDependency.TabIndex = 14;
@@ -294,7 +296,7 @@
             // 
             lbDependencyName.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lbDependencyName.AutoSize = true;
-            lbDependencyName.Location = new Point(8, 133);
+            lbDependencyName.Location = new Point(8, 129);
             lbDependencyName.Name = "lbDependencyName";
             lbDependencyName.Size = new Size(82, 15);
             lbDependencyName.TabIndex = 13;
@@ -303,9 +305,9 @@
             // txtDependencyName
             // 
             txtDependencyName.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtDependencyName.Location = new Point(94, 130);
+            txtDependencyName.Location = new Point(96, 125);
             txtDependencyName.Name = "txtDependencyName";
-            txtDependencyName.Size = new Size(285, 23);
+            txtDependencyName.Size = new Size(295, 23);
             txtDependencyName.TabIndex = 13;
             // 
             // listDependencies
@@ -315,14 +317,14 @@
             listDependencies.ItemHeight = 15;
             listDependencies.Location = new Point(6, 22);
             listDependencies.Name = "listDependencies";
-            listDependencies.Size = new Size(410, 94);
+            listDependencies.Size = new Size(420, 94);
             listDependencies.TabIndex = 0;
             listDependencies.SelectedIndexChanged += listDependencies_SelectedIndexChanged;
             // 
             // lbBundleName
             // 
             lbBundleName.AutoSize = true;
-            lbBundleName.Location = new Point(6, 53);
+            lbBundleName.Location = new Point(6, 60);
             lbBundleName.Name = "lbBundleName";
             lbBundleName.Size = new Size(82, 15);
             lbBundleName.TabIndex = 11;
@@ -331,7 +333,7 @@
             // txtBundleName
             // 
             txtBundleName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBundleName.Location = new Point(94, 51);
+            txtBundleName.Location = new Point(94, 57);
             txtBundleName.Name = "txtBundleName";
             txtBundleName.Size = new Size(394, 23);
             txtBundleName.TabIndex = 10;
@@ -340,7 +342,7 @@
             // 
             checkStreamingScene.AutoSize = true;
             checkStreamingScene.CheckAlign = ContentAlignment.MiddleRight;
-            checkStreamingScene.Location = new Point(88, 80);
+            checkStreamingScene.Location = new Point(94, 92);
             checkStreamingScene.Name = "checkStreamingScene";
             checkStreamingScene.Size = new Size(117, 19);
             checkStreamingScene.TabIndex = 9;
@@ -375,6 +377,16 @@
             btnRemoveRecord.Text = "Remove Record";
             btnRemoveRecord.UseVisualStyleBackColor = true;
             btnRemoveRecord.Click += btnRemoveRecord_Click;
+            // 
+            // btnSaveRecord
+            // 
+            btnSaveRecord.Location = new Point(343, 123);
+            btnSaveRecord.Name = "btnSaveRecord";
+            btnSaveRecord.Size = new Size(145, 25);
+            btnSaveRecord.TabIndex = 10;
+            btnSaveRecord.Text = "Save Edits to Record";
+            btnSaveRecord.UseVisualStyleBackColor = true;
+            btnSaveRecord.Click += btnSaveRecord_Click;
             // 
             // FormManifestEditor
             // 
@@ -439,5 +451,6 @@
         private Button btnAddAssetPath;
         private Button btnRenameAssetPath;
         private Button btnRenameDependency;
+        private Button btnSaveRecord;
     }
 }
