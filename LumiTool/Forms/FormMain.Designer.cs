@@ -39,6 +39,7 @@
             btnShaderPathIDFixer = new Button();
             btnBundleRenamer = new Button();
             btnPrepperMass = new Button();
+            btnWwiseBankCloner = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -142,11 +143,22 @@
             btnPrepperMass.UseVisualStyleBackColor = true;
             btnPrepperMass.Click += btnPrepperMass_Click;
             // 
+            // btnWwiseBankCloner
+            // 
+            btnWwiseBankCloner.Location = new Point(12, 260);
+            btnWwiseBankCloner.Name = "btnWwiseBankCloner";
+            btnWwiseBankCloner.Size = new Size(164, 59);
+            btnWwiseBankCloner.TabIndex = 10;
+            btnWwiseBankCloner.Text = "Wwise Bank Cloner";
+            btnWwiseBankCloner.UseVisualStyleBackColor = true;
+            btnWwiseBankCloner.Click += btnWwiseBankCloner_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(528, 266);
+            ClientSize = new Size(528, 331);
+            Controls.Add(btnWwiseBankCloner);
             Controls.Add(btnBundleRenamer);
             Controls.Add(btnShaderPathIDFixer);
             Controls.Add(btnManifestEditor);
@@ -160,8 +172,8 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(544, 305);
-            MinimumSize = new Size(544, 305);
+            MaximumSize = new Size(544, 370);
+            MinimumSize = new Size(544, 370);
             Name = "FormMain";
             Text = "LumiTool";
             ResumeLayout(false);
@@ -179,5 +191,6 @@
         private Button btnShaderPathIDFixer;
         private Button btnBundleRenamer;
         private Button btnPrepperMass;
+        private Button btnWwiseBankCloner;
     }
 }

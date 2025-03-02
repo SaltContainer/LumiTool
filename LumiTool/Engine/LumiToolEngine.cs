@@ -1,6 +1,7 @@
 ﻿using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 using LumiTool.Data;
+using LumiTool.Data.Wwise;
 using SmartPoint.AssetAssistant;
 
 namespace LumiTool.Engine
@@ -10,6 +11,7 @@ namespace LumiTool.Engine
         private BundleEngine bundleEngine;
         private ManifestEngine manifestEngine;
         private FileSystemEngine fileSystemEngine;
+        private WwiseEngine wwiseEngine;
 
         public static readonly List<Shader> ShaderList = new List<Shader>()
         {
@@ -89,6 +91,7 @@ namespace LumiTool.Engine
             bundleEngine = new BundleEngine(this);
             manifestEngine = new ManifestEngine(this);
             fileSystemEngine = new FileSystemEngine(this);
+            wwiseEngine = new WwiseEngine(this);
         }
 
         public void UnloadBundles()
@@ -189,6 +192,26 @@ namespace LumiTool.Engine
         public void RenameBundle(BundleFileInstance bundle, AssetsFileInstance assetsFile, string newName, string newCAB)
         {
             bundleEngine.RenameBundle(bundle, assetsFile, newName, newCAB);
+        }
+
+        public WwiseData LoadBank(string path)
+        {
+            return wwiseEngine.LoadBank(path);
+        }
+
+        public void SaveBank(WwiseData wd, string path)
+        {
+            wwiseEngine.SaveBank(wd, path);
+        }
+
+        public void CloneHircEvent(WwiseData wd, string oldEventName, string newEventName, string groupName)
+        {
+            wwiseEngine.CloneHircEvent(wd, oldEventName, newEventName, groupName);
+        }
+
+        public uint FNV132Hash(string data)
+        {
+            return wwiseEngine.FNV132Hash(data);
         }
     }
 }
