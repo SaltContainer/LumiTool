@@ -149,7 +149,7 @@
             btnWwiseBankCloner.Name = "btnWwiseBankCloner";
             btnWwiseBankCloner.Size = new Size(164, 59);
             btnWwiseBankCloner.TabIndex = 10;
-            btnWwiseBankCloner.Text = "Wwise Bank Cloner";
+            btnWwiseBankCloner.Text = "Wwise Event Cloner";
             btnWwiseBankCloner.UseVisualStyleBackColor = true;
             btnWwiseBankCloner.Click += btnWwiseBankCloner_Click;
             // 

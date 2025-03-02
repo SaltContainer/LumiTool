@@ -22,7 +22,7 @@ A "swiss army knife"-type tool that allows for many different manipulations on U
   - Refreshes the records in an AssetAssistant manifest by updating the sizes of all records (based on a mod RomFS and a vanilla RomFS) and removing any that cannot be found.
 - **AssetAssistant Manifest Editor**
   - Allows directly editing an AssetAssistant manifest.
-- **Wwise Bank Cloner**
+- **Wwise Event Cloner**
   - Clones a given Wwise event in a bank.
 
 ## Planned Features

@@ -204,9 +204,9 @@ namespace LumiTool.Engine
             wwiseEngine.SaveBank(wd, path);
         }
 
-        public void CloneHircEvent(WwiseData wd, string oldEventName, string newEventName, string groupName)
+        public void CloneHircEvent(WwiseData wd, string oldEventName, string newEventName, string groupName, bool loopEdit = false, double initDelay = 0, double loopStart = 0, double loopEnd = 0, double totalDuration = 0)
         {
-            wwiseEngine.CloneHircEvent(wd, oldEventName, newEventName, groupName);
+            wwiseEngine.CloneHircEvent(wd, oldEventName, newEventName, groupName, loopEdit, initDelay, loopStart, loopEnd, totalDuration);
         }
 
         public uint FNV132Hash(string data)

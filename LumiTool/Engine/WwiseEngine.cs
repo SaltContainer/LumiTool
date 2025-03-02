@@ -34,7 +34,7 @@ namespace LumiTool.Engine
             return hash;
         }
 
-        public void CloneHircEvent(WwiseData wd, string oldEventName, string newEventName, string groupName)
+        public void CloneHircEvent(WwiseData wd, string oldEventName, string newEventName, string groupName, bool loopEdit = false, double initDelay = 0, double loopStart = 0, double loopEnd = 0, double totalDuration = 0)
         {
             uint oldEventID = FNV132Hash(oldEventName);
             uint newEventID = FNV132Hash(newEventName);
@@ -146,13 +146,6 @@ namespace LumiTool.Engine
                 .Distinct()
                 .Select(i => ((MusicSegment)wd.objectsByID[i]).Clone())
                 .ToList();
-
-            // TODO: Input these values
-            bool loopEdit = false;
-            double initDelay = 0;
-            double loopStart = 0;
-            double loopEnd = 0;
-            double totalDuration = 0;
 
             // Loop work
             if (loopEdit)
