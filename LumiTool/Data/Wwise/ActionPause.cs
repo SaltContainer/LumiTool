@@ -9,8 +9,7 @@
         public ActionPause Clone()
         {
             ActionPause ap = (ActionPause)this.MemberwiseClone();
-            ap.propBundle0 = propBundle0.Clone();
-            ap.propBundle1 = propBundle1.Clone();
+            ap.initialParams = initialParams.Clone();
             return ap;
         }
 

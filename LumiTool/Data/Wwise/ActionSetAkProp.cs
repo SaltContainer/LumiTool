@@ -9,8 +9,7 @@
         public ActionSetAkProp Clone()
         {
             ActionSetAkProp asap = (ActionSetAkProp)this.MemberwiseClone();
-            asap.propBundle0 = propBundle0.Clone();
-            asap.propBundle1 = propBundle1.Clone();
+            asap.initialParams = initialParams.Clone();
             return asap;
         }
 

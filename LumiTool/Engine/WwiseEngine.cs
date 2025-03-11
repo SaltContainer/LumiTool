@@ -5,6 +5,7 @@ namespace LumiTool.Engine
     public class WwiseEngine
     {
         private LumiToolEngine engine;
+        string debugLogging = string.Empty;
 
         public WwiseEngine(LumiToolEngine engine)
         {
@@ -36,9 +37,13 @@ namespace LumiTool.Engine
 
         public void CloneHircEvent(WwiseData wd, string oldEventName, string newEventName, string groupName, bool loopEdit = false, double initDelay = 0, double loopStart = 0, double loopEnd = 0, double totalDuration = 0)
         {
+            debugLogging = string.Empty;
+
             uint oldEventID = FNV132Hash(oldEventName);
             uint newEventID = FNV132Hash(newEventName);
             uint groupID = FNV132Hash(groupName);
+
+            debugLogging += $"Cloning {oldEventID} ({oldEventName}) in group {groupID} ({groupName}) to {newEventID} ({newEventName})\n";
 
             Event e = ((Event)wd.objectsByID[oldEventID]).Clone();
             AddHirc(wd, e, newEventID);
@@ -49,8 +54,9 @@ namespace LumiTool.Engine
             for (int i=0; i<e.actionIDs.Count; i++)
             {
                 oldActionIDs.Add(e.actionIDs[i]);
-                newActionIDs.Add(oldActionIDs[i] + 1);
+                newActionIDs.Add(GenerateNewID(wd));
                 e.actionIDs[e.actionIDs.IndexOf(oldActionIDs[i])] = newActionIDs[i];
+                debugLogging += $"Action {oldActionIDs[i]} cloned to {newActionIDs[i]}\n";
 
                 if (wd.objectsByID[oldActionIDs[i]] is ActionSetState ass)
                 {
@@ -73,7 +79,7 @@ namespace LumiTool.Engine
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"Type {wd.objectsByID[oldActionIDs[i]].GetType()} is not supported at this time.");
                 }
             }
 
@@ -87,6 +93,8 @@ namespace LumiTool.Engine
             Dictionary<uint, uint> update = new();
             foreach (MusicSwitchCntr msc in mscs)
             {
+                debugLogging += $"Editing MusicSwitchCntr {msc.id}\n";
+
                 List<(Node parent, int childIdx)> targetNodes = GetTargetNodes(msc, groupID);
                 uint newMusicRanSeqCntrID = 0;
                 foreach ((Node parent, int childIdx) in targetNodes)
@@ -100,12 +108,14 @@ namespace LumiTool.Engine
                     newNode.key = newEventID;
                     Node leaf = newNode;
 
+                    // Grabbing the first child of the last depth of this new node
                     while (leaf.nodes.Count > 0)
                         leaf = leaf.nodes.First();
 
-                    newMusicRanSeqCntrID = leaf.audioNodeId + 1;
+                    newMusicRanSeqCntrID = GenerateNewID(wd);
                     if (!update.ContainsKey(leaf.audioNodeId))
                     {
+                        debugLogging += $"Node with audioId {leaf.audioNodeId} cloned to {newMusicRanSeqCntrID}\n";
                         oldMusicRanSeqCntrIDs.Add(leaf.audioNodeId);
                         update.Add(leaf.audioNodeId, newMusicRanSeqCntrID);
                     }
@@ -134,7 +144,8 @@ namespace LumiTool.Engine
             {
                 if (mrspis[i].playlistItemID != 0)
                 {
-                    uint newID = mrspis[i].playlistItemID + 1;
+                    uint newID = GenerateNewID(wd);
+                    debugLogging += $"Playlist Item {mrspis[i].playlistItemID} cloned to {newID}\n";
                     update.Add(mrspis[i].playlistItemID, newID);
                     mrspis[i].playlistItemID = newID;
                     wd.objectsByID.Add(newID, mrspis[i]);
@@ -142,81 +153,78 @@ namespace LumiTool.Engine
                 mrspis.AddRange(mrspis[i].playList);
             }
 
-            List<MusicSegment> mss = mrscs.SelectMany(mrsc => mrsc.musicTransNodeParams.musicNodeParams.children.childIDs)
-                .Distinct()
-                .Select(i => ((MusicSegment)wd.objectsByID[i]).Clone())
+            // Each MusicRanSeqCntr, containing MusicSegments
+            var splitSegments = mrscs.Select(mrsc => mrsc.musicTransNodeParams.musicNodeParams.children.childIDs
+                    .Select(i => ((MusicSegment)wd.objectsByID[i]).Clone())
+                    .ToList())
                 .ToList();
+
+            List<MusicSegment> mss = splitSegments.SelectMany(x => x).ToList();
 
             // Loop work
             if (loopEdit)
             {
-                mss[2].duration = loopStart - initDelay;
-                mss[2].arrayMarkers[1].position = loopStart - initDelay;
+                foreach (var segments in splitSegments)
+                {
+                    segments[0].duration = loopStart - initDelay;
+                    segments[0].arrayMarkers[1].position = loopStart - initDelay;
 
-                mss[3].duration = loopEnd - loopStart;
-                mss[3].arrayMarkers[1].position = loopEnd - loopStart;
+                    segments[1].duration = loopEnd - loopStart;
+                    segments[1].arrayMarkers[1].position = loopEnd - loopStart;
+                }
             }
 
             foreach (MusicSegment ms in mss)
             {
-                uint newID = ms.id + 1;
+                uint newID = GenerateNewID(wd);
                 update.Add(ms.id, newID);
                 AddHirc(wd, ms, newID);
             }
 
-            List<MusicTrack> mts = mss.SelectMany(ms => ms.musicNodeParams.children.childIDs)
-                .Distinct()
-                .Select(i => ((MusicTrack)wd.objectsByID[i]).Clone())
+            // Each MusicRanSeqCntr, containing MusicSegments, which each contain MusicTracks
+            var splitTracks = splitSegments.Select(mrsc => mrsc.Select(ms => ms.musicNodeParams.children.childIDs
+                        .Select(i => ((MusicTrack)wd.objectsByID[i]).Clone())
+                        .ToList())
+                    .ToList())
                 .ToList();
+
+            List<MusicTrack> mts = splitTracks.SelectMany(x => x).SelectMany(x => x).ToList();
 
             List<(uint oldID, uint newID)> audioSources = new();
 
             // Loop work
             if (loopEdit)
             {
-                switch (mts.Count)
+                foreach (var segments in splitTracks)
                 {
-                    case 4:
-                        mts[2].playlist[0].playAt = -(initDelay);
-                        mts[2].playlist[0].beginTrimOffset = initDelay;
-                        mts[2].playlist[0].endTrimOffset = -(totalDuration - loopStart);
-                        mts[2].playlist[0].srcDuration = totalDuration;
+                    // First segment, first track
+                    segments[0][0].playlist[0].playAt = -initDelay;
+                    segments[0][0].playlist[0].beginTrimOffset = initDelay;
+                    segments[0][0].playlist[0].endTrimOffset = loopStart;
+                    segments[0][0].playlist[0].srcDuration = totalDuration;
 
-                        mts[3].playlist[0].playAt = -(loopStart);
-                        mts[3].playlist[0].beginTrimOffset = loopStart;
-                        mts[3].playlist[0].endTrimOffset = -0;
-                        mts[3].playlist[0].srcDuration = totalDuration;
-                        break;
-
-                    case 6:
-                        mts[4].playlist[0].playAt = -(initDelay);
-                        mts[4].playlist[0].beginTrimOffset = initDelay;
-                        mts[4].playlist[0].endTrimOffset = -(totalDuration - loopStart);
-                        mts[4].playlist[0].srcDuration = totalDuration;
-
-                        mts[5].playlist[0].playAt = -(loopStart);
-                        mts[5].playlist[0].beginTrimOffset = loopStart;
-                        mts[5].playlist[0].endTrimOffset = -0;
-                        mts[5].playlist[0].srcDuration = totalDuration;
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
+                    // Second segment, first track
+                    segments[1][0].playlist[0].playAt = initDelay - loopStart;
+                    segments[1][0].playlist[0].beginTrimOffset = loopStart;
+                    segments[1][0].playlist[0].endTrimOffset = loopEnd;
+                    segments[1][0].playlist[0].srcDuration = totalDuration;
                 }
             }
 
             foreach (MusicTrack mt in mts)
             {
-                uint newID = mt.id + 1;
+                uint newID = GenerateNewID(wd);
                 update.Add(mt.id, newID);
                 AddHirc(wd, mt, newID);
 
                 uint oldSourceID = mt.source.First().mediaInformation.sourceID;
                 if (!update.ContainsKey(oldSourceID))
                 {
-                    uint newSourceID = oldSourceID + 1;
+                    uint newSourceID = GenerateNewID(wd);
                     audioSources.Add((oldSourceID, newSourceID));
                     update.Add(oldSourceID, newSourceID);
+
+                    debugLogging += $"Source {oldSourceID} cloned to {newSourceID}\n";
                 }
             }
 
@@ -261,13 +269,26 @@ namespace LumiTool.Engine
 
                 mt.nodeBaseParams.directParentID = GetNewID(mt.nodeBaseParams.directParentID, update);
             }
+
+            MessageBox.Show(debugLogging, "Debug Output", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void AddHirc(WwiseData wd, HircItem hi, uint id)
         {
+            debugLogging += $"Adding new HircItem {id} based off of HircItem {hi.id}\n";
             hi.id = id;
             ((HircChunk)wd.banks[0].chunks.First(c => c is HircChunk)).loadedItem.Add(hi);
             wd.objectsByID.Add(id, hi);
+        }
+
+        private uint GenerateNewID(WwiseData wd)
+        {
+            uint id;
+            do
+                id = (uint)Random.Shared.NextInt64(uint.MaxValue+1L);
+            while (wd.objectsByID.ContainsKey(id));
+
+            return id;
         }
 
         private List<(Node, int)> GetTargetNodes(MusicSwitchCntr msc, uint groupID)

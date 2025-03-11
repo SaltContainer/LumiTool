@@ -8,8 +8,7 @@
         public ActionSetState Clone()
         {
             ActionSetState ass = (ActionSetState)this.MemberwiseClone();
-            ass.propBundle0 = propBundle0.Clone();
-            ass.propBundle1 = propBundle1.Clone();
+            ass.initialParams = initialParams.Clone();
             return ass;
         }
 

@@ -5,8 +5,7 @@
         public ushort actionType;
         public uint idExt;
         public byte isBus;
-        public PropBundle0 propBundle0;
-        public PropBundle2 propBundle1;
+        public NodeInitialParams initialParams;
 
         public static Action GetInstance(WwiseData wd)
         {
@@ -46,13 +45,11 @@
         {
             base.Deserialize(wd);
 
-            propBundle0 = new();
-            propBundle1 = new();
+            initialParams = new();
             actionType = Utils.ReadUInt16(wd);
             idExt = Utils.ReadUInt32(wd);
             isBus = Utils.ReadUInt8(wd);
-            propBundle0.Deserialize(wd);
-            propBundle1.Deserialize(wd);
+            initialParams.Deserialize(wd);
         }
 
         public override IEnumerable<byte> Serialize()
@@ -62,8 +59,7 @@
             b.AddRange(Utils.GetBytes(actionType));
             b.AddRange(Utils.GetBytes(idExt));
             b.Add(isBus);
-            b.AddRange(propBundle0.Serialize());
-            b.AddRange(propBundle1.Serialize());
+            b.AddRange(initialParams.Serialize());
             return b;
         }
     }
