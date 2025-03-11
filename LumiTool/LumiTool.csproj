@@ -7,15 +7,15 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Authors>SaltContainer</Authors>
-    <Description>A tool using AssetsTools.NET to merge assets in asset bundles in different ways.</Description>
+    <Description>A "swiss army knife"-type tool for edits on Unity Asset Bundles, AssetAssistant Manifests, etc.</Description>
     <PackageProjectUrl>https://github.com/SaltContainer/LumiTool</PackageProjectUrl>
     <PackageIcon>lumi_tool.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/SaltContainer/LumiTool</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>0.7.0.0</AssemblyVersion>
-    <FileVersion>0.7.0.0</FileVersion>
-    <Version>0.7.0.0</Version>
+    <AssemblyVersion>0.7.1.0</AssemblyVersion>
+    <FileVersion>0.7.1.0</FileVersion>
+    <Version>0.7.1.0</Version>
     <ApplicationIcon>Resources\lumi_tool.ico</ApplicationIcon>
   </PropertyGroup>
 
