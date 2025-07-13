@@ -12,6 +12,7 @@ namespace LumiTool.Engine
         private ManifestEngine manifestEngine;
         private FileSystemEngine fileSystemEngine;
         private WwiseEngine wwiseEngine;
+        private CommandLineEngine commandLineEngine;
 
         public static readonly List<Shader> ShaderList = new List<Shader>()
         {
@@ -92,6 +93,7 @@ namespace LumiTool.Engine
             manifestEngine = new ManifestEngine(this);
             fileSystemEngine = new FileSystemEngine(this);
             wwiseEngine = new WwiseEngine(this);
+            commandLineEngine = new CommandLineEngine(this);
         }
 
         public void UnloadBundles()
@@ -212,6 +214,11 @@ namespace LumiTool.Engine
         public uint FNV132Hash(string data)
         {
             return wwiseEngine.FNV132Hash(data);
+        }
+
+        public void RunAsCommandLine(string[] args)
+        {
+            commandLineEngine.ParseCommandLineArguments(args);
         }
     }
 }

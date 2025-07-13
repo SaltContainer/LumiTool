@@ -33,6 +33,7 @@
   <ItemGroup>
     <PackageReference Include="AssetsTools.NET" Version="3.0.0" />
     <PackageReference Include="AssetsTools.NET.MonoCecil" Version="1.0.0" />
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Mono.Cecil" Version="0.11.5" />
   </ItemGroup>
 
