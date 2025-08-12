@@ -26,7 +26,7 @@ namespace LumiTool.Engine
 
             var logPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + "-log.log");
             using var fsLog = new FileStream(logPath, FileMode.Create);
-            using var swLog = new StreamWriter(fs);
+            using var swLog = new StreamWriter(fsLog);
             foreach (var log in logs)
                 swLog.WriteLine(log);
         }
