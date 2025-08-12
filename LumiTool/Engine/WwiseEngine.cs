@@ -5,15 +5,17 @@ namespace LumiTool.Engine
     public class WwiseEngine
     {
         private LumiToolEngine engine;
-        string debugLogging = string.Empty;
+        private List<string> logs;
 
         public WwiseEngine(LumiToolEngine engine)
         {
             this.engine = engine;
+            logs = new List<string>();
         }
 
         public WwiseData LoadBank(string path)
         {
+            logs.Clear();
             return new WwiseData(File.ReadAllBytes(path));
         }
 
@@ -21,6 +23,12 @@ namespace LumiTool.Engine
         {
             using FileStream fs = File.OpenWrite(path);
             fs.Write(wd.GetBytes());
+
+            var logPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + "-log.log");
+            using var fsLog = new FileStream(logPath, FileMode.Create);
+            using var swLog = new StreamWriter(fs);
+            foreach (var log in logs)
+                swLog.WriteLine(log);
         }
 
         public uint FNV132Hash(string data)
@@ -37,7 +45,7 @@ namespace LumiTool.Engine
 
         public void CloneHircEvent(WwiseData wd, string oldEventName, string newEventName, string groupName, bool loopEdit = false, double initDelay = 0, double loopStart = 0, double loopEnd = 0, double totalDuration = 0)
         {
-            debugLogging = string.Empty;
+            var debugLogging = string.Empty;
 
             uint oldEventID = FNV132Hash(oldEventName);
             uint newEventID = FNV132Hash(newEventName);
@@ -270,12 +278,12 @@ namespace LumiTool.Engine
                 mt.nodeBaseParams.directParentID = GetNewID(mt.nodeBaseParams.directParentID, update);
             }
 
+            logs.Add(debugLogging);
             MessageBox.Show(debugLogging, "Debug Output", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void AddHirc(WwiseData wd, HircItem hi, uint id)
         {
-            debugLogging += $"Adding new HircItem {id} based off of HircItem {hi.id}\n";
             hi.id = id;
             ((HircChunk)wd.banks[0].chunks.First(c => c is HircChunk)).loadedItem.Add(hi);
             wd.objectsByID.Add(id, hi);

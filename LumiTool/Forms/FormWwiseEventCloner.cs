@@ -34,6 +34,15 @@ namespace LumiTool.Forms
             btnBankSave.Enabled = false;
             btnApply.Enabled = false;
 
+            txtOldEvent.Text = string.Empty;
+            txtNewEvent.Text = string.Empty;
+            txtGroup.Text = string.Empty;
+
+            numInitialDelay.Value = 0;
+            numLoopStart.Value = 0;
+            numLoopEnd.Value = 0;
+            numTotalDuration.Value = 0;
+
             ttWwiseBankCloner.SetToolTip(lbBankName, "");
         }
 

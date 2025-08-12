@@ -1,8 +1,7 @@
 {
   "profiles": {
     "LumiTool": {
-      "commandName": "Project",
-      "commandLineArgs": "change-platform -i \"C:\\Users\\naclc\\Desktop\\dumping_ground\\new_sinjoh_dw\\masterdatas\" -o \"C:\\Users\\naclc\\Desktop\\dumping_ground\\new_sinjoh_dw\\masterdatas2\" -p Switch"
+      "commandName": "Project"
     }
   }
 }

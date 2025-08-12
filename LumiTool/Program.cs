@@ -11,7 +11,8 @@ namespace LumiTool
         [STAThread]
         static void Main()
         {
-            var args = Environment.GetCommandLineArgs();
+            // Disable command prompt stuff for now
+            /*var args = Environment.GetCommandLineArgs();
 
             if (args.Length > 1)
             {
@@ -32,7 +33,14 @@ namespace LumiTool
                 ApplicationConfiguration.Initialize();
                 Application.SetHighDpiMode(HighDpiMode.SystemAware);
                 Application.Run(new FormMain());
-            }
+            }*/
+
+
+            // To customize application configuration such as set high DPI settings or default font,
+            // see https://aka.ms/applicationconfiguration.
+            ApplicationConfiguration.Initialize();
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.Run(new FormMain());
         }
     }
 }

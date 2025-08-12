@@ -1,6 +1,5 @@
 ﻿using AssetsTools.NET.Extra;
 using LumiTool.Engine;
-using System.Windows.Forms;
 
 namespace LumiTool.Forms
 {
@@ -24,6 +23,9 @@ namespace LumiTool.Forms
             txtCABRename.Enabled = false;
             btnBundleSave.Enabled = false;
             btnApply.Enabled = false;
+
+            txtBundleRename.Text = "";
+            txtCABRename.Text = "";
 
             ttRenameBundle.SetToolTip(lbBundleName, "");
         }
