@@ -6,11 +6,13 @@ namespace LumiTool.Engine
     {
         private LumiToolEngine engine;
         private List<string> logs;
+        private string currentLog;
 
         public WwiseEngine(LumiToolEngine engine)
         {
             this.engine = engine;
             logs = new List<string>();
+            currentLog = string.Empty;
         }
 
         public WwiseData LoadBank(string path)
@@ -19,16 +21,21 @@ namespace LumiTool.Engine
             return new WwiseData(File.ReadAllBytes(path));
         }
 
-        public void SaveBank(WwiseData wd, string path)
+        public void SaveBank(WwiseData wd, string path, bool saveLogs = true)
         {
+            if (saveLogs)
+                SaveWwiseEngineLogs(Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + "-log.log"));
+
             using FileStream fs = File.OpenWrite(path);
             fs.Write(wd.GetBytes());
+        }
 
-            var logPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + "-log.log");
-            using var fsLog = new FileStream(logPath, FileMode.Create);
-            using var swLog = new StreamWriter(fsLog);
+        public void SaveWwiseEngineLogs(string path)
+        {
+            using var fs = new FileStream(path, FileMode.Create);
+            using var sw = new StreamWriter(fs);
             foreach (var log in logs)
-                swLog.WriteLine(log);
+                sw.WriteLine(log);
         }
 
         public uint FNV132Hash(string data)
@@ -45,13 +52,13 @@ namespace LumiTool.Engine
 
         public void CloneHircEvent(WwiseData wd, string oldEventName, string newEventName, string groupName, bool loopEdit = false, double initDelay = 0, double loopStart = 0, double loopEnd = 0, double totalDuration = 0)
         {
-            var debugLogging = string.Empty;
+            currentLog = string.Empty;
 
             uint oldEventID = FNV132Hash(oldEventName);
             uint newEventID = FNV132Hash(newEventName);
             uint groupID = FNV132Hash(groupName);
 
-            debugLogging += $"Cloning {oldEventID} ({oldEventName}) in group {groupID} ({groupName}) to {newEventID} ({newEventName})\n";
+            currentLog += $"Cloning {oldEventID} ({oldEventName}) in group {groupID} ({groupName}) to {newEventID} ({newEventName})\n";
 
             Event e = ((Event)wd.objectsByID[oldEventID]).Clone();
             AddHirc(wd, e, newEventID);
@@ -64,7 +71,7 @@ namespace LumiTool.Engine
                 oldActionIDs.Add(e.actionIDs[i]);
                 newActionIDs.Add(GenerateNewID(wd));
                 e.actionIDs[e.actionIDs.IndexOf(oldActionIDs[i])] = newActionIDs[i];
-                debugLogging += $"Action {oldActionIDs[i]} cloned to {newActionIDs[i]}\n";
+                currentLog += $"Action {oldActionIDs[i]} cloned to {newActionIDs[i]}\n";
 
                 if (wd.objectsByID[oldActionIDs[i]] is ActionSetState ass)
                 {
@@ -101,10 +108,10 @@ namespace LumiTool.Engine
             Dictionary<uint, uint> update = new();
             foreach (MusicSwitchCntr msc in mscs)
             {
-                debugLogging += $"Editing MusicSwitchCntr {msc.id}\n";
+                currentLog += $"Editing MusicSwitchCntr {msc.id}\n";
 
                 List<(Node parent, int childIdx)> targetNodes = GetTargetNodes(msc, groupID);
-                uint newMusicRanSeqCntrID = 0;
+                List<uint> newMusicRanSeqCntrIDs = new();
                 foreach ((Node parent, int childIdx) in targetNodes)
                 {
                     Node n = parent.nodes[childIdx];
@@ -120,19 +127,19 @@ namespace LumiTool.Engine
                     while (leaf.nodes.Count > 0)
                         leaf = leaf.nodes.First();
 
-                    newMusicRanSeqCntrID = GenerateNewID(wd);
                     if (!update.ContainsKey(leaf.audioNodeId))
                     {
-                        debugLogging += $"Node with audioId {leaf.audioNodeId} cloned to {newMusicRanSeqCntrID}\n";
+                        var newMusicRanSeqCntrID = GenerateNewID(wd);
+                        currentLog += $"Node with audioId {leaf.audioNodeId} cloned to {newMusicRanSeqCntrID}\n";
+                        newMusicRanSeqCntrIDs.Add(newMusicRanSeqCntrID);
                         oldMusicRanSeqCntrIDs.Add(leaf.audioNodeId);
                         update.Add(leaf.audioNodeId, newMusicRanSeqCntrID);
                     }
 
-                    leaf.audioNodeId = newMusicRanSeqCntrID;
+                    leaf.audioNodeId = update[leaf.audioNodeId];
                 }
 
-                if (newMusicRanSeqCntrID != 0)
-                    msc.musicTransNodeParams.musicNodeParams.children.childIDs.Add(newMusicRanSeqCntrID);
+                msc.musicTransNodeParams.musicNodeParams.children.childIDs.AddRange(newMusicRanSeqCntrIDs);
             }
 
             update.Add(oldEventID, newEventID);
@@ -153,7 +160,7 @@ namespace LumiTool.Engine
                 if (mrspis[i].playlistItemID != 0)
                 {
                     uint newID = GenerateNewID(wd);
-                    debugLogging += $"Playlist Item {mrspis[i].playlistItemID} cloned to {newID}\n";
+                    currentLog += $"Playlist Item {mrspis[i].playlistItemID} cloned to {newID}\n";
                     update.Add(mrspis[i].playlistItemID, newID);
                     mrspis[i].playlistItemID = newID;
                     wd.objectsByID.Add(newID, mrspis[i]);
@@ -232,7 +239,7 @@ namespace LumiTool.Engine
                     audioSources.Add((oldSourceID, newSourceID));
                     update.Add(oldSourceID, newSourceID);
 
-                    debugLogging += $"Source {oldSourceID} cloned to {newSourceID}\n";
+                    currentLog += $"Source {oldSourceID} cloned to {newSourceID}\n";
                 }
             }
 
@@ -278,12 +285,13 @@ namespace LumiTool.Engine
                 mt.nodeBaseParams.directParentID = GetNewID(mt.nodeBaseParams.directParentID, update);
             }
 
-            logs.Add(debugLogging);
-            MessageBox.Show(debugLogging, "Debug Output", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            logs.Add(currentLog);
+            //MessageBox.Show(currentLog, "Debug Output", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void AddHirc(WwiseData wd, HircItem hi, uint id)
         {
+            //currentLog += $"Adding new HircItem {id} based off of HircItem {hi.id}\n";
             hi.id = id;
             ((HircChunk)wd.banks[0].chunks.First(c => c is HircChunk)).loadedItem.Add(hi);
             wd.objectsByID.Add(id, hi);
@@ -295,6 +303,8 @@ namespace LumiTool.Engine
             do
                 id = (uint)Random.Shared.NextInt64(uint.MaxValue+1L);
             while (wd.objectsByID.ContainsKey(id));
+
+            //currentLog += $"Generated new ID {id}\n";
 
             return id;
         }
