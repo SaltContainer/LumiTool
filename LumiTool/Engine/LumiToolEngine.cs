@@ -211,6 +211,16 @@ namespace LumiTool.Engine
             wwiseEngine.CloneHircEvent(wd, oldEventName, newEventName, groupName, loopEdit, initDelay, loopStart, loopEnd, totalDuration);
         }
 
+        public List<Event> GetEventsOfBank(WwiseData wd)
+        {
+            return wwiseEngine.GetEventsOfBank(wd);
+        }
+
+        public List<Data.Wwise.Action> GetActionsOfEvent(WwiseData wd, Event ev)
+        {
+            return wwiseEngine.GetActionsOfEvent(wd, ev);
+        }
+
         public uint FNV132Hash(string data)
         {
             return wwiseEngine.FNV132Hash(data);

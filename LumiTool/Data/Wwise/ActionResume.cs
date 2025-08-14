@@ -26,5 +26,10 @@
             b.AddRange(exceptParams.Serialize());
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[ActionResume ({actionType}) of ID {id}] Resumes {idExt}";
+        }
     }
 }

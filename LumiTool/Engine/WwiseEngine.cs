@@ -289,6 +289,18 @@ namespace LumiTool.Engine
             //MessageBox.Show(currentLog, "Debug Output", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        public List<Event> GetEventsOfBank(WwiseData wd)
+        {
+            HircChunk hc = (HircChunk)wd.banks[0].chunks.First(c => c is HircChunk);
+            return hc.loadedItem.Where(hi => hi is Event).Cast<Event>().ToList();
+        }
+
+        public List<Data.Wwise.Action> GetActionsOfEvent(WwiseData wd, Event ev)
+        {
+            HircChunk hc = (HircChunk)wd.banks[0].chunks.First(c => c is HircChunk);
+            return hc.loadedItem.Where(hi => hi is Data.Wwise.Action && ev.actionIDs.Contains(hi.id)).Cast<Data.Wwise.Action>().ToList();
+        }
+
         private void AddHirc(WwiseData wd, HircItem hi, uint id)
         {
             //currentLog += $"Adding new HircItem {id} based off of HircItem {hi.id}\n";

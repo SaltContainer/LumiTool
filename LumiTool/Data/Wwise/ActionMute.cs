@@ -22,5 +22,10 @@
             b.AddRange(exceptParams.Serialize());
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[ActionMute ({actionType}) of ID {id}] Mutes {idExt}";
+        }
     }
 }

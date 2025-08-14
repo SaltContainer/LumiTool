@@ -26,5 +26,10 @@
             b.AddRange(exceptParams.Serialize());
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[ActionSetGameParameter ({actionType}) of ID {id}] Sets game parameter {idExt}";
+        }
     }
 }

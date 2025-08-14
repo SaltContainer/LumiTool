@@ -21,5 +21,10 @@
             b.AddRange(Utils.GetBytes(bankID));
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[ActionPlay ({actionType}) of ID {id}] Plays {idExt} in Bank {bankID}";
+        }
     }
 }

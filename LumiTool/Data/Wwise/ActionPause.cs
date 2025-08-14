@@ -33,5 +33,10 @@
             b.AddRange(exceptParams.Serialize());
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[ActionPause ({actionType}) of ID {id}] Pauses {idExt}";
+        }
     }
 }

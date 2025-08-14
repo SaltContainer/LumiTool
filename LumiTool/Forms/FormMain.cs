@@ -18,6 +18,7 @@ namespace LumiTool
         private FormShaderPathIDFixer shaderPathIDFixerForm;
         private FormRenameBundle bundleRenamerForm;
         private FormWwiseEventCloner wwiseBankClonerForm;
+        private FormWwiseEventBrowser wwiseEventBrowserForm;
 
         public FormMain()
         {
@@ -34,6 +35,7 @@ namespace LumiTool
             shaderPathIDFixerForm = new FormShaderPathIDFixer(engine);
             bundleRenamerForm = new FormRenameBundle(engine);
             wwiseBankClonerForm = new FormWwiseEventCloner(engine);
+            wwiseEventBrowserForm = new FormWwiseEventBrowser(engine);
 
             InitializeComponent();
         }
@@ -92,6 +94,11 @@ namespace LumiTool
         private void btnWwiseBankCloner_Click(object sender, EventArgs e)
         {
             wwiseBankClonerForm.ShowDialog(this);
+        }
+
+        private void btnWwiseEventBrowser_Click(object sender, EventArgs e)
+        {
+            wwiseEventBrowserForm.ShowDialog(this);
         }
     }
 }

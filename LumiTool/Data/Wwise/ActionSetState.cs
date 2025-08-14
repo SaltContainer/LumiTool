@@ -28,5 +28,10 @@
             b.AddRange(Utils.GetBytes(targetStateID));
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[ActionSetState ({actionType}) of ID {id}] Sets Group {stateGroupID} to state {targetStateID}";
+        }
     }
 }

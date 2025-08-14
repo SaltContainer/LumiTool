@@ -146,7 +146,7 @@ namespace LumiTool.Forms
             var files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
             if (files.Length > 1)
-                MessageBox.Show("Multiple files were dragged into the tool. The Wwise Bank Cloner only supports one file at a time.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Multiple files were dragged into the tool. The Wwise Event Cloner only supports one file at a time.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             else
                 OpenBank(files[0]);
         }

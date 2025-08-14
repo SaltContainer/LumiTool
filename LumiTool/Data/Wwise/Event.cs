@@ -37,5 +37,10 @@
             b.AddRange(b0);
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[{id}] {actionListSize} action{(actionListSize != 1 ? "s" : "")}";
+        }
     }
 }

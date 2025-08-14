@@ -33,5 +33,10 @@
             b.AddRange(exceptParams.Serialize());
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[ActionSetAkProp ({actionType}) of ID {id}] Sets a Wwise property at IDExt {idExt}";
+        }
     }
 }

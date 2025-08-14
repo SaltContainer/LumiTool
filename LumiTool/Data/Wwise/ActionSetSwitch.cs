@@ -21,5 +21,10 @@
             b.AddRange(Utils.GetBytes(switchStateID));
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[ActionSetSwitch ({actionType}) of ID {id}] Sets switch for group {switchGroupID} to state {switchStateID}";
+        }
     }
 }

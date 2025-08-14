@@ -40,6 +40,7 @@
             btnBundleRenamer = new Button();
             btnPrepperMass = new Button();
             btnWwiseBankCloner = new Button();
+            btnWwiseEventBrowser = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -153,11 +154,22 @@
             btnWwiseBankCloner.UseVisualStyleBackColor = true;
             btnWwiseBankCloner.Click += btnWwiseBankCloner_Click;
             // 
+            // btnWwiseEventBrowser
+            // 
+            btnWwiseEventBrowser.Location = new Point(182, 260);
+            btnWwiseEventBrowser.Name = "btnWwiseEventBrowser";
+            btnWwiseEventBrowser.Size = new Size(164, 59);
+            btnWwiseEventBrowser.TabIndex = 11;
+            btnWwiseEventBrowser.Text = "Wwise Event Browser";
+            btnWwiseEventBrowser.UseVisualStyleBackColor = true;
+            btnWwiseEventBrowser.Click += btnWwiseEventBrowser_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(528, 331);
+            Controls.Add(btnWwiseEventBrowser);
             Controls.Add(btnWwiseBankCloner);
             Controls.Add(btnBundleRenamer);
             Controls.Add(btnShaderPathIDFixer);
@@ -192,5 +204,6 @@
         private Button btnBundleRenamer;
         private Button btnPrepperMass;
         private Button btnWwiseBankCloner;
+        private Button btnWwiseEventBrowser;
     }
 }
