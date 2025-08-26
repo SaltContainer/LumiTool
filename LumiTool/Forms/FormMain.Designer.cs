@@ -41,6 +41,7 @@
             btnPrepperMass = new Button();
             btnWwiseBankCloner = new Button();
             btnWwiseEventBrowser = new Button();
+            btnSettings = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -48,7 +49,7 @@
             btnPlatform.Location = new Point(12, 65);
             btnPlatform.Name = "btnPlatform";
             btnPlatform.Size = new Size(164, 59);
-            btnPlatform.TabIndex = 1;
+            btnPlatform.TabIndex = 0;
             btnPlatform.Text = "Change Bundle Platform";
             btnPlatform.UseVisualStyleBackColor = true;
             btnPlatform.Click += btnPlatform_Click;
@@ -58,7 +59,7 @@
             btnMono.Location = new Point(182, 65);
             btnMono.Name = "btnMono";
             btnMono.Size = new Size(164, 59);
-            btnMono.TabIndex = 2;
+            btnMono.TabIndex = 1;
             btnMono.Text = "Add MonoScript";
             btnMono.UseVisualStyleBackColor = true;
             btnMono.Click += btnMono_Click;
@@ -68,7 +69,7 @@
             btnPrepper.Location = new Point(12, 130);
             btnPrepper.Name = "btnPrepper";
             btnPrepper.Size = new Size(164, 59);
-            btnPrepper.TabIndex = 4;
+            btnPrepper.TabIndex = 3;
             btnPrepper.Text = "Bundle Prepper";
             btnPrepper.UseVisualStyleBackColor = true;
             btnPrepper.Click += btnPrepper_Click;
@@ -78,7 +79,7 @@
             btnColorVariation.Location = new Point(352, 195);
             btnColorVariation.Name = "btnColorVariation";
             btnColorVariation.Size = new Size(164, 59);
-            btnColorVariation.TabIndex = 6;
+            btnColorVariation.TabIndex = 8;
             btnColorVariation.Text = "ColorVariation Generator";
             btnColorVariation.UseVisualStyleBackColor = true;
             btnColorVariation.Click += btnColorVariation_Click;
@@ -89,7 +90,7 @@
             btnAbout.Location = new Point(441, 12);
             btnAbout.Name = "btnAbout";
             btnAbout.Size = new Size(75, 47);
-            btnAbout.TabIndex = 0;
+            btnAbout.TabIndex = 12;
             btnAbout.Text = "About";
             btnAbout.UseVisualStyleBackColor = true;
             btnAbout.Click += btnAbout_Click;
@@ -99,7 +100,7 @@
             btnManifestRefresher.Location = new Point(12, 195);
             btnManifestRefresher.Name = "btnManifestRefresher";
             btnManifestRefresher.Size = new Size(164, 59);
-            btnManifestRefresher.TabIndex = 7;
+            btnManifestRefresher.TabIndex = 6;
             btnManifestRefresher.Text = "AssetAssistant Manifest Refresher";
             btnManifestRefresher.UseVisualStyleBackColor = true;
             btnManifestRefresher.Click += btnManifestRefresher_Click;
@@ -109,7 +110,7 @@
             btnManifestEditor.Location = new Point(182, 195);
             btnManifestEditor.Name = "btnManifestEditor";
             btnManifestEditor.Size = new Size(164, 59);
-            btnManifestEditor.TabIndex = 8;
+            btnManifestEditor.TabIndex = 7;
             btnManifestEditor.Text = "AssetAssistant Manifest Editor";
             btnManifestEditor.UseVisualStyleBackColor = true;
             btnManifestEditor.Click += btnManifestEditor_Click;
@@ -119,7 +120,7 @@
             btnShaderPathIDFixer.Location = new Point(352, 65);
             btnShaderPathIDFixer.Name = "btnShaderPathIDFixer";
             btnShaderPathIDFixer.Size = new Size(164, 59);
-            btnShaderPathIDFixer.TabIndex = 3;
+            btnShaderPathIDFixer.TabIndex = 2;
             btnShaderPathIDFixer.Text = "Shader Bundle PathID Fixer";
             btnShaderPathIDFixer.UseVisualStyleBackColor = true;
             btnShaderPathIDFixer.Click += btnShaderPathIDFixer_Click;
@@ -139,7 +140,7 @@
             btnPrepperMass.Location = new Point(182, 130);
             btnPrepperMass.Name = "btnPrepperMass";
             btnPrepperMass.Size = new Size(164, 59);
-            btnPrepperMass.TabIndex = 9;
+            btnPrepperMass.TabIndex = 4;
             btnPrepperMass.Text = "Bundle Prepper (Mass)";
             btnPrepperMass.UseVisualStyleBackColor = true;
             btnPrepperMass.Click += btnPrepperMass_Click;
@@ -149,7 +150,7 @@
             btnWwiseBankCloner.Location = new Point(12, 260);
             btnWwiseBankCloner.Name = "btnWwiseBankCloner";
             btnWwiseBankCloner.Size = new Size(164, 59);
-            btnWwiseBankCloner.TabIndex = 10;
+            btnWwiseBankCloner.TabIndex = 9;
             btnWwiseBankCloner.Text = "Wwise Event Cloner";
             btnWwiseBankCloner.UseVisualStyleBackColor = true;
             btnWwiseBankCloner.Click += btnWwiseBankCloner_Click;
@@ -159,16 +160,27 @@
             btnWwiseEventBrowser.Location = new Point(182, 260);
             btnWwiseEventBrowser.Name = "btnWwiseEventBrowser";
             btnWwiseEventBrowser.Size = new Size(164, 59);
-            btnWwiseEventBrowser.TabIndex = 11;
+            btnWwiseEventBrowser.TabIndex = 10;
             btnWwiseEventBrowser.Text = "Wwise Event Browser";
             btnWwiseEventBrowser.UseVisualStyleBackColor = true;
             btnWwiseEventBrowser.Click += btnWwiseEventBrowser_Click;
+            // 
+            // btnSettings
+            // 
+            btnSettings.Image = Resources.Resources.gear;
+            btnSettings.Location = new Point(388, 12);
+            btnSettings.Name = "btnSettings";
+            btnSettings.Size = new Size(47, 47);
+            btnSettings.TabIndex = 11;
+            btnSettings.UseVisualStyleBackColor = true;
+            btnSettings.Click += btnSettings_Click;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(528, 331);
+            Controls.Add(btnSettings);
             Controls.Add(btnWwiseEventBrowser);
             Controls.Add(btnWwiseBankCloner);
             Controls.Add(btnBundleRenamer);
@@ -188,6 +200,7 @@
             MinimumSize = new Size(544, 370);
             Name = "FormMain";
             Text = "LumiTool";
+            Shown += FormMain_Shown;
             ResumeLayout(false);
         }
 
@@ -205,5 +218,6 @@
         private Button btnPrepperMass;
         private Button btnWwiseBankCloner;
         private Button btnWwiseEventBrowser;
+        private Button btnSettings;
     }
 }

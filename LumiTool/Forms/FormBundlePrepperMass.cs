@@ -91,7 +91,7 @@ namespace LumiTool.Forms
         {
             bool classesLoaded = !checkTpk.Checked;
             bool exceptionHappened = false;
-            Dictionary<long, Shader> foundShaders = new Dictionary<long, Shader>();
+            var foundShaders = new Dictionary<(int, long), Shader>();
 
             var files = Directory.GetFiles(folderPath);
             foreach (var file in files)

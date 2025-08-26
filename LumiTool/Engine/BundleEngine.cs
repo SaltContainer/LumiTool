@@ -153,33 +153,50 @@ namespace LumiTool.Engine
 
         public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup)
         {
-            FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, new Dictionary<long, Shader>());
+            FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(int, long), Shader>());
         }
 
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<long, Shader> foundShaders)
+        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(int, long), Shader> foundShaders)
         {
             var mats = assetsFile.file.GetAssetsOfType(AssetClassID.Material);
-            int shaderFileID = GetDependencyIndexOfShadersBundles(assetsFile);
+
+            var fileIDToCAB = new Dictionary<int, string>();
+            for (int i=0; i<assetsFile.file.Metadata.Externals.Count; i++)
+            {
+                var external = assetsFile.file.Metadata.Externals[i];
+                var externalNameParts = external.PathName.Split('/');
+                if (externalNameParts.Length >= 2)
+                    fileIDToCAB.Add(i + 1, externalNameParts[1]);
+            }
 
             foreach (var mat in mats)
             {
                 var matBase = manager.GetBaseField(assetsFile, mat);
+                int currentShaderFileID = matBase["m_Shader"]["m_FileID"].AsInt;
                 long currentShaderPathID = matBase["m_Shader"]["m_PathID"].AsLong;
 
-                if (foundShaders.TryGetValue(currentShaderPathID, out Shader shader))
+                if (foundShaders.TryGetValue((currentShaderFileID, currentShaderPathID), out Shader shader))
                 {
-                    AssignShaderToMaterial(mat, matBase, shaderFileID, shader.PathID);
+                    AssignShaderToMaterial(mat, matBase, currentShaderFileID, shader.PathID);
                 }
                 else
                 {
+                    var shaders = engine.GetShaderConfig()[fileIDToCAB[currentShaderFileID]];
+
+                    if (shaders == null)
+                    {
+                        MessageBox.Show($"The current shaders config does not contain data for the bundle with CAB name {fileIDToCAB[currentShaderFileID]}! This material will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;
+                    }
+
                     using FormShaderSelect shaderSelect = showBundleNameInPopup ?
-                        new FormShaderSelect(matBase["m_Name"].AsString, bundle.name, LumiToolEngine.ShaderList) :
-                        new FormShaderSelect(matBase["m_Name"].AsString, LumiToolEngine.ShaderList);
+                        new FormShaderSelect(matBase["m_Name"].AsString, bundle.name, shaders) :
+                        new FormShaderSelect(matBase["m_Name"].AsString, shaders);
                     while (shaderSelect.ShowDialog() != DialogResult.OK)
                         MessageBox.Show("You must specify the shader used for this material!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    foundShaders.Add(currentShaderPathID, shaderSelect.Result);
-                    AssignShaderToMaterial(mat, matBase, shaderFileID, shaderSelect.Result.PathID);
+                    foundShaders.Add((currentShaderFileID, currentShaderPathID), shaderSelect.Result);
+                    AssignShaderToMaterial(mat, matBase, currentShaderFileID, shaderSelect.Result.PathID);
                 }
 
                 mat.SetNewData(matBase);
@@ -278,15 +295,15 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(bundle, assetsFile);
         }
 
-        private int GetDependencyIndexOfShadersBundles(AssetsFileInstance assetsFile)
+        private string FormatArchiveCABName(string cabName)
         {
-            return assetsFile.file.Metadata.Externals.FindIndex(d => d.PathName == "archive:/CAB-1dc8d26be8722a766953ce9d8a444e8c/CAB-1dc8d26be8722a766953ce9d8a444e8c") + 1;
+            return $"archive:/{cabName}/{cabName}";
         }
 
-        private void AssignShaderToMaterial(AssetFileInfo mat, AssetTypeValueField matBase, long fileID, long pathID)
+        private void AssignShaderToMaterial(AssetFileInfo mat, AssetTypeValueField matBase, int fileID, long pathID)
         {
             if (fileID != -1)
-                matBase["m_Shader"]["m_FileID"].AsLong = fileID;
+                matBase["m_Shader"]["m_FileID"].AsInt = fileID;
 
             matBase["m_Shader"]["m_PathID"].AsLong = pathID;
 

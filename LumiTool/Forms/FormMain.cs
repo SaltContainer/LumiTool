@@ -8,6 +8,8 @@ namespace LumiTool
         private LumiToolEngine engine;
 
         private FormAbout aboutForm;
+        private FormSettings settingsForm;
+
         private FormPlatform platformForm;
         private FormMono monoForm;
         private FormBundlePrepper prepperForm;
@@ -25,6 +27,9 @@ namespace LumiTool
             engine = new LumiToolEngine();
 
             aboutForm = new FormAbout();
+            settingsForm = new FormSettings(engine);
+            settingsForm.FormClosed += (sender, e) => UpdateComponentsOnSettingsChanged();
+
             platformForm = new FormPlatform(engine);
             monoForm = new FormMono(engine);
             prepperForm = new FormBundlePrepper(engine);
@@ -38,11 +43,49 @@ namespace LumiTool
             wwiseEventBrowserForm = new FormWwiseEventBrowser(engine);
 
             InitializeComponent();
+
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            engine.TryReloadShaderConfig();
+
+            UpdateComponentsOnSettingsChanged();
+        }
+
+        private void ToggleShaderConfigRequirements(bool enabled)
+        {
+            btnPrepper.Enabled = enabled;
+            btnPrepperMass.Enabled = enabled;
+        }
+
+        private void UpdateComponentsOnSettingsChanged()
+        {
+            ToggleShaderConfigRequirements(engine.IsShaderConfigLoaded());
+        }
+
+        private void CheckForUnloadedWarning()
+        {
+            if (!engine.IsShaderConfigLoaded())
+                MessageBox.Show("There was a problem reading the shaders configuration. Certain features won't be available until a valid configuration is set in the settings.", "Invalid Settings", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void SetFirstBootSettings()
+        {
+            MessageBox.Show("Hello! Since this is your first time using LumiTool, you'll have to set a few settings before you're ready to go.", "New User", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            engine.SetFirstBootConfig();
+            settingsForm.ShowDialog(this);
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
             aboutForm.ShowDialog(this);
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            settingsForm.ShowDialog(this);
         }
 
         private void btnPlatform_Click(object sender, EventArgs e)
@@ -99,6 +142,14 @@ namespace LumiTool
         private void btnWwiseEventBrowser_Click(object sender, EventArgs e)
         {
             wwiseEventBrowserForm.ShowDialog(this);
+        }
+
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            if (engine.UserConfigExists())
+                CheckForUnloadedWarning();
+            else
+                SetFirstBootSettings();
         }
     }
 }
