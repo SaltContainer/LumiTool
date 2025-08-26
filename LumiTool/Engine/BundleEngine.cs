@@ -2,6 +2,7 @@
 using AssetsTools.NET;
 using LumiTool.Data;
 using LumiTool.Forms.Popups;
+using System.Reflection.Metadata;
 
 namespace LumiTool.Engine
 {
@@ -169,6 +170,8 @@ namespace LumiTool.Engine
                     fileIDToCAB.Add(i + 1, externalNameParts[1]);
             }
 
+            var preloadTable = manager.GetBaseField(assetsFile, assetsFile.file.GetAssetInfo(1));
+
             foreach (var mat in mats)
             {
                 var matBase = manager.GetBaseField(assetsFile, mat);
@@ -197,10 +200,13 @@ namespace LumiTool.Engine
 
                     foundShaders.Add((currentShaderFileID, currentShaderPathID), shaderSelect.Result);
                     AssignShaderToMaterial(mat, matBase, currentShaderFileID, shaderSelect.Result.PathID);
+                    UpdateShaderInPreloadTable(preloadTable, currentShaderFileID, currentShaderPathID, currentShaderFileID, shaderSelect.Result.PathID);
                 }
 
                 mat.SetNewData(matBase);
             }
+
+            assetsFile.file.GetAssetInfo(1).SetNewData(preloadTable);
 
             SetAssetsFileInBundle(bundle, assetsFile);
         }
@@ -308,6 +314,20 @@ namespace LumiTool.Engine
             matBase["m_Shader"]["m_PathID"].AsLong = pathID;
 
             mat.SetNewData(matBase);
+        }
+
+        private void UpdateShaderInPreloadTable(AssetTypeValueField preloadTable, int oldFileID, long oldPathID, int newFileID, long newPathID)
+        {
+            // TODO: Keep track of the indices in this array that were already edited
+            var assets = preloadTable["m_PreloadTable"]["Array"];
+            foreach (var asset in assets)
+            {
+                if (asset["m_FileID"].AsInt == oldFileID && asset["m_PathID"].AsLong == oldPathID)
+                {
+                    asset["m_FileID"].AsInt = newFileID;
+                    asset["m_PathID"].AsLong = newPathID;
+                }
+            }
         }
 
         private void ClearDependencies(AssetsFileInstance assetsFile)
