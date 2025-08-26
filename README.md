@@ -1,6 +1,6 @@
 # LumiTool
 
-A "swiss army knife"-type tool that allows for many different manipulations on Unity Asset Bundles, AssetAssistant Manifests, and various other files. Made with BDSP mods in mind.
+A "swiss army knife"-type tool that allows for many different manipulations on Unity Asset Bundles, AssetAssistant Manifests, and various other files. Made with BDSP mods in mind but very flexible.
 
 ## Features
 
@@ -12,8 +12,9 @@ A "swiss army knife"-type tool that allows for many different manipulations on U
   - Changes the PathIDs of all shader and material assets in a bundle to PathIDs from a different bundle, based on the names of the assets.
   - If an asset can't be found in the second bundle, it gets skipped.
 - **Bundle Prepper**
-  - Converts bundles rebuilt from ripping to the Unity Editor (usually using AssetRipper) back into proper bundles for BDSP.
-  - Requires reassigning shaders. The tool will automatically ask for those.
+  - Converts bundles rebuilt from ripping to the Unity Editor (usually using AssetRipper) back into proper bundles for use in the game.
+  - Requires reassigning shaders, and is therefore only available with a proper JSON file detailing the shader path IDs.
+	- The prepper will automatically ask for the shaders and will remember when multiple materials use the same shader.
   - There is also a version that allows converting a full folder's worth of bundles.
 - **Bundle Renamer**
   - Changes the Asset Bundle Name of a bundle inside its manifest/preload table at path ID 1.
@@ -24,6 +25,8 @@ A "swiss army knife"-type tool that allows for many different manipulations on U
   - Allows directly editing an AssetAssistant manifest.
 - **Wwise Event Cloner**
   - Clones a given Wwise event in a bank.
+- **Wwise Event Browser**
+  - Allows looking at an overview of all events in a Wwise bank and their actions.
 
 ## Planned Features
 
