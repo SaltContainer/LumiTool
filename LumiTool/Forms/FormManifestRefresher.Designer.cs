@@ -42,6 +42,7 @@
             lbVanillaPath = new Label();
             btnVanillaOpen = new Button();
             ttManifestRefresher = new ToolTip(components);
+            btnLog = new Button();
             grpManifest.SuspendLayout();
             grpMod.SuspendLayout();
             grpVanilla.SuspendLayout();
@@ -97,7 +98,7 @@
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(12, 316);
+            btnRefresh.Location = new Point(12, 370);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(260, 48);
             btnRefresh.TabIndex = 4;
@@ -171,11 +172,22 @@
             btnVanillaOpen.UseVisualStyleBackColor = true;
             btnVanillaOpen.Click += btnVanillaOpen_Click;
             // 
+            // btnLog
+            // 
+            btnLog.Location = new Point(12, 316);
+            btnLog.Name = "btnLog";
+            btnLog.Size = new Size(260, 48);
+            btnLog.TabIndex = 6;
+            btnLog.Text = "Generate Log of Changes";
+            btnLog.UseVisualStyleBackColor = true;
+            btnLog.Click += btnLog_Click;
+            // 
             // FormManifestRefresher
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(284, 376);
+            ClientSize = new Size(284, 430);
+            Controls.Add(btnLog);
             Controls.Add(btnRefresh);
             Controls.Add(grpVanilla);
             Controls.Add(grpMod);
@@ -183,8 +195,8 @@
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(300, 415);
-            MinimumSize = new Size(300, 415);
+            MaximumSize = new Size(300, 469);
+            MinimumSize = new Size(300, 469);
             Name = "FormManifestRefresher";
             Text = "Manifest Refresher";
             FormClosed += FormManifestRefresher_FormClosed;
@@ -210,5 +222,6 @@
         private Label lbVanillaPath;
         private Button btnVanillaOpen;
         private ToolTip ttManifestRefresher;
+        private Button btnLog;
     }
 }

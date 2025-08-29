@@ -33,6 +33,11 @@
             return AddPathSegments(0, path);
         }
 
+        public bool DoesFileExist(string path)
+        {
+            return File.Exists(path);
+        }
+
         private string? AddPathSegments(int startIndex, string path)
         {
             for (int i=startIndex; i<pathSegments.Count; i++)

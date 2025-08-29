@@ -45,5 +45,27 @@ namespace LumiTool.Engine
 
             manifest.RemoveRecordsWhere(r => r.size == -1);
         }
+
+        public List<AssetBundleRecord> FindUnusedRecords(AssetBundleDownloadManifest manifest, string romfsPath, string romfsVPath)
+        {
+            var unusedRecords = new List<AssetBundleRecord>();
+
+            foreach (var record in manifest.records)
+            {
+                string path = Path.Combine(romfsPath, record.projectName, record.assetBundleName);
+                string pathV = Path.Combine(romfsVPath, record.projectName, record.assetBundleName);
+
+                if (!engine.DoesFileExist(path) && !engine.DoesFileExist(pathV))
+                    unusedRecords.Add(record);
+            }
+
+            return unusedRecords;
+        }
+
+        public List<string> GenerateLogOfUnusedRecords(AssetBundleDownloadManifest manifest, string romfsPath, string romfsVPath)
+        {
+            var unusedRecords = FindUnusedRecords(manifest, romfsPath, romfsVPath);
+            return unusedRecords.Select(r => $"{r.projectName} - {r.assetBundleName}").ToList();
+        }
     }
 }

@@ -105,6 +105,16 @@ namespace LumiTool.Engine
             manifestEngine.RefreshManifest(manifest, romfsPath, romfsVPath);
         }
 
+        public List<AssetBundleRecord> FindUnusedRecords(AssetBundleDownloadManifest manifest, string romfsPath, string romfsVPath)
+        {
+            return manifestEngine.FindUnusedRecords(manifest, romfsPath, romfsVPath);
+        }
+
+        public List<string> GenerateLogOfUnusedRecords(AssetBundleDownloadManifest manifest, string romfsPath, string romfsVPath)
+        {
+            return manifestEngine.GenerateLogOfUnusedRecords(manifest, romfsPath, romfsVPath);
+        }
+
         public string? FindAssetAssistantPath(string path)
         {
             return fileSystemEngine.FindAssetAssistantPath(path);
@@ -118,6 +128,11 @@ namespace LumiTool.Engine
         public long? GetFileSizeAtPath(string path)
         {
             return fileSystemEngine.GetFileSizeAtPath(path);
+        }
+
+        public bool DoesFileExist(string path)
+        {
+            return fileSystemEngine.DoesFileExist(path);
         }
 
         public void RenameBundle(BundleFileInstance bundle, AssetsFileInstance assetsFile, string newName, string newCAB)

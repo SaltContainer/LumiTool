@@ -132,6 +132,33 @@ namespace LumiTool.Forms
             vanillaPath = string.Empty;
         }
 
+        private void btnLog_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var log = engine.GenerateLogOfUnusedRecords(manifest, moddedPath, vanillaPath);
+
+                using SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Log file (*.log)|*.log";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        File.WriteAllLines(saveFileDialog.FileName, log);
+                        MessageBox.Show("Successfully saved the log file!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was an exception when saving the log. Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was an exception when generating the log. Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             try
