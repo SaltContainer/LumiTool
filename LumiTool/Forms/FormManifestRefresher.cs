@@ -144,7 +144,7 @@ namespace LumiTool.Forms
                 {
                     try
                     {
-                        File.WriteAllLines(saveFileDialog.FileName, log);
+                        File.WriteAllLines(saveFileDialog.FileName, log.OrderBy(x => x));
                         MessageBox.Show("Successfully saved the log file!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
