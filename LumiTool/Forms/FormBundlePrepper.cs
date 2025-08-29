@@ -25,6 +25,7 @@ namespace LumiTool.Forms
             ttBundlePrepper.SetToolTip(checkConvertPlatform, "Changes the platform metadata of the rebuilt bundle to Switch.");
             ttBundlePrepper.SetToolTip(checkConvertDependencies, "Copies the dependencies of the vanilla bundle onto the rebuilt bundle.\nOff by default.\nThis is the only option that actually looks at the vanilla bundle.");
             ttBundlePrepper.SetToolTip(checkConvertShaders, "When on, each material asset's shader will be remapped.\nThe user will be asked to identify the proper shader from a pre-set list\nfor each different shader that was detected.");
+            ttBundlePrepper.SetToolTip(checkReassignDependencies, "When on, every asset's references to assets in dependencies will be remapped.\nThe user will be asked to identify the proper asset from a pre-set list\nfor each different asset that was detected.");
         }
 
         private void UpdateComponentsOnStart()
@@ -36,6 +37,7 @@ namespace LumiTool.Forms
             checkConvertPlatform.Enabled = false;
             checkConvertDependencies.Enabled = false;
             checkConvertShaders.Enabled = false;
+            checkReassignDependencies.Enabled = false;
             checkTpk.Enabled = true;
 
             ttBundlePrepper.SetToolTip(lbBundleName, "");
@@ -49,6 +51,7 @@ namespace LumiTool.Forms
             checkConvertPlatform.Enabled = NewBundleLoaded;
             checkConvertDependencies.Enabled = NewBundleLoaded && VanillaBundleLoaded;
             checkConvertShaders.Enabled = NewBundleLoaded;
+            checkReassignDependencies.Enabled = NewBundleLoaded && engine.IsDependencyConfigLoaded();
         }
 
         private void UpdateComponentsOnLoadEditing()
@@ -132,6 +135,7 @@ namespace LumiTool.Forms
                 if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
                 if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
                 if (checkConvertShaders.Checked) engine.FixShadersOfMaterials(bundle, afileInst);
+                if (checkReassignDependencies.Checked) engine.ReassignExternalDependencyReferences(bundle, afileInst);
                 MessageBox.Show("Successfully converted the bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)

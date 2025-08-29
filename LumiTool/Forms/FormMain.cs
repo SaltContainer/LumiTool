@@ -50,6 +50,7 @@ namespace LumiTool
         private void LoadSettings()
         {
             engine.TryReloadShaderConfig();
+            engine.TryReloadDependencyConfig();
 
             UpdateComponentsOnSettingsChanged();
         }

@@ -2,7 +2,6 @@
 using AssetsTools.NET;
 using LumiTool.Data;
 using LumiTool.Forms.Popups;
-using System.Reflection.Metadata;
 
 namespace LumiTool.Engine
 {
@@ -154,23 +153,17 @@ namespace LumiTool.Engine
 
         public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup)
         {
-            FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(int, long), Shader>());
+            FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), Shader>());
         }
 
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(int, long), Shader> foundShaders)
+        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundShaders)
         {
             var mats = assetsFile.file.GetAssetsOfType(AssetClassID.Material);
 
-            var fileIDToCAB = new Dictionary<int, string>();
-            for (int i=0; i<assetsFile.file.Metadata.Externals.Count; i++)
-            {
-                var external = assetsFile.file.Metadata.Externals[i];
-                var externalNameParts = external.PathName.Split('/');
-                if (externalNameParts.Length >= 2)
-                    fileIDToCAB.Add(i + 1, externalNameParts[1]);
-            }
+            var fileIDToCAB = GetFileIDToCABNameDict(assetsFile);
 
             var preloadTable = manager.GetBaseField(assetsFile, assetsFile.file.GetAssetInfo(1));
+            var preloadUpdates = new Dictionary<(int, long), (int, long)>();
 
             foreach (var mat in mats)
             {
@@ -178,7 +171,7 @@ namespace LumiTool.Engine
                 int currentShaderFileID = matBase["m_Shader"]["m_FileID"].AsInt;
                 long currentShaderPathID = matBase["m_Shader"]["m_PathID"].AsLong;
 
-                if (foundShaders.TryGetValue((currentShaderFileID, currentShaderPathID), out Shader shader))
+                if (foundShaders.TryGetValue((fileIDToCAB[currentShaderFileID], currentShaderPathID), out Shader shader))
                 {
                     AssignShaderToMaterial(mat, matBase, currentShaderFileID, shader.PathID);
                 }
@@ -198,14 +191,15 @@ namespace LumiTool.Engine
                     while (shaderSelect.ShowDialog() != DialogResult.OK)
                         MessageBox.Show("You must specify the shader used for this material!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    foundShaders.Add((currentShaderFileID, currentShaderPathID), shaderSelect.Result);
+                    foundShaders.Add((fileIDToCAB[currentShaderFileID], currentShaderPathID), shaderSelect.Result);
                     AssignShaderToMaterial(mat, matBase, currentShaderFileID, shaderSelect.Result.PathID);
-                    UpdateShaderInPreloadTable(preloadTable, currentShaderFileID, currentShaderPathID, currentShaderFileID, shaderSelect.Result.PathID);
+                    preloadUpdates.Add((currentShaderFileID, currentShaderPathID), (currentShaderFileID, shaderSelect.Result.PathID));
                 }
 
                 mat.SetNewData(matBase);
             }
 
+            UpdateShadersInPreloadTable(preloadTable, preloadUpdates);
             assetsFile.file.GetAssetInfo(1).SetNewData(preloadTable);
 
             SetAssetsFileInBundle(bundle, assetsFile);
@@ -301,6 +295,75 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(bundle, assetsFile);
         }
 
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup)
+        {
+            ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), Shader>());
+        }
+
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundReferences)
+        {
+            var assets = assetsFile.file.AssetInfos;
+
+            var fileIDToCAB = GetFileIDToCABNameDict(assetsFile);
+
+            var preloadTable = manager.GetBaseField(assetsFile, assetsFile.file.GetAssetInfo(1));
+            var preloadUpdates = new Dictionary<(int, long), (int, long)>();
+
+            // Replace with tree exploration
+            /*foreach (var asset in assets)
+            {
+                var assetBase = manager.GetBaseField(assetsFile, asset);
+                int currentShaderFileID = assetBase["m_Shader"]["m_FileID"].AsInt;
+                long currentShaderPathID = assetBase["m_Shader"]["m_PathID"].AsLong;
+
+                if (foundReferences.TryGetValue((fileIDToCAB[currentShaderFileID], currentShaderPathID), out Shader shader))
+                {
+                    AssignShaderToMaterial(asset, assetBase, currentShaderFileID, shader.PathID);
+                }
+                else
+                {
+                    var shaders = engine.GetShaderConfig()[fileIDToCAB[currentShaderFileID]];
+
+                    if (shaders == null)
+                    {
+                        MessageBox.Show($"The current dependency config does not contain data for the bundle with CAB name {fileIDToCAB[currentShaderFileID]}! Assets with a reference to this CAB will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;
+                    }
+
+                    using FormShaderSelect shaderSelect = showBundleNameInPopup ?
+                        new FormShaderSelect(assetBase["m_Name"].AsString, bundle.name, shaders) :
+                        new FormShaderSelect(assetBase["m_Name"].AsString, shaders);
+                    while (shaderSelect.ShowDialog() != DialogResult.OK)
+                        MessageBox.Show("You must specify the shader used for this material!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    foundReferences.Add((fileIDToCAB[currentShaderFileID], currentShaderPathID), shaderSelect.Result);
+                    AssignShaderToMaterial(asset, assetBase, currentShaderFileID, shaderSelect.Result.PathID);
+                    preloadUpdates.Add((currentShaderFileID, currentShaderPathID), (currentShaderFileID, shaderSelect.Result.PathID));
+                }
+
+                asset.SetNewData(assetBase);
+            }*/
+
+            UpdateShadersInPreloadTable(preloadTable, preloadUpdates);
+            assetsFile.file.GetAssetInfo(1).SetNewData(preloadTable);
+
+            SetAssetsFileInBundle(bundle, assetsFile);
+        }
+
+        private Dictionary<int, string> GetFileIDToCABNameDict(AssetsFileInstance assetsFile)
+        {
+            var fileIDToCAB = new Dictionary<int, string>();
+            for (int i=0; i<assetsFile.file.Metadata.Externals.Count; i++)
+            {
+                var external = assetsFile.file.Metadata.Externals[i];
+                var externalNameParts = external.PathName.Split('/');
+                if (externalNameParts.Length >= 2)
+                    fileIDToCAB.Add(i + 1, externalNameParts[1]);
+            }
+
+            return fileIDToCAB;
+        }
+
         private string FormatArchiveCABName(string cabName)
         {
             return $"archive:/{cabName}/{cabName}";
@@ -316,16 +379,15 @@ namespace LumiTool.Engine
             mat.SetNewData(matBase);
         }
 
-        private void UpdateShaderInPreloadTable(AssetTypeValueField preloadTable, int oldFileID, long oldPathID, int newFileID, long newPathID)
+        private void UpdateShadersInPreloadTable(AssetTypeValueField preloadTable, Dictionary<(int, long), (int, long)> updates)
         {
-            // TODO: Keep track of the indices in this array that were already edited
             var assets = preloadTable["m_PreloadTable"]["Array"];
             foreach (var asset in assets)
             {
-                if (asset["m_FileID"].AsInt == oldFileID && asset["m_PathID"].AsLong == oldPathID)
+                if (updates.TryGetValue((asset["m_FileID"].AsInt, asset["m_PathID"].AsLong), out (int newFileID, long newPathID) newValues))
                 {
-                    asset["m_FileID"].AsInt = newFileID;
-                    asset["m_PathID"].AsLong = newPathID;
+                    asset["m_FileID"].AsInt = newValues.newFileID;
+                    asset["m_PathID"].AsLong = newValues.newPathID;
                 }
             }
         }

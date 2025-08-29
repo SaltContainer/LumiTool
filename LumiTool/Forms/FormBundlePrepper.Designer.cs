@@ -44,6 +44,7 @@
             checkConvertShaders = new CheckBox();
             grpConvert = new GroupBox();
             ttBundlePrepper = new ToolTip(components);
+            checkReassignDependencies = new CheckBox();
             grpBundle.SuspendLayout();
             grpBundleV.SuspendLayout();
             grpConvert.SuspendLayout();
@@ -193,26 +194,37 @@
             grpConvert.Controls.Add(checkConvertPlatform);
             grpConvert.Controls.Add(checkConvertDependencies);
             grpConvert.Controls.Add(checkConvertShaders);
+            grpConvert.Controls.Add(checkReassignDependencies);
             grpConvert.Location = new Point(12, 123);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(458, 106);
+            grpConvert.Size = new Size(458, 131);
             grpConvert.TabIndex = 13;
             grpConvert.TabStop = false;
             grpConvert.Text = "Prepare Rebuilt Bundle";
+            // 
+            // checkReassignDependencies
+            // 
+            checkReassignDependencies.AutoSize = true;
+            checkReassignDependencies.Location = new Point(8, 97);
+            checkReassignDependencies.Name = "checkReassignDependencies";
+            checkReassignDependencies.Size = new Size(228, 19);
+            checkReassignDependencies.TabIndex = 12;
+            checkReassignDependencies.Text = "Re-assign References to Dependencies";
+            checkReassignDependencies.UseVisualStyleBackColor = true;
             // 
             // FormBundlePrepper
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(488, 241);
+            ClientSize = new Size(488, 266);
             Controls.Add(grpConvert);
             Controls.Add(grpBundleV);
             Controls.Add(grpBundle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(504, 280);
-            MinimumSize = new Size(504, 280);
+            MaximumSize = new Size(504, 305);
+            MinimumSize = new Size(504, 305);
             Name = "FormBundlePrepper";
             Text = "Bundle Prepper";
             FormClosed += FormBundlePrepper_FormClosed;
@@ -241,5 +253,6 @@
         private GroupBox grpConvert;
         private CheckBox checkTpk;
         private ToolTip ttBundlePrepper;
+        private CheckBox checkReassignDependencies;
     }
 }

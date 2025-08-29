@@ -70,7 +70,7 @@ namespace LumiTool.Engine
             bundleEngine.FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup);
         }
 
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(int, long), Shader> foundShaders)
+        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundShaders)
         {
             bundleEngine.FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, foundShaders);
         }
@@ -198,6 +198,46 @@ namespace LumiTool.Engine
         public bool IsShaderConfigLoaded()
         {
             return configEngine.IsShaderConfigLoaded();
+        }
+
+        public void ReloadDependencyConfig()
+        {
+            configEngine.ReloadDependencyConfig();
+        }
+
+        public bool TryReloadDependencyConfig()
+        {
+            return configEngine.TryReloadDependencyConfig();
+        }
+
+        public ShaderConfig GetDependencyConfig()
+        {
+            return configEngine.GetDependencyConfig();
+        }
+
+        public string GetDependencyConfigPath()
+        {
+            return configEngine.GetDependencyConfigPath();
+        }
+
+        public bool SetDependencyConfigPath(string newPath)
+        {
+            return configEngine.SetDependencyConfigPath(newPath);
+        }
+
+        public bool IsDependencyConfigLoaded()
+        {
+            return configEngine.IsDependencyConfigLoaded();
+        }
+
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup = false)
+        {
+            bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup);
+        }
+
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundReferences)
+        {
+            bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, foundReferences);
         }
     }
 }

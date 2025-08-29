@@ -42,6 +42,7 @@
             grpOutput = new GroupBox();
             lbOutputBundleName = new Label();
             btnOutputBundleOpen = new Button();
+            checkReassignDependencies = new CheckBox();
             grpConvert.SuspendLayout();
             grpBundle.SuspendLayout();
             grpOutput.SuspendLayout();
@@ -52,16 +53,17 @@
             grpConvert.Controls.Add(btnConvertApply);
             grpConvert.Controls.Add(checkConvertPlatform);
             grpConvert.Controls.Add(checkConvertShaders);
+            grpConvert.Controls.Add(checkReassignDependencies);
             grpConvert.Location = new Point(12, 123);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(526, 76);
+            grpConvert.Size = new Size(526, 101);
             grpConvert.TabIndex = 16;
             grpConvert.TabStop = false;
             grpConvert.Text = "Prepare Rebuilt Bundles";
             // 
             // btnConvertApply
             // 
-            btnConvertApply.Location = new Point(362, 22);
+            btnConvertApply.Location = new Point(362, 15);
             btnConvertApply.Name = "btnConvertApply";
             btnConvertApply.Size = new Size(158, 44);
             btnConvertApply.TabIndex = 8;
@@ -170,19 +172,29 @@
             btnOutputBundleOpen.UseVisualStyleBackColor = true;
             btnOutputBundleOpen.Click += btnOutputBundleOpen_Click;
             // 
+            // checkReassignDependencies
+            // 
+            checkReassignDependencies.AutoSize = true;
+            checkReassignDependencies.Location = new Point(8, 72);
+            checkReassignDependencies.Name = "checkReassignDependencies";
+            checkReassignDependencies.Size = new Size(228, 19);
+            checkReassignDependencies.TabIndex = 12;
+            checkReassignDependencies.Text = "Re-assign References to Dependencies";
+            checkReassignDependencies.UseVisualStyleBackColor = true;
+            // 
             // FormBundlePrepperMass
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(550, 211);
+            ClientSize = new Size(550, 236);
             Controls.Add(grpConvert);
             Controls.Add(grpBundle);
             Controls.Add(grpOutput);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(566, 250);
-            MinimumSize = new Size(566, 250);
+            MaximumSize = new Size(566, 275);
+            MinimumSize = new Size(566, 275);
             Name = "FormBundlePrepperMass";
             Text = "Bundle Prepper (Mass)";
             FormClosed += FormBundlePrepperMass_FormClosed;
@@ -209,5 +221,6 @@
         private GroupBox grpOutput;
         private Label lbOutputBundleName;
         private Button btnOutputBundleOpen;
+        private CheckBox checkReassignDependencies;
     }
 }

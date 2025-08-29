@@ -18,6 +18,7 @@ namespace LumiTool.Forms
             ttBundlePrepper.SetToolTip(checkTpk, "Checking this before selecting the rebuilt bundles folder\nthe classdata.tpk file in the same folder as the executable.\nUse this if you built the bundles without a type tree.");
             ttBundlePrepper.SetToolTip(checkConvertPlatform, "Changes the platform metadata of the rebuilt bundles to Switch.");
             ttBundlePrepper.SetToolTip(checkConvertShaders, "When on, each material asset's shader will be remapped.\nThe user will be asked to identify the proper shader from a pre-set list\nfor each different shader that was detected.");
+            ttBundlePrepper.SetToolTip(checkReassignDependencies, "When on, every asset's references to assets in dependencies will be remapped.\nThe user will be asked to identify the proper asset from a pre-set list\nfor each different asset that was detected.");
         }
 
         private void UpdateComponentsOnStart()
@@ -27,6 +28,7 @@ namespace LumiTool.Forms
             btnConvertApply.Enabled = false;
             checkConvertPlatform.Enabled = false;
             checkConvertShaders.Enabled = false;
+            checkReassignDependencies.Enabled = false;
             checkTpk.Enabled = true;
 
             ttBundlePrepper.SetToolTip(lbBundleName, "");
@@ -38,6 +40,7 @@ namespace LumiTool.Forms
             btnConvertApply.Enabled = active;
             checkConvertPlatform.Enabled = active;
             checkConvertShaders.Enabled = active;
+            checkReassignDependencies.Enabled = active && engine.IsDependencyConfigLoaded();
         }
 
         private void UpdateComponentsOnLoadEditing()
@@ -91,7 +94,8 @@ namespace LumiTool.Forms
         {
             bool classesLoaded = !checkTpk.Checked;
             bool exceptionHappened = false;
-            var foundShaders = new Dictionary<(int, long), Shader>();
+            var foundShaders = new Dictionary<(string, long), Shader>();
+            var foundReferences = new Dictionary<(string, long), Shader>();
 
             var files = Directory.GetFiles(folderPath);
             foreach (var file in files)
@@ -103,6 +107,7 @@ namespace LumiTool.Forms
 
                     if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
                     if (checkConvertShaders.Checked) engine.FixShadersOfMaterials(bundle, afileInst, true, foundShaders);
+                    if (checkReassignDependencies.Checked) engine.ReassignExternalDependencyReferences(bundle, afileInst, true, foundReferences);
 
                     if (!classesLoaded && checkTpk.Checked)
                     {

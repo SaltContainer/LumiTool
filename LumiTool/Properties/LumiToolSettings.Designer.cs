@@ -46,5 +46,17 @@ namespace LumiTool.Properties {
                 this["ShaderConfigPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DependencyConfigPath {
+            get {
+                return ((string)(this["DependencyConfigPath"]));
+            }
+            set {
+                this["DependencyConfigPath"] = value;
+            }
+        }
     }
 }

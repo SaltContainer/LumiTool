@@ -9,6 +9,7 @@ namespace LumiTool.Engine
         private JsonSerializerOptions jsonOptions;
 
         private ShaderConfig shaderConfig = null;
+        private ShaderConfig dependencyConfig = null;
 
         public ConfigEngine(LumiToolEngine engine)
         {
@@ -65,24 +66,73 @@ namespace LumiTool.Engine
             var oldPath = Properties.LumiToolSettings.Default.ShaderConfigPath;
             Properties.LumiToolSettings.Default.ShaderConfigPath = newPath;
 
-            try
+            if (TryReloadShaderConfig())
             {
-                ReloadShaderConfig();
+                Properties.LumiToolSettings.Default.Save();
+                return true;
             }
-            catch (Exception ex)
+            else
             {
-                //MessageBox.Show($"Could not load the new shaders configuration! Reverting to the previous one. Full exception: {ex}", "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Properties.LumiToolSettings.Default.ShaderConfigPath = oldPath;
                 return false;
             }
-
-            Properties.LumiToolSettings.Default.Save();
-            return true;
         }
 
         public bool IsShaderConfigLoaded()
         {
             return shaderConfig != null;
+        }
+
+        public void ReloadDependencyConfig()
+        {
+            var json = File.ReadAllText(Properties.LumiToolSettings.Default.DependencyConfigPath);
+            dependencyConfig = JsonSerializer.Deserialize<ShaderConfig>(json, jsonOptions);
+        }
+
+        public bool TryReloadDependencyConfig()
+        {
+            try
+            {
+                ReloadDependencyConfig();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public ShaderConfig GetDependencyConfig()
+        {
+            return dependencyConfig;
+        }
+
+        public string GetDependencyConfigPath()
+        {
+            return Properties.LumiToolSettings.Default.DependencyConfigPath;
+        }
+
+        public bool SetDependencyConfigPath(string newPath)
+        {
+            var oldPath = Properties.LumiToolSettings.Default.DependencyConfigPath;
+            Properties.LumiToolSettings.Default.DependencyConfigPath = newPath;
+
+            if (TryReloadDependencyConfig())
+            {
+                Properties.LumiToolSettings.Default.Save();
+                return true;
+            }
+            else
+            {
+                Properties.LumiToolSettings.Default.DependencyConfigPath = oldPath;
+                return false;
+            }
+        }
+
+        public bool IsDependencyConfigLoaded()
+        {
+            return dependencyConfig != null;
         }
     }
 }
