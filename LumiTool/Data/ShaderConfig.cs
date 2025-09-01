@@ -26,8 +26,8 @@ namespace LumiTool.Data
                 bundlesByCABDict.Add(bundle.CABName, bundle);
         }
 
-        public List<Shader> this[string bundleCabName] => GetBundleByCABName(bundleCabName).Shaders;
-        public Shader this[string bundleCabName, string shaderName] => GetBundleByCABName(bundleCabName).GetShaderByName(shaderName);
+        public List<Shader> this[string bundleCabName] => GetBundleByCABName(bundleCabName)?.Shaders;
+        public Shader this[string bundleCabName, string shaderName] => GetBundleByCABName(bundleCabName)?.GetShaderByName(shaderName);
 
         public Bundle GetBundleByName(string bundleName)
         {

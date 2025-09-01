@@ -199,7 +199,7 @@ namespace LumiTool.Engine
                 mat.SetNewData(matBase);
             }
 
-            UpdateShadersInPreloadTable(preloadTable, preloadUpdates);
+            UpdateReferencesInPreloadTable(preloadTable, preloadUpdates);
             assetsFile.file.GetAssetInfo(1).SetNewData(preloadTable);
 
             SetAssetsFileInBundle(bundle, assetsFile);
@@ -297,55 +297,22 @@ namespace LumiTool.Engine
 
         public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup)
         {
-            ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), Shader>());
+            ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), DependencyAsset>());
         }
 
-        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundReferences)
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences)
         {
-            var assets = assetsFile.file.AssetInfos;
+            var assets = assetsFile.file.AssetInfos.Where(a => a.PathId != 1);
+            assets = assets.Append(assetsFile.file.GetAssetInfo(1));
 
             var fileIDToCAB = GetFileIDToCABNameDict(assetsFile);
 
-            var preloadTable = manager.GetBaseField(assetsFile, assetsFile.file.GetAssetInfo(1));
-            var preloadUpdates = new Dictionary<(int, long), (int, long)>();
-
-            // Replace with tree exploration
-            /*foreach (var asset in assets)
+            foreach (var asset in assets)
             {
                 var assetBase = manager.GetBaseField(assetsFile, asset);
-                int currentShaderFileID = assetBase["m_Shader"]["m_FileID"].AsInt;
-                long currentShaderPathID = assetBase["m_Shader"]["m_PathID"].AsLong;
-
-                if (foundReferences.TryGetValue((fileIDToCAB[currentShaderFileID], currentShaderPathID), out Shader shader))
-                {
-                    AssignShaderToMaterial(asset, assetBase, currentShaderFileID, shader.PathID);
-                }
-                else
-                {
-                    var shaders = engine.GetShaderConfig()[fileIDToCAB[currentShaderFileID]];
-
-                    if (shaders == null)
-                    {
-                        MessageBox.Show($"The current dependency config does not contain data for the bundle with CAB name {fileIDToCAB[currentShaderFileID]}! Assets with a reference to this CAB will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        continue;
-                    }
-
-                    using FormShaderSelect shaderSelect = showBundleNameInPopup ?
-                        new FormShaderSelect(assetBase["m_Name"].AsString, bundle.name, shaders) :
-                        new FormShaderSelect(assetBase["m_Name"].AsString, shaders);
-                    while (shaderSelect.ShowDialog() != DialogResult.OK)
-                        MessageBox.Show("You must specify the shader used for this material!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                    foundReferences.Add((fileIDToCAB[currentShaderFileID], currentShaderPathID), shaderSelect.Result);
-                    AssignShaderToMaterial(asset, assetBase, currentShaderFileID, shaderSelect.Result.PathID);
-                    preloadUpdates.Add((currentShaderFileID, currentShaderPathID), (currentShaderFileID, shaderSelect.Result.PathID));
-                }
-
+                CheckFieldForExternalDependency(assetsFile, assetBase, assetBase, fileIDToCAB, showBundleNameInPopup, foundReferences, bundle.name, "");
                 asset.SetNewData(assetBase);
-            }*/
-
-            UpdateShadersInPreloadTable(preloadTable, preloadUpdates);
-            assetsFile.file.GetAssetInfo(1).SetNewData(preloadTable);
+            }
 
             SetAssetsFileInBundle(bundle, assetsFile);
         }
@@ -371,15 +338,19 @@ namespace LumiTool.Engine
 
         private void AssignShaderToMaterial(AssetFileInfo mat, AssetTypeValueField matBase, int fileID, long pathID)
         {
-            if (fileID != -1)
-                matBase["m_Shader"]["m_FileID"].AsInt = fileID;
-
-            matBase["m_Shader"]["m_PathID"].AsLong = pathID;
-
+            RemapReference(matBase["m_Shader"], fileID, pathID);
             mat.SetNewData(matBase);
         }
 
-        private void UpdateShadersInPreloadTable(AssetTypeValueField preloadTable, Dictionary<(int, long), (int, long)> updates)
+        private void RemapReference(AssetTypeValueField field, int fileID, long pathID)
+        {
+            if (fileID != -1)
+                field["m_FileID"].AsInt = fileID;
+
+            field["m_PathID"].AsLong = pathID;
+        }
+
+        private void UpdateReferencesInPreloadTable(AssetTypeValueField preloadTable, Dictionary<(int, long), (int, long)> updates)
         {
             var assets = preloadTable["m_PreloadTable"]["Array"];
             foreach (var asset in assets)
@@ -388,6 +359,61 @@ namespace LumiTool.Engine
                 {
                     asset["m_FileID"].AsInt = newValues.newFileID;
                     asset["m_PathID"].AsLong = newValues.newPathID;
+                }
+            }
+        }
+
+        private void CheckFieldForExternalDependency(AssetsFileInstance assetsFile, AssetTypeValueField baseField, AssetTypeValueField currentField, Dictionary<int, string> fileIDToCAB, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences, string bundleName, string fieldPath)
+        {
+            if (currentField.TypeName.StartsWith("PPtr<") && currentField.TypeName.EndsWith(">"))
+            {
+                int currentFileID = currentField["m_FileID"].AsInt;
+                long currentPathID = currentField["m_PathID"].AsLong;
+
+                string currentTypeName = currentField.TypeName[5..^1].TrimStart('$');
+
+                // Not external file ID
+                if (currentFileID == 0)
+                    return;
+
+                if (foundReferences.TryGetValue((fileIDToCAB[currentFileID], currentPathID), out DependencyAsset dependencyAsset))
+                {
+                    RemapReference(currentField, currentFileID, dependencyAsset.PathID);
+                }
+                else
+                {
+                    var dependencyAssets = engine.GetDependencyConfig()[fileIDToCAB[currentFileID]];
+
+                    if (dependencyAssets == null)
+                    {
+                        MessageBox.Show($"The current dependency config does not contain data for the bundle with CAB name {fileIDToCAB[currentFileID]}! Assets with a reference to this CAB will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    string assetName = GenerateNameOfAsset(assetsFile, baseField);
+
+                    using FormDependencyAssetSelect assetSelect = showBundleNameInPopup ?
+                        new FormDependencyAssetSelect(assetName, $"{fieldPath}/{currentField.FieldName}", bundleName, dependencyAssets.Where(a => a.Type.ToString() == currentTypeName).ToList()) :
+                        new FormDependencyAssetSelect(assetName, $"{fieldPath}/{currentField.FieldName}", dependencyAssets.Where(a => a.Type.ToString() == currentTypeName).ToList());
+                    while (assetSelect.ShowDialog() != DialogResult.OK)
+                        MessageBox.Show("You must specify what this asset references!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    foundReferences.Add((fileIDToCAB[currentFileID], currentPathID), assetSelect.Result);
+                    RemapReference(currentField, currentFileID, assetSelect.Result.PathID);
+                }
+            }
+            else if (currentField.Value == null)
+            {
+                foreach (var subField in currentField)
+                {
+                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, showBundleNameInPopup, foundReferences, bundleName, $"{fieldPath}/{currentField.FieldName}");
+                }
+            }
+            else if (currentField.Value.ValueType == AssetValueType.Array)
+            {
+                foreach (var (subField, i) in currentField.Select((e, i) => (e, i)))
+                {
+                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, showBundleNameInPopup, foundReferences, bundleName, $"{fieldPath}/{currentField.FieldName}/{i}");
                 }
             }
         }
@@ -415,6 +441,18 @@ namespace LumiTool.Engine
         private int FindObjectOfName(List<AssetTypeValueField> objBaseFields, string name)
         {
             return objBaseFields.FindIndex(s => s["m_Name"].AsString == name);
+        }
+
+        private string GenerateNameOfAsset(AssetsFileInstance assetsFile, AssetTypeValueField baseField)
+        {
+            if (!baseField["m_Name"].IsDummy && baseField.TypeName == AssetClassID.MonoBehaviour.ToString() && !baseField["m_Script"].IsDummy && !baseField["m_GameObject"].IsDummy)
+                return $"{manager.GetBaseField(assetsFile, manager.GetExtAsset(assetsFile, baseField["m_Script"]).info)["m_ClassName"].AsString} \"{manager.GetBaseField(assetsFile, manager.GetExtAsset(assetsFile, baseField["m_GameObject"]).info)["m_Name"].AsString}\"";
+            else if (!baseField["m_Name"].IsDummy)
+                return $"{baseField.TypeName} \"{baseField["m_Name"].AsString}\"";
+            else if (!baseField["m_GameObject"].IsDummy)
+                return $"{baseField.TypeName} \"{manager.GetBaseField(assetsFile, manager.GetExtAsset(assetsFile, baseField["m_GameObject"]).info)["m_Name"].AsString}\"";
+            else
+                return "--Unknown name--";
         }
 
         public enum ManagerID

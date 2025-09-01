@@ -9,7 +9,7 @@ namespace LumiTool.Engine
         private JsonSerializerOptions jsonOptions;
 
         private ShaderConfig shaderConfig = null;
-        private ShaderConfig dependencyConfig = null;
+        private DependencyConfig dependencyConfig = null;
 
         public ConfigEngine(LumiToolEngine engine)
         {
@@ -86,7 +86,7 @@ namespace LumiTool.Engine
         public void ReloadDependencyConfig()
         {
             var json = File.ReadAllText(Properties.LumiToolSettings.Default.DependencyConfigPath);
-            dependencyConfig = JsonSerializer.Deserialize<ShaderConfig>(json, jsonOptions);
+            dependencyConfig = JsonSerializer.Deserialize<DependencyConfig>(json, jsonOptions);
         }
 
         public bool TryReloadDependencyConfig()
@@ -103,7 +103,7 @@ namespace LumiTool.Engine
             return true;
         }
 
-        public ShaderConfig GetDependencyConfig()
+        public DependencyConfig GetDependencyConfig()
         {
             return dependencyConfig;
         }

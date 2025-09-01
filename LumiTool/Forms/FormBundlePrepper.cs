@@ -134,7 +134,7 @@ namespace LumiTool.Forms
             {
                 if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
                 if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
-                if (checkConvertShaders.Checked) engine.FixShadersOfMaterials(bundle, afileInst);
+                if (checkConvertShaders.Checked && !checkReassignDependencies.Checked) engine.FixShadersOfMaterials(bundle, afileInst);
                 if (checkReassignDependencies.Checked) engine.ReassignExternalDependencyReferences(bundle, afileInst);
                 MessageBox.Show("Successfully converted the bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

@@ -225,7 +225,7 @@ namespace LumiTool.Engine
             return configEngine.TryReloadDependencyConfig();
         }
 
-        public ShaderConfig GetDependencyConfig()
+        public DependencyConfig GetDependencyConfig()
         {
             return configEngine.GetDependencyConfig();
         }
@@ -250,7 +250,7 @@ namespace LumiTool.Engine
             bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup);
         }
 
-        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundReferences)
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences)
         {
             bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, foundReferences);
         }

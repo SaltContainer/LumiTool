@@ -95,7 +95,7 @@ namespace LumiTool.Forms
             bool classesLoaded = !checkTpk.Checked;
             bool exceptionHappened = false;
             var foundShaders = new Dictionary<(string, long), Shader>();
-            var foundReferences = new Dictionary<(string, long), Shader>();
+            var foundReferences = new Dictionary<(string, long), DependencyAsset>();
 
             var files = Directory.GetFiles(folderPath);
             foreach (var file in files)
@@ -106,7 +106,7 @@ namespace LumiTool.Forms
                     var afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
 
                     if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
-                    if (checkConvertShaders.Checked) engine.FixShadersOfMaterials(bundle, afileInst, true, foundShaders);
+                    if (checkConvertShaders.Checked && !checkReassignDependencies.Checked) engine.FixShadersOfMaterials(bundle, afileInst, true, foundShaders);
                     if (checkReassignDependencies.Checked) engine.ReassignExternalDependencyReferences(bundle, afileInst, true, foundReferences);
 
                     if (!classesLoaded && checkTpk.Checked)
