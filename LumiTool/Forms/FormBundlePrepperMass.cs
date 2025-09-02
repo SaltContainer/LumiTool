@@ -10,6 +10,9 @@ namespace LumiTool.Forms
         string folderPath = null;
         string outputPath = null;
 
+        bool FoldersSet => folderPath != null && outputPath != null;
+        bool CanRemapDependencies => FoldersSet && engine.IsDependencyConfigLoaded();
+
         public FormBundlePrepperMass(LumiToolEngine engine)
         {
             InitializeComponent();
@@ -18,7 +21,6 @@ namespace LumiTool.Forms
 
             ttBundlePrepper.SetToolTip(checkTpk, "Checking this before selecting the rebuilt bundles folder\nthe classdata.tpk file in the same folder as the executable.\nUse this if you built the bundles without a type tree.");
             ttBundlePrepper.SetToolTip(checkConvertPlatform, "Changes the platform metadata of the rebuilt bundles to Switch.");
-            ttBundlePrepper.SetToolTip(checkConvertShaders, "When on, each material asset's shader will be remapped.\nThe user will be asked to identify the proper shader from a pre-set list\nfor each different shader that was detected.");
             ttBundlePrepper.SetToolTip(checkReassignDependencies, "When on, every asset's references to assets in dependencies will be remapped.\nThe user will be asked to identify the proper asset from a pre-set list\nfor each different asset that was detected.");
         }
 
@@ -28,7 +30,6 @@ namespace LumiTool.Forms
             lbOutputBundleName.Text = "Folder Path: ";
             btnConvertApply.Enabled = false;
             checkConvertPlatform.Enabled = false;
-            checkConvertShaders.Enabled = false;
             checkReassignDependencies.Enabled = false;
             checkTpk.Enabled = true;
 
@@ -37,11 +38,9 @@ namespace LumiTool.Forms
 
         private void UpdateComponentsOnLoadCommon()
         {
-            bool active = folderPath != null && outputPath != null;
-            btnConvertApply.Enabled = active;
-            checkConvertPlatform.Enabled = active;
-            checkConvertShaders.Enabled = active;
-            checkReassignDependencies.Enabled = active && engine.IsDependencyConfigLoaded();
+            btnConvertApply.Enabled = FoldersSet;
+            checkConvertPlatform.Enabled = FoldersSet;
+            checkReassignDependencies.Enabled = CanRemapDependencies;
         }
 
         private void UpdateComponentsOnLoadEditing()
@@ -99,7 +98,7 @@ namespace LumiTool.Forms
             var foundReferences = new Dictionary<(string, long), DependencyAsset>();
 
             var selectedCabs = new List<string>();
-            if (checkReassignDependencies.Checked)
+            if (checkReassignDependencies.Checked && CanRemapDependencies)
             {
                 using FormDependencySelect depSelect = new FormDependencySelect(engine.GetDependencyConfig().Bundles.Select(b => b.CABName).ToList());
                 while (depSelect.ShowDialog() != DialogResult.OK)
@@ -117,8 +116,7 @@ namespace LumiTool.Forms
                     var afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
 
                     if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
-                    if (checkConvertShaders.Checked && !checkReassignDependencies.Checked) engine.FixShadersOfMaterials(bundle, afileInst, true, foundShaders);
-                    if (checkReassignDependencies.Checked) engine.ReassignExternalDependencyReferences(bundle, afileInst, true, foundReferences, selectedCabs);
+                    if (checkReassignDependencies.Checked && CanRemapDependencies) engine.ReassignExternalDependencyReferences(bundle, afileInst, true, foundReferences, selectedCabs);
 
                     if (!classesLoaded && checkTpk.Checked)
                     {

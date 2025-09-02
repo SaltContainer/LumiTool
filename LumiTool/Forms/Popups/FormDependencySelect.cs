@@ -11,7 +11,7 @@
             DialogResult = DialogResult.Cancel;
             listDependencies.DataSource = cabs;
 
-            for (int i=0; i< listDependencies.Items.Count; i++)
+            for (int i=0; i<listDependencies.Items.Count; i++)
                 listDependencies.SetItemChecked(i, true);
         }
 

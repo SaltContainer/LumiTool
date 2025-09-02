@@ -8,7 +8,6 @@ namespace LumiTool.Engine
         private LumiToolEngine engine;
         private JsonSerializerOptions jsonOptions;
 
-        private ShaderConfig shaderConfig = null;
         private DependencyConfig dependencyConfig = null;
 
         public ConfigEngine(LumiToolEngine engine)
@@ -31,62 +30,17 @@ namespace LumiTool.Engine
             Properties.LumiToolSettings.Default.Save();
         }
 
-        public void ReloadShaderConfig()
+        public void ReloadDependencyConfig()
         {
-            var json = File.ReadAllText(Properties.LumiToolSettings.Default.ShaderConfigPath);
-            shaderConfig = JsonSerializer.Deserialize<ShaderConfig>(json, jsonOptions);
-        }
-
-        public bool TryReloadShaderConfig()
-        {
-            try
+            if (Properties.LumiToolSettings.Default.DependencyConfigPath == string.Empty)
             {
-                ReloadShaderConfig();
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public ShaderConfig GetShaderConfig()
-        {
-            return shaderConfig;
-        }
-
-        public string GetShaderConfigPath()
-        {
-            return Properties.LumiToolSettings.Default.ShaderConfigPath;
-        }
-
-        public bool SetShaderConfigPath(string newPath)
-        {
-            var oldPath = Properties.LumiToolSettings.Default.ShaderConfigPath;
-            Properties.LumiToolSettings.Default.ShaderConfigPath = newPath;
-
-            if (TryReloadShaderConfig())
-            {
-                Properties.LumiToolSettings.Default.Save();
-                return true;
+                dependencyConfig = null;
             }
             else
             {
-                Properties.LumiToolSettings.Default.ShaderConfigPath = oldPath;
-                return false;
+                var json = File.ReadAllText(Properties.LumiToolSettings.Default.DependencyConfigPath);
+                dependencyConfig = JsonSerializer.Deserialize<DependencyConfig>(json, jsonOptions);
             }
-        }
-
-        public bool IsShaderConfigLoaded()
-        {
-            return shaderConfig != null;
-        }
-
-        public void ReloadDependencyConfig()
-        {
-            var json = File.ReadAllText(Properties.LumiToolSettings.Default.DependencyConfigPath);
-            dependencyConfig = JsonSerializer.Deserialize<DependencyConfig>(json, jsonOptions);
         }
 
         public bool TryReloadDependencyConfig()

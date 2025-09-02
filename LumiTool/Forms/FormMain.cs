@@ -49,32 +49,25 @@ namespace LumiTool
 
         private void LoadSettings()
         {
-            engine.TryReloadShaderConfig();
             engine.TryReloadDependencyConfig();
 
             UpdateComponentsOnSettingsChanged();
         }
 
-        private void ToggleShaderConfigRequirements(bool enabled)
-        {
-            btnPrepper.Enabled = enabled;
-            btnPrepperMass.Enabled = enabled;
-        }
-
         private void UpdateComponentsOnSettingsChanged()
         {
-            ToggleShaderConfigRequirements(engine.IsShaderConfigLoaded());
+            // Nothing for now
         }
 
         private void CheckForUnloadedWarning()
         {
-            if (!engine.IsShaderConfigLoaded())
-                MessageBox.Show("There was a problem reading the shaders configuration. Certain features won't be available until a valid configuration is set in the settings.", "Invalid Settings", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (!engine.IsDependencyConfigLoaded())
+                MessageBox.Show("There was a problem reading the Dependency Remapping configuration. Certain features in the Bundle Prepper won't be available until a valid configuration is set in the settings.", "Invalid Settings", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void SetFirstBootSettings()
         {
-            MessageBox.Show("Hello! Since this is your first time using LumiTool, you'll have to set a few settings before you're ready to go.", "New User", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Hello! Since this is your first time using LumiTool, there's a few settings you might want to set before you're ready to go.", "New User", MessageBoxButtons.OK, MessageBoxIcon.Information);
             engine.SetFirstBootConfig();
             settingsForm.ShowDialog(this);
         }

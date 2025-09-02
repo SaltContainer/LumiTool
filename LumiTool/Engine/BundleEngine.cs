@@ -2,7 +2,6 @@
 using AssetsTools.NET;
 using LumiTool.Data;
 using LumiTool.Forms.Popups;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LumiTool.Engine
 {
@@ -150,61 +149,6 @@ namespace LumiTool.Engine
                 to.file.Metadata.Externals.Add(dep);
 
             SetAssetsFileInBundle(to.parentBundle, to);
-        }
-
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup)
-        {
-            FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), Shader>());
-        }
-
-        // TODO: remove soon
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundShaders)
-        {
-            var mats = assetsFile.file.GetAssetsOfType(AssetClassID.Material);
-
-            var fileIDToCAB = GetFileIDToCABNameDict(assetsFile);
-
-            var preloadTable = manager.GetBaseField(assetsFile, assetsFile.file.GetAssetInfo(1));
-            var preloadUpdates = new Dictionary<(int, long), (int, long)>();
-
-            foreach (var mat in mats)
-            {
-                var matBase = manager.GetBaseField(assetsFile, mat);
-                int currentShaderFileID = matBase["m_Shader"]["m_FileID"].AsInt;
-                long currentShaderPathID = matBase["m_Shader"]["m_PathID"].AsLong;
-
-                if (foundShaders.TryGetValue((fileIDToCAB[currentShaderFileID], currentShaderPathID), out Shader shader))
-                {
-                    AssignShaderToMaterial(mat, matBase, currentShaderFileID, shader.PathID);
-                }
-                else
-                {
-                    var shaders = engine.GetShaderConfig()[fileIDToCAB[currentShaderFileID]];
-
-                    if (shaders == null)
-                    {
-                        MessageBox.Show($"The current shaders config does not contain data for the bundle with CAB name {fileIDToCAB[currentShaderFileID]}! This material will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        continue;
-                    }
-
-                    using FormShaderSelect shaderSelect = showBundleNameInPopup ?
-                        new FormShaderSelect(matBase["m_Name"].AsString, bundle.name, shaders) :
-                        new FormShaderSelect(matBase["m_Name"].AsString, shaders);
-                    while (shaderSelect.ShowDialog() != DialogResult.OK)
-                        MessageBox.Show("You must specify the shader used for this material!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                    foundShaders.Add((fileIDToCAB[currentShaderFileID], currentShaderPathID), shaderSelect.Result);
-                    AssignShaderToMaterial(mat, matBase, currentShaderFileID, shaderSelect.Result.PathID);
-                    preloadUpdates.Add((currentShaderFileID, currentShaderPathID), (currentShaderFileID, shaderSelect.Result.PathID));
-                }
-
-                mat.SetNewData(matBase);
-            }
-
-            UpdateReferencesInPreloadTable(preloadTable, preloadUpdates);
-            assetsFile.file.GetAssetInfo(1).SetNewData(preloadTable);
-
-            SetAssetsFileInBundle(bundle, assetsFile);
         }
 
         public void AddDependency(AssetsFileInstance assetsFile, string path)

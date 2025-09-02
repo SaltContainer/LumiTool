@@ -65,16 +65,6 @@ namespace LumiTool.Engine
             bundleEngine.CopyDependencies(to, from);
         }
 
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup = false)
-        {
-            bundleEngine.FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup);
-        }
-
-        public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundShaders)
-        {
-            bundleEngine.FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, foundShaders);
-        }
-
         public void AddDependency(AssetsFileInstance assetsFile, string path)
         {
             bundleEngine.AddDependency(assetsFile, path);
@@ -183,36 +173,6 @@ namespace LumiTool.Engine
         public void SetFirstBootConfig()
         {
             configEngine.SetFirstBootConfig();
-        }
-
-        public void ReloadShaderConfig()
-        {
-            configEngine.ReloadShaderConfig();
-        }
-
-        public bool TryReloadShaderConfig()
-        {
-            return configEngine.TryReloadShaderConfig();
-        }
-
-        public ShaderConfig GetShaderConfig()
-        {
-            return configEngine.GetShaderConfig();
-        }
-
-        public string GetShaderConfigPath()
-        {
-            return configEngine.GetShaderConfigPath();
-        }
-
-        public bool SetShaderConfigPath(string newPath)
-        {
-            return configEngine.SetShaderConfigPath(newPath);
-        }
-
-        public bool IsShaderConfigLoaded()
-        {
-            return configEngine.IsShaderConfigLoaded();
         }
 
         public void ReloadDependencyConfig()

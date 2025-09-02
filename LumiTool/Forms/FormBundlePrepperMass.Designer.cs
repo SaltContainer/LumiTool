@@ -33,7 +33,7 @@
             grpConvert = new GroupBox();
             btnConvertApply = new Button();
             checkConvertPlatform = new CheckBox();
-            checkConvertShaders = new CheckBox();
+            checkReassignDependencies = new CheckBox();
             grpBundle = new GroupBox();
             checkTpk = new CheckBox();
             lbBundleName = new Label();
@@ -42,7 +42,6 @@
             grpOutput = new GroupBox();
             lbOutputBundleName = new Label();
             btnOutputBundleOpen = new Button();
-            checkReassignDependencies = new CheckBox();
             grpConvert.SuspendLayout();
             grpBundle.SuspendLayout();
             grpOutput.SuspendLayout();
@@ -52,11 +51,10 @@
             // 
             grpConvert.Controls.Add(btnConvertApply);
             grpConvert.Controls.Add(checkConvertPlatform);
-            grpConvert.Controls.Add(checkConvertShaders);
             grpConvert.Controls.Add(checkReassignDependencies);
             grpConvert.Location = new Point(12, 123);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(526, 101);
+            grpConvert.Size = new Size(526, 76);
             grpConvert.TabIndex = 16;
             grpConvert.TabStop = false;
             grpConvert.Text = "Prepare Rebuilt Bundles";
@@ -83,17 +81,17 @@
             checkConvertPlatform.Text = "Change Platform to Switch";
             checkConvertPlatform.UseVisualStyleBackColor = true;
             // 
-            // checkConvertShaders
+            // checkReassignDependencies
             // 
-            checkConvertShaders.AutoSize = true;
-            checkConvertShaders.Checked = true;
-            checkConvertShaders.CheckState = CheckState.Checked;
-            checkConvertShaders.Location = new Point(8, 47);
-            checkConvertShaders.Name = "checkConvertShaders";
-            checkConvertShaders.Size = new Size(121, 19);
-            checkConvertShaders.TabIndex = 11;
-            checkConvertShaders.Text = "Re-assign Shaders";
-            checkConvertShaders.UseVisualStyleBackColor = true;
+            checkReassignDependencies.AutoSize = true;
+            checkReassignDependencies.Checked = true;
+            checkReassignDependencies.CheckState = CheckState.Checked;
+            checkReassignDependencies.Location = new Point(8, 47);
+            checkReassignDependencies.Name = "checkReassignDependencies";
+            checkReassignDependencies.Size = new Size(214, 19);
+            checkReassignDependencies.TabIndex = 12;
+            checkReassignDependencies.Text = "Remap References to Dependencies";
+            checkReassignDependencies.UseVisualStyleBackColor = true;
             // 
             // grpBundle
             // 
@@ -172,29 +170,19 @@
             btnOutputBundleOpen.UseVisualStyleBackColor = true;
             btnOutputBundleOpen.Click += btnOutputBundleOpen_Click;
             // 
-            // checkReassignDependencies
-            // 
-            checkReassignDependencies.AutoSize = true;
-            checkReassignDependencies.Location = new Point(8, 72);
-            checkReassignDependencies.Name = "checkReassignDependencies";
-            checkReassignDependencies.Size = new Size(228, 19);
-            checkReassignDependencies.TabIndex = 12;
-            checkReassignDependencies.Text = "Re-assign References to Dependencies";
-            checkReassignDependencies.UseVisualStyleBackColor = true;
-            // 
             // FormBundlePrepperMass
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(550, 236);
+            ClientSize = new Size(550, 211);
             Controls.Add(grpConvert);
             Controls.Add(grpBundle);
             Controls.Add(grpOutput);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(566, 275);
-            MinimumSize = new Size(566, 275);
+            MaximumSize = new Size(566, 250);
+            MinimumSize = new Size(566, 250);
             Name = "FormBundlePrepperMass";
             Text = "Bundle Prepper (Mass)";
             FormClosed += FormBundlePrepperMass_FormClosed;
@@ -212,7 +200,6 @@
         private GroupBox grpConvert;
         private Button btnConvertApply;
         private CheckBox checkConvertPlatform;
-        private CheckBox checkConvertShaders;
         private GroupBox grpBundle;
         private CheckBox checkTpk;
         private Label lbBundleName;

@@ -30,51 +30,18 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            lbShaderConfigPath = new Label();
-            txtShaderConfigPath = new TextBox();
             ttSettings = new ToolTip(components);
-            btnShaderConfigPath = new Button();
             btnSave = new Button();
-            grpRequired = new GroupBox();
-            grpOptional = new GroupBox();
             lbDependencyRemapConfigPath = new Label();
             txtDependencyRemapConfigPath = new TextBox();
             btnDependencyRemapConfigPath = new Button();
-            grpRequired.SuspendLayout();
-            grpOptional.SuspendLayout();
             SuspendLayout();
-            // 
-            // lbShaderConfigPath
-            // 
-            lbShaderConfigPath.AutoSize = true;
-            lbShaderConfigPath.Location = new Point(6, 28);
-            lbShaderConfigPath.Name = "lbShaderConfigPath";
-            lbShaderConfigPath.Size = new Size(112, 15);
-            lbShaderConfigPath.TabIndex = 0;
-            lbShaderConfigPath.Text = "Shader Config Path:";
-            // 
-            // txtShaderConfigPath
-            // 
-            txtShaderConfigPath.Location = new Point(124, 25);
-            txtShaderConfigPath.Name = "txtShaderConfigPath";
-            txtShaderConfigPath.Size = new Size(384, 23);
-            txtShaderConfigPath.TabIndex = 1;
-            // 
-            // btnShaderConfigPath
-            // 
-            btnShaderConfigPath.Image = Resources.Resources.folder;
-            btnShaderConfigPath.Location = new Point(514, 15);
-            btnShaderConfigPath.Name = "btnShaderConfigPath";
-            btnShaderConfigPath.Size = new Size(40, 40);
-            btnShaderConfigPath.TabIndex = 2;
-            btnShaderConfigPath.UseVisualStyleBackColor = true;
-            btnShaderConfigPath.Click += btnShaderConfigPath_Click;
             // 
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnSave.Image = Resources.Resources.save;
-            btnSave.Location = new Point(459, 146);
+            btnSave.Location = new Point(459, 52);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(113, 40);
             btnSave.TabIndex = 3;
@@ -83,34 +50,10 @@
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
             // 
-            // grpRequired
-            // 
-            grpRequired.Controls.Add(lbShaderConfigPath);
-            grpRequired.Controls.Add(txtShaderConfigPath);
-            grpRequired.Controls.Add(btnShaderConfigPath);
-            grpRequired.Location = new Point(12, 12);
-            grpRequired.Name = "grpRequired";
-            grpRequired.Size = new Size(560, 61);
-            grpRequired.TabIndex = 4;
-            grpRequired.TabStop = false;
-            grpRequired.Text = "Required";
-            // 
-            // grpOptional
-            // 
-            grpOptional.Controls.Add(lbDependencyRemapConfigPath);
-            grpOptional.Controls.Add(txtDependencyRemapConfigPath);
-            grpOptional.Controls.Add(btnDependencyRemapConfigPath);
-            grpOptional.Location = new Point(12, 79);
-            grpOptional.Name = "grpOptional";
-            grpOptional.Size = new Size(560, 61);
-            grpOptional.TabIndex = 5;
-            grpOptional.TabStop = false;
-            grpOptional.Text = "Optional";
-            // 
             // lbDependencyRemapConfigPath
             // 
             lbDependencyRemapConfigPath.AutoSize = true;
-            lbDependencyRemapConfigPath.Location = new Point(6, 28);
+            lbDependencyRemapConfigPath.Location = new Point(12, 19);
             lbDependencyRemapConfigPath.Name = "lbDependencyRemapConfigPath";
             lbDependencyRemapConfigPath.Size = new Size(206, 15);
             lbDependencyRemapConfigPath.TabIndex = 3;
@@ -118,15 +61,15 @@
             // 
             // txtDependencyRemapConfigPath
             // 
-            txtDependencyRemapConfigPath.Location = new Point(218, 25);
+            txtDependencyRemapConfigPath.Location = new Point(224, 16);
             txtDependencyRemapConfigPath.Name = "txtDependencyRemapConfigPath";
-            txtDependencyRemapConfigPath.Size = new Size(290, 23);
+            txtDependencyRemapConfigPath.Size = new Size(302, 23);
             txtDependencyRemapConfigPath.TabIndex = 3;
             // 
             // btnDependencyRemapConfigPath
             // 
             btnDependencyRemapConfigPath.Image = Resources.Resources.folder;
-            btnDependencyRemapConfigPath.Location = new Point(514, 15);
+            btnDependencyRemapConfigPath.Location = new Point(532, 6);
             btnDependencyRemapConfigPath.Name = "btnDependencyRemapConfigPath";
             btnDependencyRemapConfigPath.Size = new Size(40, 40);
             btnDependencyRemapConfigPath.TabIndex = 3;
@@ -137,35 +80,27 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(584, 198);
-            Controls.Add(grpOptional);
-            Controls.Add(grpRequired);
+            ClientSize = new Size(584, 104);
+            Controls.Add(btnDependencyRemapConfigPath);
+            Controls.Add(txtDependencyRemapConfigPath);
+            Controls.Add(lbDependencyRemapConfigPath);
             Controls.Add(btnSave);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(600, 237);
-            MinimumSize = new Size(600, 237);
+            MaximumSize = new Size(600, 143);
+            MinimumSize = new Size(600, 143);
             Name = "FormSettings";
             Text = "Settings";
             FormClosed += FormSettings_FormClosed;
             Shown += FormSettings_Shown;
-            grpRequired.ResumeLayout(false);
-            grpRequired.PerformLayout();
-            grpOptional.ResumeLayout(false);
-            grpOptional.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private Label lbShaderConfigPath;
-        private TextBox txtShaderConfigPath;
         private ToolTip ttSettings;
-        private Button btnShaderConfigPath;
         private Button btnSave;
-        private GroupBox grpRequired;
-        private GroupBox grpOptional;
         private Label lbDependencyRemapConfigPath;
         private TextBox txtDependencyRemapConfigPath;
         private Button btnDependencyRemapConfigPath;

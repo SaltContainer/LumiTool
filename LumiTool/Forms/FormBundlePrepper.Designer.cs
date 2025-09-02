@@ -41,10 +41,9 @@
             btnConvertApply = new Button();
             checkConvertPlatform = new CheckBox();
             checkConvertDependencies = new CheckBox();
-            checkConvertShaders = new CheckBox();
             grpConvert = new GroupBox();
-            ttBundlePrepper = new ToolTip(components);
             checkReassignDependencies = new CheckBox();
+            ttBundlePrepper = new ToolTip(components);
             grpBundle.SuspendLayout();
             grpBundleV.SuspendLayout();
             grpConvert.SuspendLayout();
@@ -176,28 +175,15 @@
             checkConvertDependencies.Text = "Copy Dependencies";
             checkConvertDependencies.UseVisualStyleBackColor = true;
             // 
-            // checkConvertShaders
-            // 
-            checkConvertShaders.AutoSize = true;
-            checkConvertShaders.Checked = true;
-            checkConvertShaders.CheckState = CheckState.Checked;
-            checkConvertShaders.Location = new Point(8, 72);
-            checkConvertShaders.Name = "checkConvertShaders";
-            checkConvertShaders.Size = new Size(121, 19);
-            checkConvertShaders.TabIndex = 11;
-            checkConvertShaders.Text = "Re-assign Shaders";
-            checkConvertShaders.UseVisualStyleBackColor = true;
-            // 
             // grpConvert
             // 
             grpConvert.Controls.Add(btnConvertApply);
             grpConvert.Controls.Add(checkConvertPlatform);
             grpConvert.Controls.Add(checkConvertDependencies);
-            grpConvert.Controls.Add(checkConvertShaders);
             grpConvert.Controls.Add(checkReassignDependencies);
             grpConvert.Location = new Point(12, 123);
             grpConvert.Name = "grpConvert";
-            grpConvert.Size = new Size(458, 131);
+            grpConvert.Size = new Size(458, 106);
             grpConvert.TabIndex = 13;
             grpConvert.TabStop = false;
             grpConvert.Text = "Prepare Rebuilt Bundle";
@@ -205,26 +191,28 @@
             // checkReassignDependencies
             // 
             checkReassignDependencies.AutoSize = true;
-            checkReassignDependencies.Location = new Point(8, 97);
+            checkReassignDependencies.Checked = true;
+            checkReassignDependencies.CheckState = CheckState.Checked;
+            checkReassignDependencies.Location = new Point(8, 72);
             checkReassignDependencies.Name = "checkReassignDependencies";
-            checkReassignDependencies.Size = new Size(228, 19);
+            checkReassignDependencies.Size = new Size(214, 19);
             checkReassignDependencies.TabIndex = 12;
-            checkReassignDependencies.Text = "Re-assign References to Dependencies";
+            checkReassignDependencies.Text = "Remap References to Dependencies";
             checkReassignDependencies.UseVisualStyleBackColor = true;
             // 
             // FormBundlePrepper
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(488, 266);
+            ClientSize = new Size(488, 241);
             Controls.Add(grpConvert);
             Controls.Add(grpBundleV);
             Controls.Add(grpBundle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(504, 305);
-            MinimumSize = new Size(504, 305);
+            MaximumSize = new Size(504, 280);
+            MinimumSize = new Size(504, 280);
             Name = "FormBundlePrepper";
             Text = "Bundle Prepper";
             FormClosed += FormBundlePrepper_FormClosed;
@@ -249,7 +237,6 @@
         private Button btnConvertApply;
         private CheckBox checkConvertPlatform;
         private CheckBox checkConvertDependencies;
-        private CheckBox checkConvertShaders;
         private GroupBox grpConvert;
         private CheckBox checkTpk;
         private ToolTip ttBundlePrepper;
