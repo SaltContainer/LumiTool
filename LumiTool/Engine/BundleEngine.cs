@@ -2,6 +2,7 @@
 using AssetsTools.NET;
 using LumiTool.Data;
 using LumiTool.Forms.Popups;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LumiTool.Engine
 {
@@ -156,6 +157,7 @@ namespace LumiTool.Engine
             FixShadersOfMaterials(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), Shader>());
         }
 
+        // TODO: remove soon
         public void FixShadersOfMaterials(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), Shader> foundShaders)
         {
             var mats = assetsFile.file.GetAssetsOfType(AssetClassID.Material);
@@ -295,12 +297,12 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(bundle, assetsFile);
         }
 
-        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup)
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, List<string> selectedCabs)
         {
-            ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), DependencyAsset>());
+            ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), DependencyAsset>(), selectedCabs);
         }
 
-        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences)
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs)
         {
             var assets = assetsFile.file.AssetInfos.Where(a => a.PathId != 1);
             assets = assets.Append(assetsFile.file.GetAssetInfo(1));
@@ -310,11 +312,25 @@ namespace LumiTool.Engine
             foreach (var asset in assets)
             {
                 var assetBase = manager.GetBaseField(assetsFile, asset);
-                CheckFieldForExternalDependency(assetsFile, assetBase, assetBase, fileIDToCAB, showBundleNameInPopup, foundReferences, bundle.name, "");
+                CheckFieldForExternalDependency(assetsFile, assetBase, assetBase, fileIDToCAB, showBundleNameInPopup, foundReferences, selectedCabs, bundle.name, "");
                 asset.SetNewData(assetBase);
             }
 
             SetAssetsFileInBundle(bundle, assetsFile);
+        }
+
+        public List<string> GetCABNamesInBundleDependencies(AssetsFileInstance assetsFile)
+        {
+            var cabNames = new List<string>();
+
+            foreach (var external in assetsFile.file.Metadata.Externals)
+            {
+                var externalNameParts = external.PathName.Split('/');
+                if (externalNameParts.Length >= 2)
+                    cabNames.Add(externalNameParts[1]);
+            }
+
+            return cabNames;
         }
 
         private Dictionary<int, string> GetFileIDToCABNameDict(AssetsFileInstance assetsFile)
@@ -327,6 +343,16 @@ namespace LumiTool.Engine
                 if (externalNameParts.Length >= 2)
                     fileIDToCAB.Add(i + 1, externalNameParts[1]);
             }
+
+            var notFoundCabs = new List<string>();
+            foreach (var cab in fileIDToCAB.Values)
+            {
+                if (engine.GetDependencyConfig()[cab] == null)
+                    notFoundCabs.Add(cab);
+            }
+
+            if (notFoundCabs.Any())
+                MessageBox.Show($"The current dependency config does not contain data for the bundles with the following CAB names:\n{string.Join("\n", notFoundCabs)}\n\nAssets with a reference to these dependencies will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             return fileIDToCAB;
         }
@@ -363,7 +389,7 @@ namespace LumiTool.Engine
             }
         }
 
-        private void CheckFieldForExternalDependency(AssetsFileInstance assetsFile, AssetTypeValueField baseField, AssetTypeValueField currentField, Dictionary<int, string> fileIDToCAB, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences, string bundleName, string fieldPath)
+        private void CheckFieldForExternalDependency(AssetsFileInstance assetsFile, AssetTypeValueField baseField, AssetTypeValueField currentField, Dictionary<int, string> fileIDToCAB, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs, string bundleName, string fieldPath)
         {
             if (currentField.TypeName.StartsWith("PPtr<") && currentField.TypeName.EndsWith(">"))
             {
@@ -372,8 +398,12 @@ namespace LumiTool.Engine
 
                 string currentTypeName = currentField.TypeName[5..^1].TrimStart('$');
 
-                // Not external file ID
+                // Not an external reference
                 if (currentFileID == 0)
+                    return;
+
+                // Not one of our selected CABs
+                if (!selectedCabs.Contains(fileIDToCAB[currentFileID]))
                     return;
 
                 if (foundReferences.TryGetValue((fileIDToCAB[currentFileID], currentPathID), out DependencyAsset dependencyAsset))
@@ -384,11 +414,9 @@ namespace LumiTool.Engine
                 {
                     var dependencyAssets = engine.GetDependencyConfig()[fileIDToCAB[currentFileID]];
 
+                    // Not in settings, so ignored
                     if (dependencyAssets == null)
-                    {
-                        MessageBox.Show($"The current dependency config does not contain data for the bundle with CAB name {fileIDToCAB[currentFileID]}! Assets with a reference to this CAB will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
-                    }
 
                     string assetName = GenerateNameOfAsset(assetsFile, baseField);
 
@@ -406,14 +434,14 @@ namespace LumiTool.Engine
             {
                 foreach (var subField in currentField)
                 {
-                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, showBundleNameInPopup, foundReferences, bundleName, $"{fieldPath}/{currentField.FieldName}");
+                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, showBundleNameInPopup, foundReferences, selectedCabs, bundleName, $"{fieldPath}/{currentField.FieldName}");
                 }
             }
             else if (currentField.Value.ValueType == AssetValueType.Array)
             {
                 foreach (var (subField, i) in currentField.Select((e, i) => (e, i)))
                 {
-                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, showBundleNameInPopup, foundReferences, bundleName, $"{fieldPath}/{currentField.FieldName}/{i}");
+                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, showBundleNameInPopup, foundReferences, selectedCabs, bundleName, $"{fieldPath}/{currentField.FieldName}/{i}");
                 }
             }
         }
@@ -446,7 +474,7 @@ namespace LumiTool.Engine
         private string GenerateNameOfAsset(AssetsFileInstance assetsFile, AssetTypeValueField baseField)
         {
             if (!baseField["m_Name"].IsDummy && baseField.TypeName == AssetClassID.MonoBehaviour.ToString() && !baseField["m_Script"].IsDummy && !baseField["m_GameObject"].IsDummy)
-                return $"{manager.GetBaseField(assetsFile, manager.GetExtAsset(assetsFile, baseField["m_Script"]).info)["m_ClassName"].AsString} \"{manager.GetBaseField(assetsFile, manager.GetExtAsset(assetsFile, baseField["m_GameObject"]).info)["m_Name"].AsString}\"";
+                return $"{manager.GetBaseField(assetsFile, manager.GetExtAsset(assetsFile, baseField["m_Script"]).info)["m_ClassName"].AsString} \"{baseField["m_Name"].AsString}\" of GameObject \"{manager.GetBaseField(assetsFile, manager.GetExtAsset(assetsFile, baseField["m_GameObject"]).info)["m_Name"].AsString}\"";
             else if (!baseField["m_Name"].IsDummy)
                 return $"{baseField.TypeName} \"{baseField["m_Name"].AsString}\"";
             else if (!baseField["m_GameObject"].IsDummy)

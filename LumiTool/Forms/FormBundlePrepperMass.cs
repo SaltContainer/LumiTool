@@ -1,5 +1,6 @@
 ﻿using LumiTool.Data;
 using LumiTool.Engine;
+using LumiTool.Forms.Popups;
 
 namespace LumiTool.Forms
 {
@@ -97,6 +98,16 @@ namespace LumiTool.Forms
             var foundShaders = new Dictionary<(string, long), Shader>();
             var foundReferences = new Dictionary<(string, long), DependencyAsset>();
 
+            var selectedCabs = new List<string>();
+            if (checkReassignDependencies.Checked)
+            {
+                using FormDependencySelect depSelect = new FormDependencySelect(engine.GetDependencyConfig().Bundles.Select(b => b.CABName).ToList());
+                while (depSelect.ShowDialog() != DialogResult.OK)
+                    MessageBox.Show("You must select the dependencies to remap!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                selectedCabs = depSelect.Result;
+            }
+
             var files = Directory.GetFiles(folderPath);
             foreach (var file in files)
             {
@@ -107,7 +118,7 @@ namespace LumiTool.Forms
 
                     if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
                     if (checkConvertShaders.Checked && !checkReassignDependencies.Checked) engine.FixShadersOfMaterials(bundle, afileInst, true, foundShaders);
-                    if (checkReassignDependencies.Checked) engine.ReassignExternalDependencyReferences(bundle, afileInst, true, foundReferences);
+                    if (checkReassignDependencies.Checked) engine.ReassignExternalDependencyReferences(bundle, afileInst, true, foundReferences, selectedCabs);
 
                     if (!classesLoaded && checkTpk.Checked)
                     {
@@ -125,7 +136,7 @@ namespace LumiTool.Forms
             }
 
             if (exceptionHappened)
-                MessageBox.Show("There were one or more exceptions while preparing bundles. Any successful prepared bundles were still saved to the output folder.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("There were one or more exceptions while preparing bundles. Any successfully prepared bundles were still saved to the output folder.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             else
                 MessageBox.Show("Successfully saved all the new bundles to the output folder!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

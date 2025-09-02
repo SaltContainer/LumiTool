@@ -1,6 +1,7 @@
 ﻿using AssetsTools.NET.Extra;
 using LumiTool.Data;
 using LumiTool.Engine;
+using LumiTool.Forms.Popups;
 
 namespace LumiTool.Forms
 {
@@ -135,7 +136,14 @@ namespace LumiTool.Forms
                 if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
                 if (checkConvertDependencies.Checked) engine.CopyDependencies(afileInst, afileInstV);
                 if (checkConvertShaders.Checked && !checkReassignDependencies.Checked) engine.FixShadersOfMaterials(bundle, afileInst);
-                if (checkReassignDependencies.Checked) engine.ReassignExternalDependencyReferences(bundle, afileInst);
+                if (checkReassignDependencies.Checked)
+                {
+                    using FormDependencySelect depSelect = new FormDependencySelect(engine.GetCABNamesInBundleDependencies(afileInst));
+                    while (depSelect.ShowDialog() != DialogResult.OK)
+                        MessageBox.Show("You must select the dependencies to remap!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    engine.ReassignExternalDependencyReferences(bundle, afileInst, false, depSelect.Result);
+                }
                 MessageBox.Show("Successfully converted the bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
