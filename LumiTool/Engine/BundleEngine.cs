@@ -241,22 +241,22 @@ namespace LumiTool.Engine
             SetAssetsFileInBundle(bundle, assetsFile);
         }
 
-        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, List<string> selectedCabs)
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool massMode, List<string> selectedCabs)
         {
-            ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, new Dictionary<(string, long), DependencyAsset>(), selectedCabs);
+            ReassignExternalDependencyReferences(bundle, assetsFile, massMode, new Dictionary<(string, long), DependencyAsset>(), selectedCabs);
         }
 
-        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs)
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool massMode, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs)
         {
             var assets = assetsFile.file.AssetInfos.Where(a => a.PathId != 1);
             assets = assets.Append(assetsFile.file.GetAssetInfo(1));
 
-            var fileIDToCAB = GetFileIDToCABNameDict(assetsFile);
+            var fileIDToCAB = GetFileIDToCABNameDict(assetsFile, massMode);
 
             foreach (var asset in assets)
             {
                 var assetBase = manager.GetBaseField(assetsFile, asset);
-                CheckFieldForExternalDependency(assetsFile, assetBase, assetBase, fileIDToCAB, showBundleNameInPopup, foundReferences, selectedCabs, bundle.name, "");
+                CheckFieldForExternalDependency(assetsFile, assetBase, assetBase, fileIDToCAB, massMode, foundReferences, selectedCabs, bundle.name, "");
                 asset.SetNewData(assetBase);
             }
 
@@ -277,7 +277,7 @@ namespace LumiTool.Engine
             return cabNames;
         }
 
-        private Dictionary<int, string> GetFileIDToCABNameDict(AssetsFileInstance assetsFile)
+        private Dictionary<int, string> GetFileIDToCABNameDict(AssetsFileInstance assetsFile, bool massMode)
         {
             var fileIDToCAB = new Dictionary<int, string>();
             for (int i=0; i<assetsFile.file.Metadata.Externals.Count; i++)
@@ -295,7 +295,7 @@ namespace LumiTool.Engine
                     notFoundCabs.Add(cab);
             }
 
-            if (notFoundCabs.Any())
+            if (notFoundCabs.Any() && !massMode)
                 MessageBox.Show($"The current dependency config does not contain data for the bundles with the following CAB names:\n{string.Join("\n", notFoundCabs)}\n\nAssets with a reference to these dependencies will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             return fileIDToCAB;
@@ -333,7 +333,7 @@ namespace LumiTool.Engine
             }
         }
 
-        private void CheckFieldForExternalDependency(AssetsFileInstance assetsFile, AssetTypeValueField baseField, AssetTypeValueField currentField, Dictionary<int, string> fileIDToCAB, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs, string bundleName, string fieldPath)
+        private void CheckFieldForExternalDependency(AssetsFileInstance assetsFile, AssetTypeValueField baseField, AssetTypeValueField currentField, Dictionary<int, string> fileIDToCAB, bool massMode, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs, string bundleName, string fieldPath)
         {
             if (currentField.TypeName.StartsWith("PPtr<") && currentField.TypeName.EndsWith(">"))
             {
@@ -364,7 +364,7 @@ namespace LumiTool.Engine
 
                     string assetName = GenerateNameOfAsset(assetsFile, baseField);
 
-                    using FormDependencyAssetSelect assetSelect = showBundleNameInPopup ?
+                    using FormDependencyAssetSelect assetSelect = massMode ?
                         new FormDependencyAssetSelect(assetName, $"{fieldPath}/{currentField.FieldName}", bundleName, dependencyAssets.Where(a => a.Type.ToString() == currentTypeName).ToList()) :
                         new FormDependencyAssetSelect(assetName, $"{fieldPath}/{currentField.FieldName}", dependencyAssets.Where(a => a.Type.ToString() == currentTypeName).ToList());
                     while (assetSelect.ShowDialog() != DialogResult.OK)
@@ -378,14 +378,14 @@ namespace LumiTool.Engine
             {
                 foreach (var subField in currentField)
                 {
-                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, showBundleNameInPopup, foundReferences, selectedCabs, bundleName, $"{fieldPath}/{currentField.FieldName}");
+                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, massMode, foundReferences, selectedCabs, bundleName, $"{fieldPath}/{currentField.FieldName}");
                 }
             }
             else if (currentField.Value.ValueType == AssetValueType.Array)
             {
                 foreach (var (subField, i) in currentField.Select((e, i) => (e, i)))
                 {
-                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, showBundleNameInPopup, foundReferences, selectedCabs, bundleName, $"{fieldPath}/{currentField.FieldName}/{i}");
+                    CheckFieldForExternalDependency(assetsFile, baseField, subField, fileIDToCAB, massMode, foundReferences, selectedCabs, bundleName, $"{fieldPath}/{currentField.FieldName}/{i}");
                 }
             }
         }

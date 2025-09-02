@@ -205,14 +205,14 @@ namespace LumiTool.Engine
             return configEngine.IsDependencyConfigLoaded();
         }
 
-        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, List<string> selectedCabs)
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool massMode, List<string> selectedCabs)
         {
-            bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, selectedCabs);
+            bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, massMode, selectedCabs);
         }
 
-        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool showBundleNameInPopup, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs)
+        public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool massMode, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs)
         {
-            bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, showBundleNameInPopup, foundReferences, selectedCabs);
+            bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, massMode, foundReferences, selectedCabs);
         }
 
         public List<string> GetCABNamesInBundleDependencies(AssetsFileInstance assetsFile)
