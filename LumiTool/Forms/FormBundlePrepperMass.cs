@@ -58,6 +58,52 @@ namespace LumiTool.Forms
             UpdateComponentsOnLoadCommon();
         }
 
+        private bool CopyDirectoryRecursive(string srcPath, string dstPath, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs)
+        {
+            bool classesLoaded = !checkTpk.Checked;
+            bool result = true;
+
+            var dir = new DirectoryInfo(srcPath);
+            var subDirs = dir.GetDirectories();
+            var files = dir.GetFiles();
+
+            Directory.CreateDirectory(dstPath);
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var bundle = engine.LoadBundle(file.FullName, BundleEngine.ManagerID.Modded);
+                    var afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
+
+                    if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
+                    if (checkReassignDependencies.Checked && CanRemapDependencies) engine.ReassignExternalDependencyReferences(bundle, afileInst, true, foundReferences, selectedCabs);
+
+                    if (!classesLoaded && checkTpk.Checked)
+                    {
+                        engine.LoadClassPackage(afileInst, BundleEngine.ManagerID.Modded);
+                        classesLoaded = true;
+                    }
+
+                    engine.SaveBundleToFile(bundle, Path.Combine(dstPath, file.Name));
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                    MessageBox.Show("There was an exception when converting the bundle at \"" + file.FullName + "\". Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    engine.UnloadBundles();
+                }
+            }
+
+            foreach (var subDir in subDirs)
+                result &= CopyDirectoryRecursive(subDir.FullName, Path.Combine(dstPath, subDir.Name), foundReferences, selectedCabs);
+
+            return result;
+        }
+
         private void btnBundleOpen_Click(object sender, EventArgs e)
         {
             using FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
@@ -92,9 +138,6 @@ namespace LumiTool.Forms
 
         private void btnConvertApply_Click(object sender, EventArgs e)
         {
-            bool classesLoaded = !checkTpk.Checked;
-            bool exceptionHappened = false;
-            var foundShaders = new Dictionary<(string, long), Shader>();
             var foundReferences = new Dictionary<(string, long), DependencyAsset>();
 
             var selectedCabs = new List<string>();
@@ -107,36 +150,10 @@ namespace LumiTool.Forms
                 selectedCabs = depSelect.Result;
             }
 
-            var files = Directory.GetFiles(folderPath);
-            foreach (var file in files)
-            {
-                try
-                {
-                    var bundle = engine.LoadBundle(file, BundleEngine.ManagerID.Modded);
-                    var afileInst = engine.LoadAssetsFileFromBundle(bundle, BundleEngine.ManagerID.Modded);
-
-                    if (checkConvertPlatform.Checked) engine.SetPlatformOfBundle(bundle, afileInst, Platform.Switch);
-                    if (checkReassignDependencies.Checked && CanRemapDependencies) engine.ReassignExternalDependencyReferences(bundle, afileInst, true, foundReferences, selectedCabs);
-
-                    if (!classesLoaded && checkTpk.Checked)
-                    {
-                        engine.LoadClassPackage(afileInst, BundleEngine.ManagerID.Modded);
-                        classesLoaded = true;
-                    }
-
-                    engine.SaveBundleToFile(bundle, Path.Combine(outputPath, Path.GetFileName(file)));
-                }
-                catch (Exception ex)
-                {
-                    exceptionHappened = true;
-                    MessageBox.Show("There was an exception when converting the bundle at \"" + file + "\". Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-
-            if (exceptionHappened)
-                MessageBox.Show("There were one or more exceptions while preparing bundles. Any successfully prepared bundles were still saved to the output folder.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            else
+            if (CopyDirectoryRecursive(folderPath, outputPath, foundReferences, selectedCabs))
                 MessageBox.Show("Successfully saved all the new bundles to the output folder!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show("There were one or more exceptions while preparing bundles. Any successfully prepared bundles were still saved to the output folder.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }
