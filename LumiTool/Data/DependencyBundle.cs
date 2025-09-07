@@ -36,7 +36,7 @@ namespace LumiTool.Data
 
         public override string ToString()
         {
-            return BundleName;
+            return $"{BundleName} ({CABName})";
         }
     }
 }

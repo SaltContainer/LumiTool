@@ -137,11 +137,19 @@ namespace LumiTool.Forms
                 if (checkConvertDependencies.Checked && CanCopyDependencies) engine.CopyDependencies(afileInst, afileInstV);
                 if (checkReassignDependencies.Checked && CanRemapDependencies)
                 {
-                    using FormDependencySelect depSelect = new FormDependencySelect(engine.GetCABNamesInBundleDependencies(afileInst));
+                    var cabsToRemap = engine.GetCABNamesInBundleDependencies(afileInst);
+                    var supportedBundles = engine.GetDependencyConfig().Bundles;
+                    var missingCabs = cabsToRemap.Where(c => !supportedBundles.Any(b => b.CABName == c)).ToList();
+                    var selectableBundles = supportedBundles.Where(b => cabsToRemap.Any(c => c == b.CABName)).ToList();
+
+                    if (missingCabs.Any())
+                        MessageBox.Show($"The bundles with the following CAB names are not present in the dependency config file:\n{string.Join("\n", missingCabs)}\n\nAssets with a reference to these dependencies will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    using FormDependencySelect depSelect = new FormDependencySelect(selectableBundles);
                     while (depSelect.ShowDialog() != DialogResult.OK)
                         MessageBox.Show("You must select the dependencies to remap!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    engine.ReassignExternalDependencyReferences(bundle, afileInst, false, depSelect.Result);
+                    engine.ReassignExternalDependencyReferences(bundle, afileInst, false, depSelect.Result.Select(b => b.CABName).ToList());
                 }
                 MessageBox.Show("Successfully converted the bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

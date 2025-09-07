@@ -143,11 +143,11 @@ namespace LumiTool.Forms
             var selectedCabs = new List<string>();
             if (checkReassignDependencies.Checked && CanRemapDependencies)
             {
-                using FormDependencySelect depSelect = new FormDependencySelect(engine.GetDependencyConfig().Bundles.Select(b => b.CABName).ToList());
+                using FormDependencySelect depSelect = new FormDependencySelect(engine.GetDependencyConfig().Bundles);
                 while (depSelect.ShowDialog() != DialogResult.OK)
                     MessageBox.Show("You must select the dependencies to remap!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                selectedCabs = depSelect.Result;
+                selectedCabs = depSelect.Result.Select(b => b.CABName).ToList();
             }
 
             if (CopyDirectoryRecursive(folderPath, outputPath, foundReferences, selectedCabs))

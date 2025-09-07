@@ -45,10 +45,10 @@
             // 
             // btnConfirm
             // 
-            btnConfirm.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnConfirm.Location = new Point(12, 117);
+            btnConfirm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnConfirm.Location = new Point(12, 171);
             btnConfirm.Name = "btnConfirm";
-            btnConfirm.Size = new Size(260, 32);
+            btnConfirm.Size = new Size(410, 48);
             btnConfirm.TabIndex = 2;
             btnConfirm.Text = "Confirm";
             btnConfirm.UseVisualStyleBackColor = true;
@@ -60,7 +60,7 @@
             listDependencies.FormattingEnabled = true;
             listDependencies.Location = new Point(12, 35);
             listDependencies.Name = "listDependencies";
-            listDependencies.Size = new Size(260, 76);
+            listDependencies.Size = new Size(410, 130);
             listDependencies.TabIndex = 1;
             // 
             // FormDependencySelect
@@ -68,15 +68,15 @@
             AcceptButton = btnConfirm;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(284, 161);
+            ClientSize = new Size(434, 231);
             Controls.Add(listDependencies);
             Controls.Add(btnConfirm);
             Controls.Add(lbText);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
-            MaximumSize = new Size(300, 200);
+            MaximumSize = new Size(450, 270);
             MinimizeBox = false;
-            MinimumSize = new Size(300, 162);
+            MinimumSize = new Size(450, 270);
             Name = "FormDependencySelect";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Select Dependencies to Remap";

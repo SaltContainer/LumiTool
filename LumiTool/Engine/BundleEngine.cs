@@ -251,7 +251,7 @@ namespace LumiTool.Engine
             var assets = assetsFile.file.AssetInfos.Where(a => a.PathId != 1);
             assets = assets.Append(assetsFile.file.GetAssetInfo(1));
 
-            var fileIDToCAB = GetFileIDToCABNameDict(assetsFile, massMode);
+            var fileIDToCAB = GetFileIDToCABNameDict(assetsFile);
 
             foreach (var asset in assets)
             {
@@ -277,7 +277,7 @@ namespace LumiTool.Engine
             return cabNames;
         }
 
-        private Dictionary<int, string> GetFileIDToCABNameDict(AssetsFileInstance assetsFile, bool massMode)
+        private Dictionary<int, string> GetFileIDToCABNameDict(AssetsFileInstance assetsFile)
         {
             var fileIDToCAB = new Dictionary<int, string>();
             for (int i=0; i<assetsFile.file.Metadata.Externals.Count; i++)
@@ -294,9 +294,6 @@ namespace LumiTool.Engine
                 if (engine.GetDependencyConfig()[cab] == null)
                     notFoundCabs.Add(cab);
             }
-
-            if (notFoundCabs.Any() && !massMode)
-                MessageBox.Show($"The current dependency config does not contain data for the bundles with the following CAB names:\n{string.Join("\n", notFoundCabs)}\n\nAssets with a reference to these dependencies will not be changed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             return fileIDToCAB;
         }
