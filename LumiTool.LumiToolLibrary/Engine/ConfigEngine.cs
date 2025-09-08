@@ -98,6 +98,11 @@ namespace LumiTool.Engine
             return dependencyConfig != null;
         }
 
+        public bool IsDependencyConfigEmpty()
+        {
+            return LumiToolSettings.Default.DependencyConfigPath == string.Empty;
+        }
+
         public List<AssetBundleCompressionType> GetAllAssetBundleCompressionTypes()
         {
             return assetBundleCompressionModes;

@@ -61,7 +61,7 @@ namespace LumiTool
 
         private void CheckForUnloadedWarning()
         {
-            if (!engine.IsDependencyConfigLoaded())
+            if (!engine.IsDependencyConfigLoaded() && !engine.IsDependencyConfigEmpty())
                 MessageBox.Show("There was a problem reading the Dependency Remapping configuration. Certain features in the Bundle Prepper won't be available until a valid configuration is set in the settings.", "Invalid Settings", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 

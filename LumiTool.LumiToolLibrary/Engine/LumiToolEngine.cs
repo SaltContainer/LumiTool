@@ -3,6 +3,8 @@ using AssetsTools.NET.Extra;
 using LumiTool.Data;
 using LumiTool.Data.Wwise;
 using SmartPoint.AssetAssistant;
+using static LumiTool.Engine.BundleEngine;
+using static LumiTool.Engine.LoggerEngine;
 
 namespace LumiTool.Engine
 {
@@ -13,6 +15,7 @@ namespace LumiTool.Engine
         private FileSystemEngine fileSystemEngine;
         private WwiseEngine wwiseEngine;
         private ConfigEngine configEngine;
+        private LoggerEngine loggerEngine;
 
         public LumiToolEngine()
         {
@@ -21,6 +24,7 @@ namespace LumiTool.Engine
             fileSystemEngine = new FileSystemEngine(this);
             wwiseEngine = new WwiseEngine(this);
             configEngine = new ConfigEngine(this);
+            loggerEngine = new LoggerEngine(this);
         }
 
         public void UnloadBundles()
@@ -198,6 +202,11 @@ namespace LumiTool.Engine
             return configEngine.IsDependencyConfigLoaded();
         }
 
+        public bool IsDependencyConfigEmpty()
+        {
+            return configEngine.IsDependencyConfigEmpty();
+        }
+
         public List<AssetBundleCompressionType> GetAllAssetBundleCompressionTypes()
         {
             return configEngine.GetAllAssetBundleCompressionTypes();
@@ -226,6 +235,41 @@ namespace LumiTool.Engine
         public List<string> GetCABNamesInBundleDependencies(AssetsFileInstance assetsFile)
         {
             return bundleEngine.GetCABNamesInBundleDependencies(assetsFile);
+        }
+
+        public void AddOnAssetSelectCallback(FindDependencyAssetDelegate callback)
+        {
+            bundleEngine.AddOnAssetSelectCallback(callback);
+        }
+
+        public void RemoveOnAssetSelectCallback(FindDependencyAssetDelegate callback)
+        {
+            bundleEngine.RemoveOnAssetSelectCallback(callback);
+        }
+
+        public void AddOnLogCallback(LogDelegate callback)
+        {
+            loggerEngine.AddOnLogCallback(callback);
+        }
+
+        public void RemoveOnLogCallback(LogDelegate callback)
+        {
+            loggerEngine.RemoveOnLogCallback(callback);
+        }
+
+        public void Log(string message, LogLevel level)
+        {
+            loggerEngine.Log(message, level);
+        }
+
+        public void WriteLinesToFile(string path, List<string> lines)
+        {
+            fileSystemEngine.WriteLinesToFile(path, lines);
+        }
+
+        public void WriteTextToFile(string path, string text)
+        {
+            fileSystemEngine.WriteTextToFile(path, text);
         }
     }
 }

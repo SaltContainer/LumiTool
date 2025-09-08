@@ -89,6 +89,15 @@ namespace LumiTool.Forms
             UpdateComponentsOnLoadVanilla();
         }
 
+        private DependencyAsset FindDependencyAsset(string assetName, string fieldName, string bundleName, List<DependencyAsset> dependencyAssets)
+        {
+            using FormDependencyAssetSelect assetSelect = new FormDependencyAssetSelect(assetName, fieldName, dependencyAssets);
+            while (assetSelect.ShowDialog() != DialogResult.OK)
+                MessageBox.Show("You must specify what this asset references!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            return assetSelect.Result;
+        }
+
         private void btnBundleOpen_Click(object sender, EventArgs e)
         {
             using OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -149,6 +158,7 @@ namespace LumiTool.Forms
                     while (depSelect.ShowDialog() != DialogResult.OK)
                         MessageBox.Show("You must select the dependencies to remap!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
+                    engine.AddOnAssetSelectCallback(FindDependencyAsset);
                     engine.ReassignExternalDependencyReferences(bundle, afileInst, false, depSelect.Result.Select(b => b.CABName).ToList());
                 }
                 MessageBox.Show("Successfully converted the bundle. Don't forget to save your bundle!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -156,6 +166,10 @@ namespace LumiTool.Forms
             catch (Exception ex)
             {
                 MessageBox.Show("There was an exception when converting the bundle. Full Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                engine.RemoveOnAssetSelectCallback(FindDependencyAsset);
             }
         }
 

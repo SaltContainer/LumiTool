@@ -104,6 +104,15 @@ namespace LumiTool.Forms
             return result;
         }
 
+        private DependencyAsset FindDependencyAsset(string assetName, string fieldName, string bundleName, List<DependencyAsset> dependencyAssets)
+        {
+            using FormDependencyAssetSelect assetSelect = new FormDependencyAssetSelect(assetName, fieldName, bundleName, dependencyAssets);
+            while (assetSelect.ShowDialog() != DialogResult.OK)
+                MessageBox.Show("You must specify what this asset references!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            return assetSelect.Result;
+        }
+
         private void btnBundleOpen_Click(object sender, EventArgs e)
         {
             using FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
@@ -150,10 +159,14 @@ namespace LumiTool.Forms
                 selectedCabs = depSelect.Result.Select(b => b.CABName).ToList();
             }
 
+            engine.AddOnAssetSelectCallback(FindDependencyAsset);
+
             if (CopyDirectoryRecursive(folderPath, outputPath, foundReferences, selectedCabs))
                 MessageBox.Show("Successfully saved all the new bundles to the output folder!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 MessageBox.Show("There were one or more exceptions while preparing bundles. Any successfully prepared bundles were still saved to the output folder.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            
+            engine.RemoveOnAssetSelectCallback(FindDependencyAsset);
         }
     }
 }

@@ -1,17 +1,20 @@
 ﻿using AssetsTools.NET.Extra;
 using AssetsTools.NET;
 using LumiTool.Data;
-//using LumiTool.Forms.Popups;
 
 namespace LumiTool.Engine
 {
     public class BundleEngine
     {
+        public delegate DependencyAsset FindDependencyAssetDelegate(string assetName, string fieldName, string bundleName, List<DependencyAsset> dependencyAssets);
+
         private LumiToolEngine engine;
 
         private AssetsManager manager;
         private AssetsManager managerV;
         private TemplateFieldToTypeTree typeTreeConverter;
+
+        private event FindDependencyAssetDelegate onAssetSelect;
 
         public BundleEngine(LumiToolEngine engine)
         {
@@ -279,6 +282,9 @@ namespace LumiTool.Engine
 
         public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool massMode, Dictionary<(string, long), DependencyAsset> foundReferences, List<string> selectedCabs)
         {
+            if (onAssetSelect == null)
+                return;
+
             var assets = assetsFile.file.AssetInfos.Where(a => a.PathId != 1);
             assets = assets.Append(assetsFile.file.GetAssetInfo(1));
 
@@ -306,6 +312,16 @@ namespace LumiTool.Engine
             }
 
             return cabNames;
+        }
+
+        public void AddOnAssetSelectCallback(FindDependencyAssetDelegate callback)
+        {
+            onAssetSelect += callback;
+        }
+
+        public void RemoveOnAssetSelectCallback(FindDependencyAssetDelegate callback)
+        {
+            onAssetSelect -= callback;
         }
 
         private Dictionary<int, string> GetFileIDToCABNameDict(AssetsFileInstance assetsFile)
@@ -392,15 +408,9 @@ namespace LumiTool.Engine
 
                     string assetName = GenerateNameOfAsset(assetsFile, baseField);
 
-                    // TODO: Generalize
-                    /*using FormDependencyAssetSelect assetSelect = massMode ?
-                        new FormDependencyAssetSelect(assetName, $"{fieldPath}/{currentField.FieldName}", bundleName, dependencyAssets.Where(a => a.Type.ToString() == currentTypeName).ToList()) :
-                        new FormDependencyAssetSelect(assetName, $"{fieldPath}/{currentField.FieldName}", dependencyAssets.Where(a => a.Type.ToString() == currentTypeName).ToList());
-                    while (assetSelect.ShowDialog() != DialogResult.OK)
-                        MessageBox.Show("You must specify what this asset references!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                    foundReferences.Add((fileIDToCAB[currentFileID], currentPathID), assetSelect.Result);
-                    RemapReference(currentField, currentFileID, assetSelect.Result.PathID);*/
+                    var result = onAssetSelect?.Invoke(assetName, $"{fieldPath}/{currentField.FieldName}", bundleName, dependencyAssets.Where(a => a.Type.ToString() == currentTypeName).ToList());
+                    foundReferences.Add((fileIDToCAB[currentFileID], currentPathID), result);
+                    RemapReference(currentField, currentFileID, result.PathID);
                 }
             }
             else if (currentField.Value == null)

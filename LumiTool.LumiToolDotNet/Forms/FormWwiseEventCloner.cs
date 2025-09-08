@@ -1,4 +1,5 @@
-﻿using LumiTool.Data.Wwise;
+﻿using LumiTool.Data;
+using LumiTool.Data.Wwise;
 using LumiTool.Engine;
 
 namespace LumiTool.Forms
@@ -10,15 +11,21 @@ namespace LumiTool.Forms
         WwiseData bank;
         string originalPath = string.Empty;
 
+        private Queue<string> infoLogQueue;
+
         public FormWwiseEventCloner(LumiToolEngine engine)
         {
             InitializeComponent();
 
             this.engine = engine;
+
+            infoLogQueue = new Queue<string>();
         }
 
         private void UpdateComponentsOnStart()
         {
+            infoLogQueue.Clear();
+
             lbBankName.Text = "Bank Name: " + Path.GetFileName(originalPath);
             txtOldEvent.Enabled = false;
             txtNewEvent.Enabled = false;
@@ -78,16 +85,45 @@ namespace LumiTool.Forms
             return engine.FNV132Hash(eventName);
         }
 
+        private void LogReceiver(string message, LogLevel level)
+        {
+            switch (level)
+            {
+                case LogLevel.Information:
+                    infoLogQueue.Enqueue(message);
+                    break;
+
+                case LogLevel.Warning:
+                    MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+
+                case LogLevel.Error:
+                    MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+        }
+
+        private void ShowInfoPopup()
+        {
+            MessageBox.Show(string.Join("\n", infoLogQueue), "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            infoLogQueue.Clear();
+        }
+
         private void btnApply_Click(object sender, EventArgs e)
         {
             try
             {
+                engine.AddOnLogCallback(LogReceiver);
                 engine.CloneHircEvent(bank, txtOldEvent.Text, txtNewEvent.Text, txtGroup.Text, checkLoop.Checked, (double)numInitialDelay.Value, (double)numLoopStart.Value, (double)numLoopEnd.Value, (double)numTotalDuration.Value);
                 MessageBox.Show("Successfully cloned an event. Don't forget to save your bank!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("There was an error while cloning the event. Full exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                engine.RemoveOnLogCallback(LogReceiver);
             }
         }
 
@@ -115,6 +151,8 @@ namespace LumiTool.Forms
                 try
                 {
                     engine.SaveBank(bank, saveFileDialog.FileName);
+                    engine.WriteLinesToFile(saveFileDialog.FileName + ".log", infoLogQueue.ToList());
+                    infoLogQueue.Clear();
                     MessageBox.Show("Successfully saved the new bank!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)

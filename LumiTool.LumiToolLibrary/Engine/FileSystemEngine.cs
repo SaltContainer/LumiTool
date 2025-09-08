@@ -38,6 +38,21 @@
             return File.Exists(path);
         }
 
+        public void WriteLinesToFile(string path, List<string> lines)
+        {
+            using var fs = new FileStream(path, FileMode.Create);
+            using var sw = new StreamWriter(fs);
+            foreach (var line in lines)
+                sw.WriteLine(line);
+        }
+
+        public void WriteTextToFile(string path, string text)
+        {
+            using var fs = new FileStream(path, FileMode.Create);
+            using var sw = new StreamWriter(fs);
+            sw.Write(text);
+        }
+
         private string? AddPathSegments(int startIndex, string path)
         {
             for (int i=startIndex; i<pathSegments.Count; i++)
