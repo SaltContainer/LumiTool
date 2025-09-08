@@ -13,8 +13,9 @@ A "swiss army knife"-type tool that allows for many different manipulations on U
   - If an asset can't be found in the second bundle, it gets skipped.
 - **Bundle Prepper**
   - Converts bundles rebuilt from ripping to the Unity Editor (usually using AssetRipper) back into proper bundles for use in the game.
-  - Requires reassigning shaders, and is therefore only available with a proper JSON file detailing the shader path IDs.
-	- The prepper will automatically ask for the shaders and will remember when multiple materials use the same shader.
+  - For bundles with dependencies, this requires reassigning references to those dependencies and is therefore only available with a proper JSON file detailing the path IDs of those references.
+	- An example of a valid configuration file is available in the tool's Config folder.
+	- The prepper will automatically ask for what the assets referenced are and will remember those choices when the same path IDs are seen again.
   - There is also a version that allows converting a full folder's worth of bundles.
 - **Bundle Renamer**
   - Changes the Asset Bundle Name of a bundle inside its manifest/preload table at path ID 1.
