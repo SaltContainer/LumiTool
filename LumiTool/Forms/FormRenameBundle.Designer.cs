@@ -51,7 +51,7 @@
             grpBundle.Location = new Point(12, 12);
             grpBundle.Name = "grpBundle";
             grpBundle.Size = new Size(260, 86);
-            grpBundle.TabIndex = 11;
+            grpBundle.TabIndex = 0;
             grpBundle.TabStop = false;
             grpBundle.Text = "Loaded Bundle";
             // 
@@ -61,7 +61,7 @@
             lbBundleName.Location = new Point(6, 19);
             lbBundleName.Name = "lbBundleName";
             lbBundleName.Size = new Size(85, 15);
-            lbBundleName.TabIndex = 1;
+            lbBundleName.TabIndex = 0;
             lbBundleName.Text = "Bundle Name: ";
             // 
             // btnBundleOpen
@@ -71,7 +71,7 @@
             btnBundleOpen.Location = new Point(6, 40);
             btnBundleOpen.Name = "btnBundleOpen";
             btnBundleOpen.Size = new Size(121, 40);
-            btnBundleOpen.TabIndex = 0;
+            btnBundleOpen.TabIndex = 1;
             btnBundleOpen.Text = "Open";
             btnBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleOpen.UseVisualStyleBackColor = true;
@@ -96,14 +96,14 @@
             txtBundleRename.Location = new Point(87, 104);
             txtBundleRename.Name = "txtBundleRename";
             txtBundleRename.Size = new Size(185, 23);
-            txtBundleRename.TabIndex = 12;
+            txtBundleRename.TabIndex = 2;
             // 
             // txtCABRename
             // 
             txtCABRename.Location = new Point(78, 133);
             txtCABRename.Name = "txtCABRename";
             txtCABRename.Size = new Size(194, 23);
-            txtCABRename.TabIndex = 13;
+            txtCABRename.TabIndex = 4;
             // 
             // lbBundleRename
             // 
@@ -111,7 +111,7 @@
             lbBundleRename.Location = new Point(12, 107);
             lbBundleRename.Name = "lbBundleRename";
             lbBundleRename.Size = new Size(69, 15);
-            lbBundleRename.TabIndex = 14;
+            lbBundleRename.TabIndex = 1;
             lbBundleRename.Text = "New Name:";
             // 
             // lbCABRename
@@ -120,7 +120,7 @@
             lbCABRename.Location = new Point(12, 136);
             lbCABRename.Name = "lbCABRename";
             lbCABRename.Size = new Size(60, 15);
-            lbCABRename.TabIndex = 15;
+            lbCABRename.TabIndex = 3;
             lbCABRename.Text = "New CAB:";
             // 
             // btnApply
@@ -128,7 +128,7 @@
             btnApply.Location = new Point(12, 162);
             btnApply.Name = "btnApply";
             btnApply.Size = new Size(260, 41);
-            btnApply.TabIndex = 16;
+            btnApply.TabIndex = 5;
             btnApply.Text = "Rename";
             btnApply.UseVisualStyleBackColor = true;
             btnApply.Click += btnApply_Click;

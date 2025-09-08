@@ -45,7 +45,7 @@
             btnBundleOpen.Location = new Point(6, 40);
             btnBundleOpen.Name = "btnBundleOpen";
             btnBundleOpen.Size = new Size(121, 40);
-            btnBundleOpen.TabIndex = 0;
+            btnBundleOpen.TabIndex = 1;
             btnBundleOpen.Text = "Open";
             btnBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleOpen.UseVisualStyleBackColor = true;
@@ -61,7 +61,7 @@
             grpBundle.Location = new Point(12, 12);
             grpBundle.Name = "grpBundle";
             grpBundle.Size = new Size(260, 86);
-            grpBundle.TabIndex = 1;
+            grpBundle.TabIndex = 0;
             grpBundle.TabStop = false;
             grpBundle.Text = "Loaded Bundle";
             // 
@@ -71,7 +71,7 @@
             lbBundleName.Location = new Point(6, 19);
             lbBundleName.Name = "lbBundleName";
             lbBundleName.Size = new Size(85, 15);
-            lbBundleName.TabIndex = 1;
+            lbBundleName.TabIndex = 0;
             lbBundleName.Text = "Bundle Name: ";
             // 
             // btnBundleSave
@@ -100,7 +100,7 @@
             lbPlatform.Location = new Point(12, 110);
             lbPlatform.Name = "lbPlatform";
             lbPlatform.Size = new Size(83, 15);
-            lbPlatform.TabIndex = 3;
+            lbPlatform.TabIndex = 1;
             lbPlatform.Text = "New Platform:";
             // 
             // FormPlatform

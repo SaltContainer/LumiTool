@@ -1,4 +1,5 @@
-﻿using LumiTool.Data;
+﻿using AssetsTools.NET;
+using LumiTool.Data;
 using System.Text.Json;
 
 namespace LumiTool.Engine
@@ -7,6 +8,13 @@ namespace LumiTool.Engine
     {
         private LumiToolEngine engine;
         private JsonSerializerOptions jsonOptions;
+
+        private List<AssetBundleCompressionType> assetBundleCompressionModes = new List<AssetBundleCompressionType>()
+        {
+            AssetBundleCompressionType.None,
+            AssetBundleCompressionType.LZMA,
+            AssetBundleCompressionType.LZ4,
+        };
 
         private DependencyConfig dependencyConfig = null;
 
@@ -87,6 +95,22 @@ namespace LumiTool.Engine
         public bool IsDependencyConfigLoaded()
         {
             return dependencyConfig != null;
+        }
+
+        public List<AssetBundleCompressionType> GetAllAssetBundleCompressionTypes()
+        {
+            return assetBundleCompressionModes;
+        }
+
+        public AssetBundleCompressionType GetAssetBundleCompressionType()
+        {
+            return (AssetBundleCompressionType)Properties.LumiToolSettings.Default.AssetBundleCompressionMode;
+        }
+
+        public void SetAssetBundleCompressionType(AssetBundleCompressionType value)
+        {
+            Properties.LumiToolSettings.Default.AssetBundleCompressionMode = (int)value;
+            Properties.LumiToolSettings.Default.Save();
         }
     }
 }

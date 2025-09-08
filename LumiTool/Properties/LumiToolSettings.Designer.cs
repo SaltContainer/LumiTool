@@ -38,24 +38,24 @@ namespace LumiTool.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ShaderConfigPath {
-            get {
-                return ((string)(this["ShaderConfigPath"]));
-            }
-            set {
-                this["ShaderConfigPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DependencyConfigPath {
             get {
                 return ((string)(this["DependencyConfigPath"]));
             }
             set {
                 this["DependencyConfigPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int AssetBundleCompressionMode {
+            get {
+                return ((int)(this["AssetBundleCompressionMode"]));
+            }
+            set {
+                this["AssetBundleCompressionMode"] = value;
             }
         }
     }

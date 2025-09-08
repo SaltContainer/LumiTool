@@ -56,8 +56,39 @@ namespace LumiTool.Engine
 
         public void SaveBundleToFile(BundleFileInstance bundle, string path)
         {
-            using AssetsFileWriter writer = new AssetsFileWriter(path);
-            bundle.file.Write(writer);
+            var compressionType = engine.GetAssetBundleCompressionType();
+            switch (compressionType)
+            {
+                case AssetBundleCompressionType.LZ4:
+                case AssetBundleCompressionType.LZMA:
+                    {
+                        using (AssetsFileWriter writer = new AssetsFileWriter(path + ".temp"))
+                            bundle.file.Write(writer);
+
+                        var bundleToCompress = new AssetBundleFile();
+                        using (AssetsFileReader reader = new AssetsFileReader(path + ".temp"))
+                        {
+                            bundleToCompress.Read(reader);
+
+                            using (AssetsFileWriter compressedWriter = new AssetsFileWriter(path))
+                            {
+                                bundleToCompress.Pack(compressedWriter, compressionType);
+                                bundleToCompress.Close();
+                            }
+                        }
+
+                        File.Delete(path + ".temp");
+                    }
+                    break;
+
+                case AssetBundleCompressionType.None:
+                default:
+                    {
+                        using AssetsFileWriter writer = new AssetsFileWriter(path);
+                        bundle.file.Write(writer);
+                    }
+                    break;
+            }
         }
 
         public ClassDatabaseFile LoadClassPackage(AssetsFileInstance assetsFile, ManagerID managerID)

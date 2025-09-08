@@ -46,7 +46,7 @@
             grpBank.Location = new Point(12, 12);
             grpBank.Name = "grpBank";
             grpBank.Size = new Size(182, 86);
-            grpBank.TabIndex = 1;
+            grpBank.TabIndex = 0;
             grpBank.TabStop = false;
             grpBank.Text = "Loaded Bank";
             // 
@@ -56,7 +56,7 @@
             lbBankName.Location = new Point(6, 19);
             lbBankName.Name = "lbBankName";
             lbBankName.Size = new Size(74, 15);
-            lbBankName.TabIndex = 2;
+            lbBankName.TabIndex = 0;
             lbBankName.Text = "Bank Name: ";
             // 
             // btnBankOpen
@@ -66,7 +66,7 @@
             btnBankOpen.Location = new Point(6, 40);
             btnBankOpen.Name = "btnBankOpen";
             btnBankOpen.Size = new Size(170, 40);
-            btnBankOpen.TabIndex = 0;
+            btnBankOpen.TabIndex = 1;
             btnBankOpen.Text = "Open";
             btnBankOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBankOpen.UseVisualStyleBackColor = true;
@@ -82,7 +82,7 @@
             listEvents.Location = new Point(12, 104);
             listEvents.Name = "listEvents";
             listEvents.Size = new Size(182, 199);
-            listEvents.TabIndex = 2;
+            listEvents.TabIndex = 1;
             listEvents.SelectedIndexChanged += listEvents_SelectedIndexChanged;
             // 
             // listActions
@@ -93,7 +93,7 @@
             listActions.Location = new Point(200, 14);
             listActions.Name = "listActions";
             listActions.Size = new Size(472, 289);
-            listActions.TabIndex = 3;
+            listActions.TabIndex = 2;
             // 
             // FormWwiseEventBrowser
             // 

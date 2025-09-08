@@ -48,7 +48,7 @@
             btnFix.Location = new Point(12, 196);
             btnFix.Name = "btnFix";
             btnFix.Size = new Size(260, 38);
-            btnFix.TabIndex = 11;
+            btnFix.TabIndex = 2;
             btnFix.Text = "Fix PathIDs of Bundle";
             btnFix.UseVisualStyleBackColor = true;
             btnFix.Click += btnFix_Click;
@@ -61,7 +61,7 @@
             grpBundle.Location = new Point(12, 12);
             grpBundle.Name = "grpBundle";
             grpBundle.Size = new Size(260, 86);
-            grpBundle.TabIndex = 10;
+            grpBundle.TabIndex = 0;
             grpBundle.TabStop = false;
             grpBundle.Text = "Loaded Bundle";
             // 
@@ -71,7 +71,7 @@
             lbBundleName.Location = new Point(6, 19);
             lbBundleName.Name = "lbBundleName";
             lbBundleName.Size = new Size(85, 15);
-            lbBundleName.TabIndex = 1;
+            lbBundleName.TabIndex = 0;
             lbBundleName.Text = "Bundle Name: ";
             // 
             // btnBundleOpen
@@ -81,7 +81,7 @@
             btnBundleOpen.Location = new Point(6, 40);
             btnBundleOpen.Name = "btnBundleOpen";
             btnBundleOpen.Size = new Size(121, 40);
-            btnBundleOpen.TabIndex = 0;
+            btnBundleOpen.TabIndex = 1;
             btnBundleOpen.Text = "Open";
             btnBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleOpen.UseVisualStyleBackColor = true;
@@ -108,7 +108,7 @@
             grpBundleV.Location = new Point(12, 104);
             grpBundleV.Name = "grpBundleV";
             grpBundleV.Size = new Size(260, 86);
-            grpBundleV.TabIndex = 12;
+            grpBundleV.TabIndex = 1;
             grpBundleV.TabStop = false;
             grpBundleV.Text = "Loaded Vanilla Bundle";
             // 
@@ -118,7 +118,7 @@
             lbBundleVName.Location = new Point(6, 19);
             lbBundleVName.Name = "lbBundleVName";
             lbBundleVName.Size = new Size(85, 15);
-            lbBundleVName.TabIndex = 3;
+            lbBundleVName.TabIndex = 0;
             lbBundleVName.Text = "Bundle Name: ";
             // 
             // btnBundleVOpen
@@ -128,7 +128,7 @@
             btnBundleVOpen.Location = new Point(6, 40);
             btnBundleVOpen.Name = "btnBundleVOpen";
             btnBundleVOpen.Size = new Size(248, 40);
-            btnBundleVOpen.TabIndex = 0;
+            btnBundleVOpen.TabIndex = 1;
             btnBundleVOpen.Text = "Open";
             btnBundleVOpen.TextAlign = ContentAlignment.MiddleRight;
             btnBundleVOpen.TextImageRelation = TextImageRelation.ImageBeforeText;

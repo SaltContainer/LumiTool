@@ -35,13 +35,15 @@
             lbDependencyRemapConfigPath = new Label();
             txtDependencyRemapConfigPath = new TextBox();
             btnDependencyRemapConfigPath = new Button();
+            comboCompression = new ComboBox();
+            lbCompression = new Label();
             SuspendLayout();
             // 
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnSave.Image = Resources.Resources.save;
-            btnSave.Location = new Point(459, 52);
+            btnSave.Location = new Point(459, 81);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(113, 40);
             btnSave.TabIndex = 3;
@@ -76,20 +78,39 @@
             btnDependencyRemapConfigPath.UseVisualStyleBackColor = true;
             btnDependencyRemapConfigPath.Click += btnDependencyRemapConfigPath_Click;
             // 
+            // comboCompression
+            // 
+            comboCompression.FormattingEnabled = true;
+            comboCompression.Location = new Point(406, 52);
+            comboCompression.Name = "comboCompression";
+            comboCompression.Size = new Size(166, 23);
+            comboCompression.TabIndex = 4;
+            // 
+            // lbCompression
+            // 
+            lbCompression.AutoSize = true;
+            lbCompression.Location = new Point(12, 55);
+            lbCompression.Name = "lbCompression";
+            lbCompression.Size = new Size(185, 15);
+            lbCompression.TabIndex = 5;
+            lbCompression.Text = "Asset Bundle Compression Mode:";
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(584, 104);
+            ClientSize = new Size(584, 133);
             Controls.Add(btnDependencyRemapConfigPath);
             Controls.Add(txtDependencyRemapConfigPath);
             Controls.Add(lbDependencyRemapConfigPath);
+            Controls.Add(comboCompression);
+            Controls.Add(lbCompression);
             Controls.Add(btnSave);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(600, 143);
-            MinimumSize = new Size(600, 143);
+            MaximumSize = new Size(600, 172);
+            MinimumSize = new Size(600, 172);
             Name = "FormSettings";
             Text = "Settings";
             FormClosed += FormSettings_FormClosed;
@@ -104,5 +125,7 @@
         private Label lbDependencyRemapConfigPath;
         private TextBox txtDependencyRemapConfigPath;
         private Button btnDependencyRemapConfigPath;
+        private ComboBox comboCompression;
+        private Label lbCompression;
     }
 }

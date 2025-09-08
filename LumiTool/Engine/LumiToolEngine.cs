@@ -205,6 +205,21 @@ namespace LumiTool.Engine
             return configEngine.IsDependencyConfigLoaded();
         }
 
+        public List<AssetBundleCompressionType> GetAllAssetBundleCompressionTypes()
+        {
+            return configEngine.GetAllAssetBundleCompressionTypes();
+        }
+
+        public AssetBundleCompressionType GetAssetBundleCompressionType()
+        {
+            return configEngine.GetAssetBundleCompressionType();
+        }
+
+        public void SetAssetBundleCompressionType(AssetBundleCompressionType value)
+        {
+            configEngine.SetAssetBundleCompressionType(value);
+        }
+
         public void ReassignExternalDependencyReferences(BundleFileInstance bundle, AssetsFileInstance assetsFile, bool massMode, List<string> selectedCabs)
         {
             bundleEngine.ReassignExternalDependencyReferences(bundle, assetsFile, massMode, selectedCabs);

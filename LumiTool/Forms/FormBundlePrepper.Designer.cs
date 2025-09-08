@@ -58,7 +58,7 @@
             grpBundle.Location = new Point(12, 12);
             grpBundle.Name = "grpBundle";
             grpBundle.Size = new Size(260, 105);
-            grpBundle.TabIndex = 2;
+            grpBundle.TabIndex = 0;
             grpBundle.TabStop = false;
             grpBundle.Text = "Loaded Rebuilt Bundle";
             // 
@@ -68,7 +68,7 @@
             checkTpk.Location = new Point(8, 38);
             checkTpk.Name = "checkTpk";
             checkTpk.Size = new Size(179, 19);
-            checkTpk.TabIndex = 14;
+            checkTpk.TabIndex = 3;
             checkTpk.Text = "Load External Type Tree (.tpk)";
             checkTpk.UseVisualStyleBackColor = true;
             // 
@@ -78,7 +78,7 @@
             lbBundleName.Location = new Point(6, 19);
             lbBundleName.Name = "lbBundleName";
             lbBundleName.Size = new Size(248, 15);
-            lbBundleName.TabIndex = 1;
+            lbBundleName.TabIndex = 0;
             lbBundleName.Text = "Bundle Name: ";
             // 
             // btnBundleOpen
@@ -88,7 +88,7 @@
             btnBundleOpen.Location = new Point(6, 59);
             btnBundleOpen.Name = "btnBundleOpen";
             btnBundleOpen.Size = new Size(121, 40);
-            btnBundleOpen.TabIndex = 0;
+            btnBundleOpen.TabIndex = 1;
             btnBundleOpen.Text = "Open";
             btnBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleOpen.UseVisualStyleBackColor = true;
@@ -115,7 +115,7 @@
             grpBundleV.Location = new Point(278, 12);
             grpBundleV.Name = "grpBundleV";
             grpBundleV.Size = new Size(198, 105);
-            grpBundleV.TabIndex = 3;
+            grpBundleV.TabIndex = 1;
             grpBundleV.TabStop = false;
             grpBundleV.Text = "Loaded Vanilla Bundle";
             // 
@@ -125,7 +125,7 @@
             lbBundleVName.Location = new Point(6, 19);
             lbBundleVName.Name = "lbBundleVName";
             lbBundleVName.Size = new Size(186, 37);
-            lbBundleVName.TabIndex = 1;
+            lbBundleVName.TabIndex = 0;
             lbBundleVName.Text = "Bundle Name: ";
             // 
             // btnBundleVOpen
@@ -135,7 +135,7 @@
             btnBundleVOpen.Location = new Point(6, 59);
             btnBundleVOpen.Name = "btnBundleVOpen";
             btnBundleVOpen.Size = new Size(186, 40);
-            btnBundleVOpen.TabIndex = 0;
+            btnBundleVOpen.TabIndex = 1;
             btnBundleVOpen.Text = "Open";
             btnBundleVOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleVOpen.UseVisualStyleBackColor = true;
@@ -148,7 +148,7 @@
             btnConvertApply.Location = new Point(294, 15);
             btnConvertApply.Name = "btnConvertApply";
             btnConvertApply.Size = new Size(158, 44);
-            btnConvertApply.TabIndex = 8;
+            btnConvertApply.TabIndex = 3;
             btnConvertApply.Text = "Execute Script";
             btnConvertApply.UseVisualStyleBackColor = true;
             btnConvertApply.Click += btnConvertApply_Click;
@@ -161,7 +161,7 @@
             checkConvertPlatform.Location = new Point(8, 22);
             checkConvertPlatform.Name = "checkConvertPlatform";
             checkConvertPlatform.Size = new Size(168, 19);
-            checkConvertPlatform.TabIndex = 9;
+            checkConvertPlatform.TabIndex = 0;
             checkConvertPlatform.Text = "Change Platform to Switch";
             checkConvertPlatform.UseVisualStyleBackColor = true;
             // 
@@ -171,7 +171,7 @@
             checkConvertDependencies.Location = new Point(8, 47);
             checkConvertDependencies.Name = "checkConvertDependencies";
             checkConvertDependencies.Size = new Size(131, 19);
-            checkConvertDependencies.TabIndex = 10;
+            checkConvertDependencies.TabIndex = 1;
             checkConvertDependencies.Text = "Copy Dependencies";
             checkConvertDependencies.UseVisualStyleBackColor = true;
             // 
@@ -184,7 +184,7 @@
             grpConvert.Location = new Point(12, 123);
             grpConvert.Name = "grpConvert";
             grpConvert.Size = new Size(458, 106);
-            grpConvert.TabIndex = 13;
+            grpConvert.TabIndex = 2;
             grpConvert.TabStop = false;
             grpConvert.Text = "Prepare Rebuilt Bundle";
             // 
@@ -196,7 +196,7 @@
             checkReassignDependencies.Location = new Point(8, 72);
             checkReassignDependencies.Name = "checkReassignDependencies";
             checkReassignDependencies.Size = new Size(214, 19);
-            checkReassignDependencies.TabIndex = 12;
+            checkReassignDependencies.TabIndex = 2;
             checkReassignDependencies.Text = "Remap References to Dependencies";
             checkReassignDependencies.UseVisualStyleBackColor = true;
             // 

@@ -55,7 +55,7 @@
             grpConvert.Location = new Point(12, 123);
             grpConvert.Name = "grpConvert";
             grpConvert.Size = new Size(526, 76);
-            grpConvert.TabIndex = 16;
+            grpConvert.TabIndex = 2;
             grpConvert.TabStop = false;
             grpConvert.Text = "Prepare Rebuilt Bundles";
             // 
@@ -64,7 +64,7 @@
             btnConvertApply.Location = new Point(362, 15);
             btnConvertApply.Name = "btnConvertApply";
             btnConvertApply.Size = new Size(158, 44);
-            btnConvertApply.TabIndex = 8;
+            btnConvertApply.TabIndex = 2;
             btnConvertApply.Text = "Execute Script";
             btnConvertApply.UseVisualStyleBackColor = true;
             btnConvertApply.Click += btnConvertApply_Click;
@@ -77,7 +77,7 @@
             checkConvertPlatform.Location = new Point(8, 22);
             checkConvertPlatform.Name = "checkConvertPlatform";
             checkConvertPlatform.Size = new Size(168, 19);
-            checkConvertPlatform.TabIndex = 9;
+            checkConvertPlatform.TabIndex = 0;
             checkConvertPlatform.Text = "Change Platform to Switch";
             checkConvertPlatform.UseVisualStyleBackColor = true;
             // 
@@ -89,7 +89,7 @@
             checkReassignDependencies.Location = new Point(8, 47);
             checkReassignDependencies.Name = "checkReassignDependencies";
             checkReassignDependencies.Size = new Size(214, 19);
-            checkReassignDependencies.TabIndex = 12;
+            checkReassignDependencies.TabIndex = 1;
             checkReassignDependencies.Text = "Remap References to Dependencies";
             checkReassignDependencies.UseVisualStyleBackColor = true;
             // 
@@ -101,7 +101,7 @@
             grpBundle.Location = new Point(12, 12);
             grpBundle.Name = "grpBundle";
             grpBundle.Size = new Size(260, 105);
-            grpBundle.TabIndex = 14;
+            grpBundle.TabIndex = 0;
             grpBundle.TabStop = false;
             grpBundle.Text = "Loaded Bundle Folder";
             // 
@@ -111,7 +111,7 @@
             checkTpk.Location = new Point(8, 38);
             checkTpk.Name = "checkTpk";
             checkTpk.Size = new Size(179, 19);
-            checkTpk.TabIndex = 14;
+            checkTpk.TabIndex = 1;
             checkTpk.Text = "Load External Type Tree (.tpk)";
             checkTpk.UseVisualStyleBackColor = true;
             // 
@@ -121,7 +121,7 @@
             lbBundleName.Location = new Point(6, 19);
             lbBundleName.Name = "lbBundleName";
             lbBundleName.Size = new Size(248, 15);
-            lbBundleName.TabIndex = 1;
+            lbBundleName.TabIndex = 0;
             lbBundleName.Text = "Folder Path: ";
             // 
             // btnBundleOpen
@@ -130,7 +130,7 @@
             btnBundleOpen.Location = new Point(6, 59);
             btnBundleOpen.Name = "btnBundleOpen";
             btnBundleOpen.Size = new Size(248, 40);
-            btnBundleOpen.TabIndex = 0;
+            btnBundleOpen.TabIndex = 2;
             btnBundleOpen.Text = "Open";
             btnBundleOpen.TextAlign = ContentAlignment.MiddleRight;
             btnBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -144,7 +144,7 @@
             grpOutput.Location = new Point(278, 12);
             grpOutput.Name = "grpOutput";
             grpOutput.Size = new Size(260, 105);
-            grpOutput.TabIndex = 15;
+            grpOutput.TabIndex = 1;
             grpOutput.TabStop = false;
             grpOutput.Text = "Output Folder";
             // 
@@ -154,7 +154,7 @@
             lbOutputBundleName.Location = new Point(6, 19);
             lbOutputBundleName.Name = "lbOutputBundleName";
             lbOutputBundleName.Size = new Size(248, 37);
-            lbOutputBundleName.TabIndex = 1;
+            lbOutputBundleName.TabIndex = 0;
             lbOutputBundleName.Text = "Folder Path: ";
             // 
             // btnOutputBundleOpen
@@ -163,7 +163,7 @@
             btnOutputBundleOpen.Location = new Point(6, 59);
             btnOutputBundleOpen.Name = "btnOutputBundleOpen";
             btnOutputBundleOpen.Size = new Size(248, 40);
-            btnOutputBundleOpen.TabIndex = 0;
+            btnOutputBundleOpen.TabIndex = 1;
             btnOutputBundleOpen.Text = "Open";
             btnOutputBundleOpen.TextAlign = ContentAlignment.MiddleRight;
             btnOutputBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;

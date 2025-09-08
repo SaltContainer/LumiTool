@@ -38,6 +38,7 @@
             listRecords = new ListBox();
             lbProjectName = new Label();
             grpEditRecord = new GroupBox();
+            btnSaveRecord = new Button();
             lbSize = new Label();
             numSize = new NumericUpDown();
             grpAssetPaths = new GroupBox();
@@ -60,7 +61,6 @@
             txtProjectName = new TextBox();
             btnAddRecord = new Button();
             btnRemoveRecord = new Button();
-            btnSaveRecord = new Button();
             grpManifest.SuspendLayout();
             grpEditRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSize).BeginInit();
@@ -76,7 +76,7 @@
             grpManifest.Location = new Point(12, 12);
             grpManifest.Name = "grpManifest";
             grpManifest.Size = new Size(260, 86);
-            grpManifest.TabIndex = 4;
+            grpManifest.TabIndex = 0;
             grpManifest.TabStop = false;
             grpManifest.Text = "Loaded Manifest";
             // 
@@ -86,7 +86,7 @@
             lbManifestName.Location = new Point(6, 19);
             lbManifestName.Name = "lbManifestName";
             lbManifestName.Size = new Size(94, 15);
-            lbManifestName.TabIndex = 1;
+            lbManifestName.TabIndex = 0;
             lbManifestName.Text = "Manifest Name: ";
             // 
             // btnManifestOpen
@@ -96,7 +96,7 @@
             btnManifestOpen.Location = new Point(6, 40);
             btnManifestOpen.Name = "btnManifestOpen";
             btnManifestOpen.Size = new Size(121, 40);
-            btnManifestOpen.TabIndex = 0;
+            btnManifestOpen.TabIndex = 1;
             btnManifestOpen.Text = "Open";
             btnManifestOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnManifestOpen.UseVisualStyleBackColor = true;
@@ -123,7 +123,7 @@
             listRecords.Location = new Point(12, 104);
             listRecords.Name = "listRecords";
             listRecords.Size = new Size(260, 364);
-            listRecords.TabIndex = 5;
+            listRecords.TabIndex = 1;
             listRecords.SelectedIndexChanged += listRecords_SelectedIndexChanged;
             // 
             // lbProjectName
@@ -132,7 +132,7 @@
             lbProjectName.Location = new Point(6, 25);
             lbProjectName.Name = "lbProjectName";
             lbProjectName.Size = new Size(82, 15);
-            lbProjectName.TabIndex = 6;
+            lbProjectName.TabIndex = 0;
             lbProjectName.Text = "Project Name:";
             // 
             // grpEditRecord
@@ -150,9 +150,19 @@
             grpEditRecord.Location = new Point(278, 12);
             grpEditRecord.Name = "grpEditRecord";
             grpEditRecord.Size = new Size(494, 487);
-            grpEditRecord.TabIndex = 7;
+            grpEditRecord.TabIndex = 4;
             grpEditRecord.TabStop = false;
             grpEditRecord.Text = "Record Editor";
+            // 
+            // btnSaveRecord
+            // 
+            btnSaveRecord.Location = new Point(343, 123);
+            btnSaveRecord.Name = "btnSaveRecord";
+            btnSaveRecord.Size = new Size(145, 25);
+            btnSaveRecord.TabIndex = 7;
+            btnSaveRecord.Text = "Save Edits to Record";
+            btnSaveRecord.UseVisualStyleBackColor = true;
+            btnSaveRecord.Click += btnSaveRecord_Click;
             // 
             // lbSize
             // 
@@ -160,7 +170,7 @@
             lbSize.Location = new Point(14, 125);
             lbSize.Name = "lbSize";
             lbSize.Size = new Size(74, 15);
-            lbSize.TabIndex = 16;
+            lbSize.TabIndex = 5;
             lbSize.Text = "Size in bytes:";
             // 
             // numSize
@@ -171,7 +181,7 @@
             numSize.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numSize.Name = "numSize";
             numSize.Size = new Size(228, 23);
-            numSize.TabIndex = 15;
+            numSize.TabIndex = 6;
             // 
             // grpAssetPaths
             // 
@@ -184,7 +194,7 @@
             grpAssetPaths.Location = new Point(6, 319);
             grpAssetPaths.Name = "grpAssetPaths";
             grpAssetPaths.Size = new Size(482, 159);
-            grpAssetPaths.TabIndex = 14;
+            grpAssetPaths.TabIndex = 9;
             grpAssetPaths.TabStop = false;
             grpAssetPaths.Text = "Asset Paths";
             // 
@@ -193,7 +203,7 @@
             btnRenameAssetPath.Location = new Point(395, 125);
             btnRenameAssetPath.Name = "btnRenameAssetPath";
             btnRenameAssetPath.Size = new Size(81, 23);
-            btnRenameAssetPath.TabIndex = 16;
+            btnRenameAssetPath.TabIndex = 5;
             btnRenameAssetPath.Text = "Rename";
             btnRenameAssetPath.UseVisualStyleBackColor = true;
             btnRenameAssetPath.Click += btnRenameAssetPath_Click;
@@ -204,7 +214,7 @@
             btnRemoveAssetPath.Location = new Point(432, 72);
             btnRemoveAssetPath.Name = "btnRemoveAssetPath";
             btnRemoveAssetPath.Size = new Size(44, 44);
-            btnRemoveAssetPath.TabIndex = 16;
+            btnRemoveAssetPath.TabIndex = 2;
             btnRemoveAssetPath.UseVisualStyleBackColor = true;
             btnRemoveAssetPath.Click += btnRemoveAssetPath_Click;
             // 
@@ -214,7 +224,7 @@
             btnAddAssetPath.Location = new Point(432, 22);
             btnAddAssetPath.Name = "btnAddAssetPath";
             btnAddAssetPath.Size = new Size(44, 44);
-            btnAddAssetPath.TabIndex = 16;
+            btnAddAssetPath.TabIndex = 1;
             btnAddAssetPath.UseVisualStyleBackColor = true;
             btnAddAssetPath.Click += btnAddAssetPath_Click;
             // 
@@ -225,7 +235,7 @@
             lbAssetPath.Location = new Point(23, 129);
             lbAssetPath.Name = "lbAssetPath";
             lbAssetPath.Size = new Size(65, 15);
-            lbAssetPath.TabIndex = 13;
+            lbAssetPath.TabIndex = 3;
             lbAssetPath.Text = "Asset Path:";
             // 
             // txtAssetPath
@@ -234,7 +244,7 @@
             txtAssetPath.Location = new Point(94, 125);
             txtAssetPath.Name = "txtAssetPath";
             txtAssetPath.Size = new Size(295, 23);
-            txtAssetPath.TabIndex = 13;
+            txtAssetPath.TabIndex = 4;
             // 
             // listAssetPaths
             // 
@@ -258,7 +268,7 @@
             grpDependency.Location = new Point(6, 154);
             grpDependency.Name = "grpDependency";
             grpDependency.Size = new Size(482, 159);
-            grpDependency.TabIndex = 12;
+            grpDependency.TabIndex = 8;
             grpDependency.TabStop = false;
             grpDependency.Text = "Dependencies";
             // 
@@ -267,7 +277,7 @@
             btnRenameDependency.Location = new Point(395, 125);
             btnRenameDependency.Name = "btnRenameDependency";
             btnRenameDependency.Size = new Size(81, 23);
-            btnRenameDependency.TabIndex = 10;
+            btnRenameDependency.TabIndex = 5;
             btnRenameDependency.Text = "Rename";
             btnRenameDependency.UseVisualStyleBackColor = true;
             btnRenameDependency.Click += btnRenameDependency_Click;
@@ -278,7 +288,7 @@
             btnRemoveDependency.Location = new Point(432, 72);
             btnRemoveDependency.Name = "btnRemoveDependency";
             btnRemoveDependency.Size = new Size(44, 44);
-            btnRemoveDependency.TabIndex = 15;
+            btnRemoveDependency.TabIndex = 2;
             btnRemoveDependency.UseVisualStyleBackColor = true;
             btnRemoveDependency.Click += btnRemoveDependency_Click;
             // 
@@ -288,7 +298,7 @@
             btnAddDependency.Location = new Point(432, 22);
             btnAddDependency.Name = "btnAddDependency";
             btnAddDependency.Size = new Size(44, 44);
-            btnAddDependency.TabIndex = 14;
+            btnAddDependency.TabIndex = 1;
             btnAddDependency.UseVisualStyleBackColor = true;
             btnAddDependency.Click += btnAddDependency_Click;
             // 
@@ -299,7 +309,7 @@
             lbDependencyName.Location = new Point(8, 129);
             lbDependencyName.Name = "lbDependencyName";
             lbDependencyName.Size = new Size(82, 15);
-            lbDependencyName.TabIndex = 13;
+            lbDependencyName.TabIndex = 3;
             lbDependencyName.Text = "Bundle Name:";
             // 
             // txtDependencyName
@@ -308,7 +318,7 @@
             txtDependencyName.Location = new Point(96, 125);
             txtDependencyName.Name = "txtDependencyName";
             txtDependencyName.Size = new Size(295, 23);
-            txtDependencyName.TabIndex = 13;
+            txtDependencyName.TabIndex = 4;
             // 
             // listDependencies
             // 
@@ -327,7 +337,7 @@
             lbBundleName.Location = new Point(6, 60);
             lbBundleName.Name = "lbBundleName";
             lbBundleName.Size = new Size(82, 15);
-            lbBundleName.TabIndex = 11;
+            lbBundleName.TabIndex = 2;
             lbBundleName.Text = "Bundle Name:";
             // 
             // txtBundleName
@@ -336,7 +346,7 @@
             txtBundleName.Location = new Point(94, 57);
             txtBundleName.Name = "txtBundleName";
             txtBundleName.Size = new Size(394, 23);
-            txtBundleName.TabIndex = 10;
+            txtBundleName.TabIndex = 3;
             // 
             // checkStreamingScene
             // 
@@ -345,7 +355,7 @@
             checkStreamingScene.Location = new Point(94, 92);
             checkStreamingScene.Name = "checkStreamingScene";
             checkStreamingScene.Size = new Size(117, 19);
-            checkStreamingScene.TabIndex = 9;
+            checkStreamingScene.TabIndex = 4;
             checkStreamingScene.Text = "Streaming Scene:";
             checkStreamingScene.TextAlign = ContentAlignment.MiddleRight;
             checkStreamingScene.UseVisualStyleBackColor = true;
@@ -356,14 +366,14 @@
             txtProjectName.Location = new Point(94, 22);
             txtProjectName.Name = "txtProjectName";
             txtProjectName.Size = new Size(394, 23);
-            txtProjectName.TabIndex = 7;
+            txtProjectName.TabIndex = 1;
             // 
             // btnAddRecord
             // 
             btnAddRecord.Location = new Point(12, 474);
             btnAddRecord.Name = "btnAddRecord";
             btnAddRecord.Size = new Size(127, 25);
-            btnAddRecord.TabIndex = 8;
+            btnAddRecord.TabIndex = 2;
             btnAddRecord.Text = "Add Record";
             btnAddRecord.UseVisualStyleBackColor = true;
             btnAddRecord.Click += btnAddRecord_Click;
@@ -373,20 +383,10 @@
             btnRemoveRecord.Location = new Point(145, 474);
             btnRemoveRecord.Name = "btnRemoveRecord";
             btnRemoveRecord.Size = new Size(127, 25);
-            btnRemoveRecord.TabIndex = 9;
+            btnRemoveRecord.TabIndex = 3;
             btnRemoveRecord.Text = "Remove Record";
             btnRemoveRecord.UseVisualStyleBackColor = true;
             btnRemoveRecord.Click += btnRemoveRecord_Click;
-            // 
-            // btnSaveRecord
-            // 
-            btnSaveRecord.Location = new Point(343, 123);
-            btnSaveRecord.Name = "btnSaveRecord";
-            btnSaveRecord.Size = new Size(145, 25);
-            btnSaveRecord.TabIndex = 10;
-            btnSaveRecord.Text = "Save Edits to Record";
-            btnSaveRecord.UseVisualStyleBackColor = true;
-            btnSaveRecord.Click += btnSaveRecord_Click;
             // 
             // FormManifestEditor
             // 

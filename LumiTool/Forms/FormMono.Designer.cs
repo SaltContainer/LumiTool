@@ -51,7 +51,7 @@
             grpBundle.Location = new Point(12, 12);
             grpBundle.Name = "grpBundle";
             grpBundle.Size = new Size(260, 86);
-            grpBundle.TabIndex = 2;
+            grpBundle.TabIndex = 0;
             grpBundle.TabStop = false;
             grpBundle.Text = "Loaded Bundle";
             // 
@@ -61,7 +61,7 @@
             lbBundleName.Location = new Point(6, 19);
             lbBundleName.Name = "lbBundleName";
             lbBundleName.Size = new Size(85, 15);
-            lbBundleName.TabIndex = 1;
+            lbBundleName.TabIndex = 0;
             lbBundleName.Text = "Bundle Name: ";
             // 
             // btnBundleOpen
@@ -71,7 +71,7 @@
             btnBundleOpen.Location = new Point(6, 40);
             btnBundleOpen.Name = "btnBundleOpen";
             btnBundleOpen.Size = new Size(121, 40);
-            btnBundleOpen.TabIndex = 0;
+            btnBundleOpen.TabIndex = 1;
             btnBundleOpen.Text = "Open";
             btnBundleOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnBundleOpen.UseVisualStyleBackColor = true;
@@ -96,7 +96,7 @@
             btnAddMono.Location = new Point(12, 200);
             btnAddMono.Name = "btnAddMono";
             btnAddMono.Size = new Size(260, 34);
-            btnAddMono.TabIndex = 3;
+            btnAddMono.TabIndex = 7;
             btnAddMono.Text = "Add MonoScript";
             btnAddMono.UseVisualStyleBackColor = true;
             btnAddMono.Click += btnAddMono_Click;
@@ -106,7 +106,7 @@
             txtAssembly.Location = new Point(79, 113);
             txtAssembly.Name = "txtAssembly";
             txtAssembly.Size = new Size(193, 23);
-            txtAssembly.TabIndex = 4;
+            txtAssembly.TabIndex = 2;
             // 
             // lbAssembly
             // 
@@ -114,7 +114,7 @@
             lbAssembly.Location = new Point(12, 116);
             lbAssembly.Name = "lbAssembly";
             lbAssembly.Size = new Size(61, 15);
-            lbAssembly.TabIndex = 5;
+            lbAssembly.TabIndex = 1;
             lbAssembly.Text = "Assembly:";
             // 
             // lbNamespace
@@ -123,7 +123,7 @@
             lbNamespace.Location = new Point(12, 145);
             lbNamespace.Name = "lbNamespace";
             lbNamespace.Size = new Size(72, 15);
-            lbNamespace.TabIndex = 7;
+            lbNamespace.TabIndex = 3;
             lbNamespace.Text = "Namespace:";
             // 
             // txtNamespace
@@ -131,7 +131,7 @@
             txtNamespace.Location = new Point(90, 142);
             txtNamespace.Name = "txtNamespace";
             txtNamespace.Size = new Size(182, 23);
-            txtNamespace.TabIndex = 6;
+            txtNamespace.TabIndex = 4;
             // 
             // lbClass
             // 
@@ -139,7 +139,7 @@
             lbClass.Location = new Point(12, 174);
             lbClass.Name = "lbClass";
             lbClass.Size = new Size(37, 15);
-            lbClass.TabIndex = 9;
+            lbClass.TabIndex = 5;
             lbClass.Text = "Class:";
             // 
             // txtClass
@@ -147,7 +147,7 @@
             txtClass.Location = new Point(55, 171);
             txtClass.Name = "txtClass";
             txtClass.Size = new Size(217, 23);
-            txtClass.TabIndex = 8;
+            txtClass.TabIndex = 6;
             // 
             // FormMono
             // 

@@ -56,7 +56,7 @@
             grpManifest.Location = new Point(12, 12);
             grpManifest.Name = "grpManifest";
             grpManifest.Size = new Size(260, 86);
-            grpManifest.TabIndex = 3;
+            grpManifest.TabIndex = 0;
             grpManifest.TabStop = false;
             grpManifest.Text = "Loaded Manifest";
             // 
@@ -66,7 +66,7 @@
             lbManifestName.Location = new Point(6, 19);
             lbManifestName.Name = "lbManifestName";
             lbManifestName.Size = new Size(94, 15);
-            lbManifestName.TabIndex = 1;
+            lbManifestName.TabIndex = 0;
             lbManifestName.Text = "Manifest Name: ";
             // 
             // btnManifestOpen
@@ -76,7 +76,7 @@
             btnManifestOpen.Location = new Point(6, 40);
             btnManifestOpen.Name = "btnManifestOpen";
             btnManifestOpen.Size = new Size(121, 40);
-            btnManifestOpen.TabIndex = 0;
+            btnManifestOpen.TabIndex = 1;
             btnManifestOpen.Text = "Open";
             btnManifestOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnManifestOpen.UseVisualStyleBackColor = true;
@@ -113,7 +113,7 @@
             grpMod.Location = new Point(12, 104);
             grpMod.Name = "grpMod";
             grpMod.Size = new Size(260, 100);
-            grpMod.TabIndex = 4;
+            grpMod.TabIndex = 1;
             grpMod.TabStop = false;
             grpMod.Text = "Loaded Mod RomFS";
             // 
@@ -123,7 +123,7 @@
             lbModPath.Location = new Point(6, 19);
             lbModPath.Name = "lbModPath";
             lbModPath.Size = new Size(248, 32);
-            lbModPath.TabIndex = 1;
+            lbModPath.TabIndex = 0;
             lbModPath.Text = "Path: ";
             // 
             // btnModOpen
@@ -132,7 +132,7 @@
             btnModOpen.Location = new Point(6, 54);
             btnModOpen.Name = "btnModOpen";
             btnModOpen.Size = new Size(248, 40);
-            btnModOpen.TabIndex = 0;
+            btnModOpen.TabIndex = 1;
             btnModOpen.Text = "Open";
             btnModOpen.TextAlign = ContentAlignment.MiddleRight;
             btnModOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -146,7 +146,7 @@
             grpVanilla.Location = new Point(12, 210);
             grpVanilla.Name = "grpVanilla";
             grpVanilla.Size = new Size(260, 100);
-            grpVanilla.TabIndex = 5;
+            grpVanilla.TabIndex = 2;
             grpVanilla.TabStop = false;
             grpVanilla.Text = "Loaded Vanilla RomFS";
             // 
@@ -156,7 +156,7 @@
             lbVanillaPath.Location = new Point(6, 19);
             lbVanillaPath.Name = "lbVanillaPath";
             lbVanillaPath.Size = new Size(248, 32);
-            lbVanillaPath.TabIndex = 1;
+            lbVanillaPath.TabIndex = 0;
             lbVanillaPath.Text = "Path: ";
             // 
             // btnVanillaOpen
@@ -165,7 +165,7 @@
             btnVanillaOpen.Location = new Point(6, 54);
             btnVanillaOpen.Name = "btnVanillaOpen";
             btnVanillaOpen.Size = new Size(248, 40);
-            btnVanillaOpen.TabIndex = 0;
+            btnVanillaOpen.TabIndex = 1;
             btnVanillaOpen.Text = "Open";
             btnVanillaOpen.TextAlign = ContentAlignment.MiddleRight;
             btnVanillaOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -177,7 +177,7 @@
             btnLog.Location = new Point(12, 316);
             btnLog.Name = "btnLog";
             btnLog.Size = new Size(260, 48);
-            btnLog.TabIndex = 6;
+            btnLog.TabIndex = 3;
             btnLog.Text = "Generate Log of Changes";
             btnLog.UseVisualStyleBackColor = true;
             btnLog.Click += btnLog_Click;
