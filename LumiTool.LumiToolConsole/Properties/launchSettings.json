@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LumiTool.LumiToolConsole": {
+      "commandName": "Project",
+      "commandLineArgs": "bundle-prepper -i \"C:\\Users\\naclc\\Downloads\\in\\fc0001_00\" -o \"C:\\Users\\naclc\\Downloads\\out\\fc0001_00\" -p -r"
+    }
+  }
+}
