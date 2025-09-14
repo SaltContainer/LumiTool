@@ -41,5 +41,10 @@
             b.AddRange(max);
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"{id} : min: [{min[0]}, {min[1]}, {min[2]}, {min[3]}], max: [{max[0]}, {max[1]}, {max[2]}, {max[3]}]";
+        }
     }
 }

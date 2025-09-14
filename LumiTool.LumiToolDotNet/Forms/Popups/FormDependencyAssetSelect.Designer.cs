@@ -75,7 +75,7 @@
             MaximizeBox = false;
             MaximumSize = new Size(300, 200);
             MinimizeBox = false;
-            MinimumSize = new Size(300, 162);
+            MinimumSize = new Size(300, 200);
             Name = "FormDependencyAssetSelect";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Select Asset in Dependency";

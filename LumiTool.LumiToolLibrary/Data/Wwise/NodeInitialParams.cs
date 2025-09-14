@@ -5,6 +5,12 @@
         public PropBundle0 propBundle0;
         public PropBundle2 propBundle2;
 
+        public NodeInitialParams()
+        {
+            propBundle0 = new PropBundle0();
+            propBundle2 = new PropBundle2();
+        }
+
         public NodeInitialParams Clone()
         {
             NodeInitialParams nip = (NodeInitialParams)this.MemberwiseClone();

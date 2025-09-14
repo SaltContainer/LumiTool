@@ -40,7 +40,7 @@
 
         public override string ToString()
         {
-            return $"[{id}] {actionListSize} action{(actionListSize != 1 ? "s" : "")}";
+            return $"[{id}] {actionIDs.Count} action{(actionIDs.Count != 1 ? "s" : "")}";
         }
     }
 }

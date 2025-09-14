@@ -1,5 +1,6 @@
 ﻿using LumiTool.Data;
 using LumiTool.Data.Wwise;
+using Microsoft.VisualBasic;
 
 namespace LumiTool.Engine
 {
@@ -280,6 +281,18 @@ namespace LumiTool.Engine
         {
             HircChunk hc = (HircChunk)wd.banks[0].chunks.First(c => c is HircChunk);
             return hc.loadedItem.Where(hi => hi is Data.Wwise.Action && ev.actionIDs.Contains(hi.id)).Cast<Data.Wwise.Action>().ToList();
+        }
+
+        public void AddActionToEvent(WwiseData wd, Event ev, Data.Wwise.Action action)
+        {
+            uint newID = GenerateNewID(wd);
+            AddHirc(wd, action, newID);
+            ev.actionIDs.Add(newID);
+        }
+
+        public void RemoveActionOfEvent(WwiseData wd, Event ev, Data.Wwise.Action action)
+        {
+            ev.actionIDs.Remove(action.id);
         }
 
         private void AddHirc(WwiseData wd, HircItem hi, uint id)

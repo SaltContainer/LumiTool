@@ -29,5 +29,10 @@
         {
             return Utils.GetBytes(value);
         }
+
+        public override string ToString()
+        {
+            return $"{id} : {value}";
+        }
     }
 }

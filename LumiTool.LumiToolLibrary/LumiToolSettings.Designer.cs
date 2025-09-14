@@ -14,58 +14,47 @@ namespace LumiTool.LumiToolLibrary {
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
     internal sealed partial class LumiToolSettings : global::System.Configuration.ApplicationSettingsBase {
-
+        
         private static LumiToolSettings defaultInstance = ((LumiToolSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new LumiToolSettings())));
-
-        public static LumiToolSettings Default
-        {
-            get
-            {
+        
+        public static LumiToolSettings Default {
+            get {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FirstBoot
-        {
-            get
-            {
+        public bool FirstBoot {
+            get {
                 return ((bool)(this["FirstBoot"]));
             }
-            set
-            {
+            set {
                 this["FirstBoot"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DependencyConfigPath
-        {
-            get
-            {
+        public string DependencyConfigPath {
+            get {
                 return ((string)(this["DependencyConfigPath"]));
             }
-            set
-            {
+            set {
                 this["DependencyConfigPath"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int AssetBundleCompressionMode
-        {
-            get
-            {
+        public int AssetBundleCompressionMode {
+            get {
                 return ((int)(this["AssetBundleCompressionMode"]));
             }
-            set
-            {
+            set {
                 this["AssetBundleCompressionMode"] = value;
             }
         }

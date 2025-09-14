@@ -5,6 +5,11 @@
         public byte propsCount;
         public List<PropBundle3> props;
 
+        public PropBundle2()
+        {
+            props = new List<PropBundle3>();
+        }
+
         public PropBundle2 Clone()
         {
             PropBundle2 pb2 = (PropBundle2)this.MemberwiseClone();

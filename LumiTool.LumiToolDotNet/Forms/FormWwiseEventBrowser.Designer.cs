@@ -38,6 +38,11 @@ namespace LumiTool.Forms
             btnBankOpen = new Button();
             listEvents = new ListBox();
             listActions = new ListBox();
+            btnAddAction = new Button();
+            btnRemoveAction = new Button();
+            btnEditAction = new Button();
+            comboActions = new ComboBox();
+            lbActions = new Label();
             grpBank.SuspendLayout();
             SuspendLayout();
             // 
@@ -94,14 +99,66 @@ namespace LumiTool.Forms
             listActions.ItemHeight = 15;
             listActions.Location = new Point(200, 14);
             listActions.Name = "listActions";
-            listActions.Size = new Size(472, 289);
+            listActions.Size = new Size(472, 244);
             listActions.TabIndex = 2;
+            // 
+            // btnAddAction
+            // 
+            btnAddAction.Image = Resources.plus_big;
+            btnAddAction.Location = new Point(543, 264);
+            btnAddAction.Name = "btnAddAction";
+            btnAddAction.Size = new Size(39, 39);
+            btnAddAction.TabIndex = 5;
+            btnAddAction.UseVisualStyleBackColor = true;
+            btnAddAction.Click += btnAddAction_Click;
+            // 
+            // btnRemoveAction
+            // 
+            btnRemoveAction.Image = Resources.minus_big;
+            btnRemoveAction.Location = new Point(588, 264);
+            btnRemoveAction.Name = "btnRemoveAction";
+            btnRemoveAction.Size = new Size(39, 39);
+            btnRemoveAction.TabIndex = 6;
+            btnRemoveAction.UseVisualStyleBackColor = true;
+            btnRemoveAction.Click += btnRemoveAction_Click;
+            // 
+            // btnEditAction
+            // 
+            btnEditAction.Image = Resources.pencil_big;
+            btnEditAction.Location = new Point(633, 264);
+            btnEditAction.Name = "btnEditAction";
+            btnEditAction.Size = new Size(39, 39);
+            btnEditAction.TabIndex = 7;
+            btnEditAction.UseVisualStyleBackColor = true;
+            btnEditAction.Click += btnEditAction_Click;
+            // 
+            // comboActions
+            // 
+            comboActions.FormattingEnabled = true;
+            comboActions.Location = new Point(305, 273);
+            comboActions.Name = "comboActions";
+            comboActions.Size = new Size(232, 23);
+            comboActions.TabIndex = 4;
+            // 
+            // lbActions
+            // 
+            lbActions.AutoSize = true;
+            lbActions.Location = new Point(200, 276);
+            lbActions.Name = "lbActions";
+            lbActions.Size = new Size(99, 15);
+            lbActions.TabIndex = 3;
+            lbActions.Text = "New Action Type:";
             // 
             // FormWwiseEventBrowser
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(684, 315);
+            Controls.Add(lbActions);
+            Controls.Add(comboActions);
+            Controls.Add(btnEditAction);
+            Controls.Add(btnRemoveAction);
+            Controls.Add(btnAddAction);
             Controls.Add(listActions);
             Controls.Add(listEvents);
             Controls.Add(grpBank);
@@ -111,12 +168,13 @@ namespace LumiTool.Forms
             MaximumSize = new Size(700, 354);
             MinimumSize = new Size(700, 354);
             Name = "FormWwiseEventBrowser";
-            Text = "FormWwiseEventBrowser";
+            Text = "Wwise Event Browser";
             FormClosed += FormWwiseEventBrowser_FormClosed;
             Shown += FormWwiseEventBrowser_Shown;
             grpBank.ResumeLayout(false);
             grpBank.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -127,5 +185,10 @@ namespace LumiTool.Forms
         private Button btnBankOpen;
         private ListBox listEvents;
         private ListBox listActions;
+        private Button btnAddAction;
+        private Button btnRemoveAction;
+        private Button btnEditAction;
+        private ComboBox comboActions;
+        private Label lbActions;
     }
 }

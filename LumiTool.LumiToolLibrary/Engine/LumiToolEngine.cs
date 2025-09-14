@@ -157,6 +157,16 @@ namespace LumiTool.Engine
             return wwiseEngine.GetActionsOfEvent(wd, ev);
         }
 
+        public void AddActionToEvent(WwiseData wd, Event ev, Data.Wwise.Action action)
+        {
+            wwiseEngine.AddActionToEvent(wd, ev, action);
+        }
+
+        public void RemoveActionOfEvent(WwiseData wd, Event ev, Data.Wwise.Action action)
+        {
+            wwiseEngine.RemoveActionOfEvent(wd, ev, action);
+        }
+
         public uint FNV132Hash(string data)
         {
             return wwiseEngine.FNV132Hash(data);

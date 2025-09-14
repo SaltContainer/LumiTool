@@ -7,6 +7,11 @@
         public byte isBus;
         public NodeInitialParams initialParams;
 
+        public Action()
+        {
+            initialParams = new NodeInitialParams();
+        }
+
         public static Action GetInstance(WwiseData wd)
         {
             ushort actionType = BitConverter.ToUInt16(wd.buffer, wd.offset + 9);
