@@ -171,7 +171,8 @@ namespace LumiTool.Forms
 
         private void listEvents_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AddActionsToListBox(listEvents.SelectedItem as Event);
+            if (listEvents.SelectedIndex > -1 && listEvents.SelectedIndex < listEvents.Items.Count)
+                AddActionsToListBox(listEvents.SelectedItem as Event);
         }
 
         private void btnAddAction_Click(object sender, EventArgs e)
@@ -180,13 +181,20 @@ namespace LumiTool.Forms
             var selectedType = actionTypes[comboActions.SelectedIndex];
             var action = Activator.CreateInstance(selectedType.type) as Data.Wwise.Action;
 
-            using FormWwiseActionBase actionForm = new FormWwiseActionBase(action);
-            actionForm.ShowDialog();
-
-            if (actionForm.DialogResult == DialogResult.OK)
+            using FormWwiseActionBase actionForm = FormWwiseActionBase.BuildFormByActionType(action);
+            if (actionForm != null)
             {
-                engine.AddActionToEvent(bank, ev, action);
-                ReloadLists();
+                actionForm.ShowDialog();
+
+                if (actionForm.DialogResult == DialogResult.OK)
+                {
+                    engine.AddActionToEvent(bank, ev, action);
+                    ReloadLists();
+                }
+            }
+            else
+            {
+                MessageBox.Show($"An action of type {comboActions.SelectedItem} cannot be added yet.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -211,13 +219,17 @@ namespace LumiTool.Forms
             if (listEvents.SelectedIndex > -1 && listEvents.SelectedIndex < listEvents.Items.Count &&
                 listActions.SelectedIndex > -1 && listActions.SelectedIndex < listActions.Items.Count)
             {
-                using FormWwiseActionBase actionForm = new FormWwiseActionBase(action);
-                actionForm.ShowDialog();
-
-                if (actionForm.DialogResult == DialogResult.OK)
+                using FormWwiseActionBase actionForm = FormWwiseActionBase.BuildFormByActionType(action);
+                if (actionForm != null)
                 {
-                    engine.AddActionToEvent(bank, ev, action);
-                    ReloadLists();
+                    actionForm.ShowDialog();
+
+                    if (actionForm.DialogResult == DialogResult.OK)
+                        ReloadLists();
+                }
+                else
+                {
+                    MessageBox.Show($"An action of type {comboActions.SelectedItem} cannot be edited yet.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }

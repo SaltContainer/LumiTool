@@ -5,7 +5,7 @@ namespace LumiTool.Forms.WwiseActions
 {
     public partial class FormWwiseActionBase : Form
     {
-        Data.Wwise.Action action;
+        protected Data.Wwise.Action action;
 
         BindingList<PropBundle1> bundle0Props;
         BindingList<PropBundle3> bundle2Props;
@@ -24,7 +24,24 @@ namespace LumiTool.Forms.WwiseActions
             listBundle2.DataSource = bundle2Props;
         }
 
-        protected void btnSave_Click(object sender, EventArgs e)
+        public FormWwiseActionBase()
+        {
+            InitializeComponent();
+        }
+
+        public static FormWwiseActionBase BuildFormByActionType(Data.Wwise.Action action)
+        {
+            switch (action)
+            {
+                case ActionStop actionStop:
+                    return new FormWwiseActionStop(actionStop);
+
+                default:
+                    return null;
+            }
+        }
+
+        protected virtual void SaveProperties()
         {
             action.idExt = (uint)numExtID.Value;
             action.isBus = (byte)(checkIsBus.Checked ? 1 : 0);
@@ -32,9 +49,18 @@ namespace LumiTool.Forms.WwiseActions
             action.initialParams.propBundle0.propsCount = (byte)action.initialParams.propBundle0.props.Count;
             action.initialParams.propBundle2.props = bundle2Props.ToList();
             action.initialParams.propBundle2.propsCount = (byte)action.initialParams.propBundle2.props.Count;
+        }
 
+        private void SetOKAndClose()
+        {
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            SaveProperties();
+            SetOKAndClose();
         }
 
         private void listBundle0_SelectedIndexChanged(object sender, EventArgs e)

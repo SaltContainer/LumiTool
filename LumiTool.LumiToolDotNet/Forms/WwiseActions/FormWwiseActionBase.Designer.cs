@@ -1,6 +1,4 @@
-﻿using LumiTool.LumiToolDotNet.Resources;
-
-namespace LumiTool.Forms.WwiseActions
+﻿namespace LumiTool.Forms.WwiseActions
 {
     partial class FormWwiseActionBase
     {
@@ -248,7 +246,7 @@ namespace LumiTool.Forms.WwiseActions
             // 
             // btnEditBundle3
             // 
-            btnEditBundle3.Image = Resources.pencil_big;
+            btnEditBundle3.Image = LumiToolDotNet.Resources.Resources.pencil_big;
             btnEditBundle3.Location = new Point(253, 212);
             btnEditBundle3.Name = "btnEditBundle3";
             btnEditBundle3.Size = new Size(39, 39);
@@ -258,7 +256,7 @@ namespace LumiTool.Forms.WwiseActions
             // 
             // btnRemoveBundle3
             // 
-            btnRemoveBundle3.Image = Resources.minus_big;
+            btnRemoveBundle3.Image = LumiToolDotNet.Resources.Resources.minus_big;
             btnRemoveBundle3.Location = new Point(253, 167);
             btnRemoveBundle3.Name = "btnRemoveBundle3";
             btnRemoveBundle3.Size = new Size(39, 39);
@@ -268,7 +266,7 @@ namespace LumiTool.Forms.WwiseActions
             // 
             // btnAddBundle3
             // 
-            btnAddBundle3.Image = Resources.plus_big;
+            btnAddBundle3.Image = LumiToolDotNet.Resources.Resources.plus_big;
             btnAddBundle3.Location = new Point(253, 122);
             btnAddBundle3.Name = "btnAddBundle3";
             btnAddBundle3.Size = new Size(39, 39);
@@ -341,7 +339,7 @@ namespace LumiTool.Forms.WwiseActions
             // 
             // btnEditBundle1
             // 
-            btnEditBundle1.Image = Resources.pencil_big;
+            btnEditBundle1.Image = LumiToolDotNet.Resources.Resources.pencil_big;
             btnEditBundle1.Location = new Point(253, 212);
             btnEditBundle1.Name = "btnEditBundle1";
             btnEditBundle1.Size = new Size(39, 39);
@@ -351,7 +349,7 @@ namespace LumiTool.Forms.WwiseActions
             // 
             // btnRemoveBundle1
             // 
-            btnRemoveBundle1.Image = Resources.minus_big;
+            btnRemoveBundle1.Image = LumiToolDotNet.Resources.Resources.minus_big;
             btnRemoveBundle1.Location = new Point(253, 167);
             btnRemoveBundle1.Name = "btnRemoveBundle1";
             btnRemoveBundle1.Size = new Size(39, 39);
@@ -361,7 +359,7 @@ namespace LumiTool.Forms.WwiseActions
             // 
             // btnAddBundle1
             // 
-            btnAddBundle1.Image = Resources.plus_big;
+            btnAddBundle1.Image = LumiToolDotNet.Resources.Resources.plus_big;
             btnAddBundle1.Location = new Point(253, 122);
             btnAddBundle1.Name = "btnAddBundle1";
             btnAddBundle1.Size = new Size(39, 39);
@@ -403,7 +401,7 @@ namespace LumiTool.Forms.WwiseActions
             btnSave.Location = new Point(12, 662);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(310, 37);
-            btnSave.TabIndex = 1;
+            btnSave.TabIndex = 2;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
@@ -480,6 +478,6 @@ namespace LumiTool.Forms.WwiseActions
         private NumericUpDown numBundle3Max2;
         private NumericUpDown numBundle3Max1;
         private NumericUpDown numBundle3Max0;
-        private Button btnSave;
+        protected Button btnSave;
     }
 }

@@ -5,6 +5,11 @@
         public ulong exceptionListSize;
         public List<WwiseObjectIDext> listElementException;
 
+        public ExceptParams()
+        {
+            listElementException = new List<WwiseObjectIDext>();
+        }
+
         public void Deserialize(WwiseData wd)
         {
             listElementException = new();

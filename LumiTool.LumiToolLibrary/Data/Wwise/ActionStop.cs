@@ -6,6 +6,12 @@
         public StopActionSpecificParams stopActionSpecificParams;
         public ExceptParams exceptParams;
 
+        public ActionStop()
+        {
+            stopActionSpecificParams = new StopActionSpecificParams();
+            exceptParams = new ExceptParams();
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             base.Deserialize(wd);
