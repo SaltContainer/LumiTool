@@ -36,6 +36,33 @@ namespace LumiTool.Forms.WwiseActions
                 case ActionStop actionStop:
                     return new FormWwiseActionStop(actionStop);
 
+                case ActionPause actionPause:
+                    return new FormWwiseActionPause(actionPause);
+
+                case ActionResume actionResume:
+                    return new FormWwiseActionResume(actionResume);
+
+                case ActionPlay actionPlay:
+                    return new FormWwiseActionPlay(actionPlay);
+
+                case ActionMute actionMute:
+                    return new FormWwiseActionMute(actionMute);
+
+                case ActionSetAkProp actionSetAkProp:
+                    return new FormWwiseActionSetAkProp(actionSetAkProp);
+
+                case ActionSetState actionSetState:
+                    return new FormWwiseActionSetState(actionSetState);
+
+                case ActionSetGameParameter actionSetGameParameter:
+                    return new FormWwiseActionSetGameParameter(actionSetGameParameter);
+
+                case ActionSetSwitch actionSetSwitch:
+                    return new FormWwiseActionSetSwitch(actionSetSwitch);
+
+                case ActionPlayEvent actionPlayEvent:
+                    return new FormWwiseActionPlayEvent(actionPlayEvent);
+
                 default:
                     return null;
             }

@@ -6,6 +6,12 @@
         public AkPropActionSpecificParams akPropActionSpecificParams;
         public ExceptParams exceptParams;
 
+        public ActionSetAkProp()
+        {
+            akPropActionSpecificParams = new AkPropActionSpecificParams();
+            exceptParams = new ExceptParams();
+        }
+
         public ActionSetAkProp Clone()
         {
             ActionSetAkProp asap = (ActionSetAkProp)this.MemberwiseClone();

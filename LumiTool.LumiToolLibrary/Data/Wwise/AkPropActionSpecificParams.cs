@@ -5,6 +5,11 @@
         public byte valueMeaning;
         public RandomizerModifier randomizerModifier;
 
+        public AkPropActionSpecificParams()
+        {
+            randomizerModifier = new RandomizerModifier();
+        }
+
         public void Deserialize(WwiseData wd)
         {
             randomizerModifier = new();

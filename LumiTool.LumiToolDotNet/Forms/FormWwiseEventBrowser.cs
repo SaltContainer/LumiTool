@@ -142,6 +142,23 @@ namespace LumiTool.Forms
             }
         }
 
+        private void btnBankSave_Click(object sender, EventArgs e)
+        {
+            using SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    engine.SaveBank(bank, saveFileDialog.FileName);
+                    MessageBox.Show("Successfully saved the new bank!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error while saving the new bank. Full exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
         private void FormWwiseEventBrowser_Shown(object sender, EventArgs e)
         {
             UpdateComponentsOnStart();

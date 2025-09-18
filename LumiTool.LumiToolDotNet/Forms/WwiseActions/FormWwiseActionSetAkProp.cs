@@ -3,23 +3,24 @@ using System.ComponentModel;
 
 namespace LumiTool.Forms.WwiseActions
 {
-    public partial class FormWwiseActionStop : FormWwiseActionBase
+    public partial class FormWwiseActionSetAkProp : FormWwiseActionBase
     {
         BindingList<WwiseObjectIDext> exceptions;
 
-        public FormWwiseActionStop(ActionStop action) : base(action)
+        public FormWwiseActionSetAkProp(ActionSetAkProp action) : base(action)
         {
             InitializeComponent();
 
             exceptions = new BindingList<WwiseObjectIDext>(action.exceptParams.listElementException);
 
             numFadeCurve.Value = action.fadeCurve;
-            checkStateTransition.Checked = action.stopActionSpecificParams.applyToStateTransitions;
-            checkDynamicSequence.Checked = action.stopActionSpecificParams.applyToDynamicSequence;
+            numRandomBase.Value = (decimal)action.akPropActionSpecificParams.randomizerModifier._base;
+            numRandomMin.Value = (decimal)action.akPropActionSpecificParams.randomizerModifier.min;
+            numRandomMax.Value = (decimal)action.akPropActionSpecificParams.randomizerModifier.max;
             listExceptions.DataSource = exceptions;
         }
 
-        public FormWwiseActionStop()
+        public FormWwiseActionSetAkProp()
         {
             InitializeComponent();
         }
@@ -28,12 +29,13 @@ namespace LumiTool.Forms.WwiseActions
         {
             base.SaveProperties();
 
-            var actionStop = action as ActionStop;
-            actionStop.fadeCurve = (byte)numFadeCurve.Value;
-            actionStop.stopActionSpecificParams.applyToStateTransitions = checkStateTransition.Checked;
-            actionStop.stopActionSpecificParams.applyToDynamicSequence = checkDynamicSequence.Checked;
-            actionStop.exceptParams.listElementException = exceptions.ToList();
-            actionStop.exceptParams.exceptionListSize = (ulong)actionStop.exceptParams.listElementException.Count;
+            var actionSetAkProp = action as ActionSetAkProp;
+            actionSetAkProp.fadeCurve = (byte)numFadeCurve.Value;
+            actionSetAkProp.akPropActionSpecificParams.randomizerModifier._base = (float)numRandomBase.Value;
+            actionSetAkProp.akPropActionSpecificParams.randomizerModifier.min = (float)numRandomMin.Value;
+            actionSetAkProp.akPropActionSpecificParams.randomizerModifier.max = (float)numRandomMax.Value;
+            actionSetAkProp.exceptParams.listElementException = exceptions.ToList();
+            actionSetAkProp.exceptParams.exceptionListSize = (ulong)actionSetAkProp.exceptParams.listElementException.Count;
         }
 
         private void listExceptions_SelectedIndexChanged(object sender, EventArgs e)

@@ -1,6 +1,6 @@
 ﻿namespace LumiTool.Forms.WwiseActions
 {
-    partial class FormWwiseActionStop : FormWwiseActionBase
+    partial class FormWwiseActionSetAkProp : FormWwiseActionBase
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            grpActionStop = new GroupBox();
+            grpActionSetAkProp = new GroupBox();
             grpExceptions = new GroupBox();
             lbExceptionBus = new Label();
             checkExceptionBus = new CheckBox();
@@ -38,15 +38,20 @@
             btnExceptionsRemove = new Button();
             btnExceptionsAdd = new Button();
             listExceptions = new ListBox();
-            lbDynamicSequence = new Label();
-            checkDynamicSequence = new CheckBox();
-            lbStateTransition = new Label();
-            checkStateTransition = new CheckBox();
+            lbRandomMax = new Label();
+            numRandomMax = new NumericUpDown();
+            lbRandomMin = new Label();
+            numRandomMin = new NumericUpDown();
+            lbRandomBase = new Label();
+            numRandomBase = new NumericUpDown();
             lbFadeCurve = new Label();
             numFadeCurve = new NumericUpDown();
-            grpActionStop.SuspendLayout();
+            grpActionSetAkProp.SuspendLayout();
             grpExceptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numExceptionID).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRandomMax).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRandomMin).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRandomBase).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numFadeCurve).BeginInit();
             SuspendLayout();
             // 
@@ -54,21 +59,23 @@
             // 
             btnSave.Size = new Size(626, 37);
             // 
-            // grpActionStop
+            // grpActionSetAkProp
             // 
-            grpActionStop.Controls.Add(grpExceptions);
-            grpActionStop.Controls.Add(lbDynamicSequence);
-            grpActionStop.Controls.Add(checkDynamicSequence);
-            grpActionStop.Controls.Add(lbStateTransition);
-            grpActionStop.Controls.Add(checkStateTransition);
-            grpActionStop.Controls.Add(lbFadeCurve);
-            grpActionStop.Controls.Add(numFadeCurve);
-            grpActionStop.Location = new Point(328, 12);
-            grpActionStop.Name = "grpActionStop";
-            grpActionStop.Size = new Size(310, 644);
-            grpActionStop.TabIndex = 1;
-            grpActionStop.TabStop = false;
-            grpActionStop.Text = "Action Stop";
+            grpActionSetAkProp.Controls.Add(grpExceptions);
+            grpActionSetAkProp.Controls.Add(lbRandomMax);
+            grpActionSetAkProp.Controls.Add(numRandomMax);
+            grpActionSetAkProp.Controls.Add(lbRandomMin);
+            grpActionSetAkProp.Controls.Add(numRandomMin);
+            grpActionSetAkProp.Controls.Add(lbRandomBase);
+            grpActionSetAkProp.Controls.Add(numRandomBase);
+            grpActionSetAkProp.Controls.Add(lbFadeCurve);
+            grpActionSetAkProp.Controls.Add(numFadeCurve);
+            grpActionSetAkProp.Location = new Point(328, 12);
+            grpActionSetAkProp.Name = "grpActionSetAkProp";
+            grpActionSetAkProp.Size = new Size(310, 644);
+            grpActionSetAkProp.TabIndex = 5;
+            grpActionSetAkProp.TabStop = false;
+            grpActionSetAkProp.Text = "Action Set AK Prop";
             // 
             // grpExceptions
             // 
@@ -80,10 +87,10 @@
             grpExceptions.Controls.Add(btnExceptionsRemove);
             grpExceptions.Controls.Add(btnExceptionsAdd);
             grpExceptions.Controls.Add(listExceptions);
-            grpExceptions.Location = new Point(6, 110);
+            grpExceptions.Location = new Point(6, 140);
             grpExceptions.Name = "grpExceptions";
             grpExceptions.Size = new Size(298, 257);
-            grpExceptions.TabIndex = 8;
+            grpExceptions.TabIndex = 15;
             grpExceptions.TabStop = false;
             grpExceptions.Text = "Exceptions";
             // 
@@ -162,41 +169,65 @@
             listExceptions.TabIndex = 0;
             listExceptions.SelectedIndexChanged += listExceptions_SelectedIndexChanged;
             // 
-            // lbDynamicSequence
+            // lbRandomMax
             // 
-            lbDynamicSequence.AutoSize = true;
-            lbDynamicSequence.Location = new Point(12, 84);
-            lbDynamicSequence.Name = "lbDynamicSequence";
-            lbDynamicSequence.Size = new Size(159, 15);
-            lbDynamicSequence.TabIndex = 6;
-            lbDynamicSequence.Text = "Apply to Dynamic Sequence:";
+            lbRandomMax.AutoSize = true;
+            lbRandomMax.Location = new Point(24, 114);
+            lbRandomMax.Name = "lbRandomMax";
+            lbRandomMax.Size = new Size(147, 15);
+            lbRandomMax.TabIndex = 13;
+            lbRandomMax.Text = "Randomizer Modifier Max:";
             // 
-            // checkDynamicSequence
+            // numRandomMax
             // 
-            checkDynamicSequence.AutoSize = true;
-            checkDynamicSequence.Location = new Point(177, 85);
-            checkDynamicSequence.Name = "checkDynamicSequence";
-            checkDynamicSequence.Size = new Size(15, 14);
-            checkDynamicSequence.TabIndex = 7;
-            checkDynamicSequence.UseVisualStyleBackColor = true;
+            numRandomMax.DecimalPlaces = 5;
+            numRandomMax.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
+            numRandomMax.Location = new Point(177, 112);
+            numRandomMax.Maximum = new decimal(new int[] { 1215752191, 23, 0, 327680 });
+            numRandomMax.Minimum = new decimal(new int[] { 1215752191, 23, 0, -2147155968 });
+            numRandomMax.Name = "numRandomMax";
+            numRandomMax.Size = new Size(127, 23);
+            numRandomMax.TabIndex = 19;
             // 
-            // lbStateTransition
+            // lbRandomMin
             // 
-            lbStateTransition.AutoSize = true;
-            lbStateTransition.Location = new Point(28, 54);
-            lbStateTransition.Name = "lbStateTransition";
-            lbStateTransition.Size = new Size(143, 15);
-            lbStateTransition.TabIndex = 4;
-            lbStateTransition.Text = "Apply to State Transitions:";
+            lbRandomMin.AutoSize = true;
+            lbRandomMin.Location = new Point(26, 84);
+            lbRandomMin.Name = "lbRandomMin";
+            lbRandomMin.Size = new Size(145, 15);
+            lbRandomMin.TabIndex = 11;
+            lbRandomMin.Text = "Randomizer Modifier Min:";
             // 
-            // checkStateTransition
+            // numRandomMin
             // 
-            checkStateTransition.AutoSize = true;
-            checkStateTransition.Location = new Point(177, 55);
-            checkStateTransition.Name = "checkStateTransition";
-            checkStateTransition.Size = new Size(15, 14);
-            checkStateTransition.TabIndex = 5;
-            checkStateTransition.UseVisualStyleBackColor = true;
+            numRandomMin.DecimalPlaces = 5;
+            numRandomMin.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
+            numRandomMin.Location = new Point(177, 82);
+            numRandomMin.Maximum = new decimal(new int[] { 1215752191, 23, 0, 327680 });
+            numRandomMin.Minimum = new decimal(new int[] { 1215752191, 23, 0, -2147155968 });
+            numRandomMin.Name = "numRandomMin";
+            numRandomMin.Size = new Size(127, 23);
+            numRandomMin.TabIndex = 18;
+            // 
+            // lbRandomBase
+            // 
+            lbRandomBase.AutoSize = true;
+            lbRandomBase.Location = new Point(23, 54);
+            lbRandomBase.Name = "lbRandomBase";
+            lbRandomBase.Size = new Size(148, 15);
+            lbRandomBase.TabIndex = 16;
+            lbRandomBase.Text = "Randomizer Modifier Base:";
+            // 
+            // numRandomBase
+            // 
+            numRandomBase.DecimalPlaces = 5;
+            numRandomBase.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
+            numRandomBase.Location = new Point(177, 52);
+            numRandomBase.Maximum = new decimal(new int[] { 1215752191, 23, 0, 327680 });
+            numRandomBase.Minimum = new decimal(new int[] { 1215752191, 23, 0, -2147155968 });
+            numRandomBase.Name = "numRandomBase";
+            numRandomBase.Size = new Size(127, 23);
+            numRandomBase.TabIndex = 17;
             // 
             // lbFadeCurve
             // 
@@ -204,7 +235,7 @@
             lbFadeCurve.Location = new Point(102, 24);
             lbFadeCurve.Name = "lbFadeCurve";
             lbFadeCurve.Size = new Size(69, 15);
-            lbFadeCurve.TabIndex = 1;
+            lbFadeCurve.TabIndex = 10;
             lbFadeCurve.Text = "Fade Curve:";
             // 
             // numFadeCurve
@@ -213,46 +244,51 @@
             numFadeCurve.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numFadeCurve.Name = "numFadeCurve";
             numFadeCurve.Size = new Size(127, 23);
-            numFadeCurve.TabIndex = 0;
+            numFadeCurve.TabIndex = 9;
             // 
-            // FormWwiseActionStop
+            // FormWwiseActionSetAkProp
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(650, 711);
-            Controls.Add(grpActionStop);
+            Controls.Add(grpActionSetAkProp);
             MaximumSize = new Size(666, 750);
             MinimumSize = new Size(666, 750);
-            Name = "FormWwiseActionStop";
-            Text = "Enter Data for ActionStop";
+            Name = "FormWwiseActionSetAkProp";
+            Text = "Enter Data for ActionSetAkProp";
             Controls.SetChildIndex(btnSave, 0);
-            Controls.SetChildIndex(grpActionStop, 0);
-            grpActionStop.ResumeLayout(false);
-            grpActionStop.PerformLayout();
+            Controls.SetChildIndex(grpActionSetAkProp, 0);
+            grpActionSetAkProp.ResumeLayout(false);
+            grpActionSetAkProp.PerformLayout();
             grpExceptions.ResumeLayout(false);
             grpExceptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numExceptionID).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRandomMax).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRandomMin).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRandomBase).EndInit();
             ((System.ComponentModel.ISupportInitialize)numFadeCurve).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private GroupBox grpActionStop;
-        private Label lbFadeCurve;
-        private NumericUpDown numFadeCurve;
-        private Label lbStateTransition;
-        private CheckBox checkStateTransition;
-        private Label lbDynamicSequence;
-        private CheckBox checkDynamicSequence;
+        private GroupBox grpActionSetAkProp;
         private GroupBox grpExceptions;
         private Label lbExceptionBus;
+        private CheckBox checkExceptionBus;
         private Label lbExceptionID;
         private NumericUpDown numExceptionID;
         private Button btnExceptionsEdit;
         private Button btnExceptionsRemove;
         private Button btnExceptionsAdd;
         private ListBox listExceptions;
-        private CheckBox checkExceptionBus;
+        private Label lbRandomMax;
+        private Label lbRandomMin;
+        private Label lbRandomBase;
+        private Label lbFadeCurve;
+        private NumericUpDown numFadeCurve;
+        private NumericUpDown numRandomMax;
+        private NumericUpDown numRandomMin;
+        private NumericUpDown numRandomBase;
     }
 }

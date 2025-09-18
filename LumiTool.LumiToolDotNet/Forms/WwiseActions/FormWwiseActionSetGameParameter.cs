@@ -3,23 +3,26 @@ using System.ComponentModel;
 
 namespace LumiTool.Forms.WwiseActions
 {
-    public partial class FormWwiseActionStop : FormWwiseActionBase
+    public partial class FormWwiseActionSetGameParameter : FormWwiseActionBase
     {
         BindingList<WwiseObjectIDext> exceptions;
 
-        public FormWwiseActionStop(ActionStop action) : base(action)
+        public FormWwiseActionSetGameParameter(ActionSetGameParameter action) : base(action)
         {
             InitializeComponent();
 
             exceptions = new BindingList<WwiseObjectIDext>(action.exceptParams.listElementException);
 
             numFadeCurve.Value = action.fadeCurve;
-            checkStateTransition.Checked = action.stopActionSpecificParams.applyToStateTransitions;
-            checkDynamicSequence.Checked = action.stopActionSpecificParams.applyToDynamicSequence;
+            numBypassTransition.Value = action.gameParameterActionSpecificParams.bypassTransition;
+            numValueMeaning.Value = action.gameParameterActionSpecificParams.valueMeaning;
+            numRangedBase.Value = (decimal)action.gameParameterActionSpecificParams.rangedParameter._base;
+            numRangedMin.Value = (decimal)action.gameParameterActionSpecificParams.rangedParameter.min;
+            numRangedMax.Value = (decimal)action.gameParameterActionSpecificParams.rangedParameter.max;
             listExceptions.DataSource = exceptions;
         }
 
-        public FormWwiseActionStop()
+        public FormWwiseActionSetGameParameter()
         {
             InitializeComponent();
         }
@@ -28,12 +31,15 @@ namespace LumiTool.Forms.WwiseActions
         {
             base.SaveProperties();
 
-            var actionStop = action as ActionStop;
-            actionStop.fadeCurve = (byte)numFadeCurve.Value;
-            actionStop.stopActionSpecificParams.applyToStateTransitions = checkStateTransition.Checked;
-            actionStop.stopActionSpecificParams.applyToDynamicSequence = checkDynamicSequence.Checked;
-            actionStop.exceptParams.listElementException = exceptions.ToList();
-            actionStop.exceptParams.exceptionListSize = (ulong)actionStop.exceptParams.listElementException.Count;
+            var actionSetGameParameter = action as ActionSetGameParameter;
+            actionSetGameParameter.fadeCurve = (byte)numFadeCurve.Value;
+            actionSetGameParameter.gameParameterActionSpecificParams.bypassTransition = (byte)numBypassTransition.Value;
+            actionSetGameParameter.gameParameterActionSpecificParams.valueMeaning = (byte)numValueMeaning.Value;
+            actionSetGameParameter.gameParameterActionSpecificParams.rangedParameter._base = (float)numRangedBase.Value;
+            actionSetGameParameter.gameParameterActionSpecificParams.rangedParameter.min = (float)numRangedMin.Value;
+            actionSetGameParameter.gameParameterActionSpecificParams.rangedParameter.max = (float)numRangedMax.Value;
+            actionSetGameParameter.exceptParams.listElementException = exceptions.ToList();
+            actionSetGameParameter.exceptParams.exceptionListSize = (ulong)actionSetGameParameter.exceptParams.listElementException.Count;
         }
 
         private void listExceptions_SelectedIndexChanged(object sender, EventArgs e)

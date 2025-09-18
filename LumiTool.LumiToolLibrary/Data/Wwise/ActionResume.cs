@@ -6,6 +6,12 @@
         public ResumeActionSpecificParams resumeActionSpecificParams;
         public ExceptParams exceptParams;
 
+        public ActionResume()
+        {
+            resumeActionSpecificParams = new ResumeActionSpecificParams();
+            exceptParams = new ExceptParams();
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             base.Deserialize(wd);

@@ -6,6 +6,12 @@
         public PauseActionSpecificParams pauseActionSpecificParams;
         public ExceptParams exceptParams;
 
+        public ActionPause()
+        {
+            pauseActionSpecificParams = new PauseActionSpecificParams();
+            exceptParams = new ExceptParams();
+        }
+
         public ActionPause Clone()
         {
             ActionPause ap = (ActionPause)this.MemberwiseClone();

@@ -3,23 +3,24 @@ using System.ComponentModel;
 
 namespace LumiTool.Forms.WwiseActions
 {
-    public partial class FormWwiseActionStop : FormWwiseActionBase
+    public partial class FormWwiseActionPause : FormWwiseActionBase
     {
         BindingList<WwiseObjectIDext> exceptions;
 
-        public FormWwiseActionStop(ActionStop action) : base(action)
+        public FormWwiseActionPause(ActionPause action) : base(action)
         {
             InitializeComponent();
 
             exceptions = new BindingList<WwiseObjectIDext>(action.exceptParams.listElementException);
 
             numFadeCurve.Value = action.fadeCurve;
-            checkStateTransition.Checked = action.stopActionSpecificParams.applyToStateTransitions;
-            checkDynamicSequence.Checked = action.stopActionSpecificParams.applyToDynamicSequence;
+            checkPendingResume.Checked = action.pauseActionSpecificParams.includePendingResume;
+            checkStateTransition.Checked = action.pauseActionSpecificParams.applyToStateTransitions;
+            checkDynamicSequence.Checked = action.pauseActionSpecificParams.applyToDynamicSequence;
             listExceptions.DataSource = exceptions;
         }
 
-        public FormWwiseActionStop()
+        public FormWwiseActionPause()
         {
             InitializeComponent();
         }
@@ -28,12 +29,13 @@ namespace LumiTool.Forms.WwiseActions
         {
             base.SaveProperties();
 
-            var actionStop = action as ActionStop;
-            actionStop.fadeCurve = (byte)numFadeCurve.Value;
-            actionStop.stopActionSpecificParams.applyToStateTransitions = checkStateTransition.Checked;
-            actionStop.stopActionSpecificParams.applyToDynamicSequence = checkDynamicSequence.Checked;
-            actionStop.exceptParams.listElementException = exceptions.ToList();
-            actionStop.exceptParams.exceptionListSize = (ulong)actionStop.exceptParams.listElementException.Count;
+            var actionPause = action as ActionPause;
+            actionPause.fadeCurve = (byte)numFadeCurve.Value;
+            actionPause.pauseActionSpecificParams.includePendingResume = checkPendingResume.Checked;
+            actionPause.pauseActionSpecificParams.applyToStateTransitions = checkStateTransition.Checked;
+            actionPause.pauseActionSpecificParams.applyToDynamicSequence = checkDynamicSequence.Checked;
+            actionPause.exceptParams.listElementException = exceptions.ToList();
+            actionPause.exceptParams.exceptionListSize = (ulong)actionPause.exceptParams.listElementException.Count;
         }
 
         private void listExceptions_SelectedIndexChanged(object sender, EventArgs e)

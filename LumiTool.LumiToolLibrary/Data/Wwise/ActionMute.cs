@@ -5,6 +5,11 @@
         public byte fadeCurve;
         public ExceptParams exceptParams;
 
+        public ActionMute()
+        {
+            exceptParams = new ExceptParams();
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             base.Deserialize(wd);

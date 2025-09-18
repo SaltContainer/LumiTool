@@ -3,37 +3,23 @@ using System.ComponentModel;
 
 namespace LumiTool.Forms.WwiseActions
 {
-    public partial class FormWwiseActionStop : FormWwiseActionBase
+    public partial class FormWwiseActionMute : FormWwiseActionBase
     {
         BindingList<WwiseObjectIDext> exceptions;
 
-        public FormWwiseActionStop(ActionStop action) : base(action)
+        public FormWwiseActionMute(ActionMute action) : base(action)
         {
             InitializeComponent();
 
             exceptions = new BindingList<WwiseObjectIDext>(action.exceptParams.listElementException);
 
             numFadeCurve.Value = action.fadeCurve;
-            checkStateTransition.Checked = action.stopActionSpecificParams.applyToStateTransitions;
-            checkDynamicSequence.Checked = action.stopActionSpecificParams.applyToDynamicSequence;
             listExceptions.DataSource = exceptions;
         }
 
-        public FormWwiseActionStop()
+        public FormWwiseActionMute()
         {
             InitializeComponent();
-        }
-
-        protected override void SaveProperties()
-        {
-            base.SaveProperties();
-
-            var actionStop = action as ActionStop;
-            actionStop.fadeCurve = (byte)numFadeCurve.Value;
-            actionStop.stopActionSpecificParams.applyToStateTransitions = checkStateTransition.Checked;
-            actionStop.stopActionSpecificParams.applyToDynamicSequence = checkDynamicSequence.Checked;
-            actionStop.exceptParams.listElementException = exceptions.ToList();
-            actionStop.exceptParams.exceptionListSize = (ulong)actionStop.exceptParams.listElementException.Count;
         }
 
         private void listExceptions_SelectedIndexChanged(object sender, EventArgs e)

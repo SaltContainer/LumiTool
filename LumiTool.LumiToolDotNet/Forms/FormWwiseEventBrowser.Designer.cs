@@ -43,16 +43,18 @@ namespace LumiTool.Forms
             btnEditAction = new Button();
             comboActions = new ComboBox();
             lbActions = new Label();
+            btnBankSave = new Button();
             grpBank.SuspendLayout();
             SuspendLayout();
             // 
             // grpBank
             // 
+            grpBank.Controls.Add(btnBankSave);
             grpBank.Controls.Add(lbBankName);
             grpBank.Controls.Add(btnBankOpen);
             grpBank.Location = new Point(12, 12);
             grpBank.Name = "grpBank";
-            grpBank.Size = new Size(182, 86);
+            grpBank.Size = new Size(260, 86);
             grpBank.TabIndex = 0;
             grpBank.TabStop = false;
             grpBank.Text = "Loaded Bank";
@@ -72,7 +74,7 @@ namespace LumiTool.Forms
             btnBankOpen.Image = Resources.folder;
             btnBankOpen.Location = new Point(6, 40);
             btnBankOpen.Name = "btnBankOpen";
-            btnBankOpen.Size = new Size(170, 40);
+            btnBankOpen.Size = new Size(121, 40);
             btnBankOpen.TabIndex = 1;
             btnBankOpen.Text = "Open";
             btnBankOpen.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -88,7 +90,7 @@ namespace LumiTool.Forms
             listEvents.ItemHeight = 15;
             listEvents.Location = new Point(12, 104);
             listEvents.Name = "listEvents";
-            listEvents.Size = new Size(182, 199);
+            listEvents.Size = new Size(260, 199);
             listEvents.TabIndex = 1;
             listEvents.SelectedIndexChanged += listEvents_SelectedIndexChanged;
             // 
@@ -97,15 +99,15 @@ namespace LumiTool.Forms
             listActions.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             listActions.FormattingEnabled = true;
             listActions.ItemHeight = 15;
-            listActions.Location = new Point(200, 14);
+            listActions.Location = new Point(278, 14);
             listActions.Name = "listActions";
-            listActions.Size = new Size(472, 244);
+            listActions.Size = new Size(494, 244);
             listActions.TabIndex = 2;
             // 
             // btnAddAction
             // 
             btnAddAction.Image = Resources.plus_big;
-            btnAddAction.Location = new Point(543, 264);
+            btnAddAction.Location = new Point(643, 264);
             btnAddAction.Name = "btnAddAction";
             btnAddAction.Size = new Size(39, 39);
             btnAddAction.TabIndex = 5;
@@ -115,7 +117,7 @@ namespace LumiTool.Forms
             // btnRemoveAction
             // 
             btnRemoveAction.Image = Resources.minus_big;
-            btnRemoveAction.Location = new Point(588, 264);
+            btnRemoveAction.Location = new Point(688, 264);
             btnRemoveAction.Name = "btnRemoveAction";
             btnRemoveAction.Size = new Size(39, 39);
             btnRemoveAction.TabIndex = 6;
@@ -125,7 +127,7 @@ namespace LumiTool.Forms
             // btnEditAction
             // 
             btnEditAction.Image = Resources.pencil_big;
-            btnEditAction.Location = new Point(633, 264);
+            btnEditAction.Location = new Point(733, 264);
             btnEditAction.Name = "btnEditAction";
             btnEditAction.Size = new Size(39, 39);
             btnEditAction.TabIndex = 7;
@@ -135,7 +137,7 @@ namespace LumiTool.Forms
             // comboActions
             // 
             comboActions.FormattingEnabled = true;
-            comboActions.Location = new Point(305, 273);
+            comboActions.Location = new Point(405, 273);
             comboActions.Name = "comboActions";
             comboActions.Size = new Size(232, 23);
             comboActions.TabIndex = 4;
@@ -143,17 +145,29 @@ namespace LumiTool.Forms
             // lbActions
             // 
             lbActions.AutoSize = true;
-            lbActions.Location = new Point(200, 276);
+            lbActions.Location = new Point(300, 276);
             lbActions.Name = "lbActions";
             lbActions.Size = new Size(99, 15);
             lbActions.TabIndex = 3;
             lbActions.Text = "New Action Type:";
             // 
+            // btnBankSave
+            // 
+            btnBankSave.Image = Resources.save;
+            btnBankSave.Location = new Point(133, 40);
+            btnBankSave.Name = "btnBankSave";
+            btnBankSave.Size = new Size(121, 40);
+            btnBankSave.TabIndex = 3;
+            btnBankSave.Text = "Save";
+            btnBankSave.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnBankSave.UseVisualStyleBackColor = true;
+            btnBankSave.Click += btnBankSave_Click;
+            // 
             // FormWwiseEventBrowser
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(684, 315);
+            ClientSize = new Size(784, 315);
             Controls.Add(lbActions);
             Controls.Add(comboActions);
             Controls.Add(btnEditAction);
@@ -165,8 +179,8 @@ namespace LumiTool.Forms
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(700, 354);
-            MinimumSize = new Size(700, 354);
+            MaximumSize = new Size(800, 354);
+            MinimumSize = new Size(800, 354);
             Name = "FormWwiseEventBrowser";
             Text = "Wwise Event Browser";
             FormClosed += FormWwiseEventBrowser_FormClosed;
@@ -190,5 +204,6 @@ namespace LumiTool.Forms
         private Button btnEditAction;
         private ComboBox comboActions;
         private Label lbActions;
+        private Button btnBankSave;
     }
 }

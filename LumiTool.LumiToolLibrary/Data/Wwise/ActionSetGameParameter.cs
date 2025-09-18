@@ -6,6 +6,12 @@
         public GameParameterActionSpecificParams gameParameterActionSpecificParams;
         public ExceptParams exceptParams;
 
+        public ActionSetGameParameter()
+        {
+            gameParameterActionSpecificParams = new GameParameterActionSpecificParams();
+            exceptParams = new ExceptParams();
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             base.Deserialize(wd);

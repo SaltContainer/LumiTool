@@ -3,23 +3,24 @@ using System.ComponentModel;
 
 namespace LumiTool.Forms.WwiseActions
 {
-    public partial class FormWwiseActionStop : FormWwiseActionBase
+    public partial class FormWwiseActionResume : FormWwiseActionBase
     {
         BindingList<WwiseObjectIDext> exceptions;
 
-        public FormWwiseActionStop(ActionStop action) : base(action)
+        public FormWwiseActionResume(ActionResume action) : base(action)
         {
             InitializeComponent();
 
             exceptions = new BindingList<WwiseObjectIDext>(action.exceptParams.listElementException);
 
             numFadeCurve.Value = action.fadeCurve;
-            checkStateTransition.Checked = action.stopActionSpecificParams.applyToStateTransitions;
-            checkDynamicSequence.Checked = action.stopActionSpecificParams.applyToDynamicSequence;
+            checkMasterResume.Checked = action.resumeActionSpecificParams.isMasterResume;
+            checkStateTransition.Checked = action.resumeActionSpecificParams.applyToStateTransitions;
+            checkDynamicSequence.Checked = action.resumeActionSpecificParams.applyToDynamicSequence;
             listExceptions.DataSource = exceptions;
         }
 
-        public FormWwiseActionStop()
+        public FormWwiseActionResume()
         {
             InitializeComponent();
         }
@@ -28,12 +29,13 @@ namespace LumiTool.Forms.WwiseActions
         {
             base.SaveProperties();
 
-            var actionStop = action as ActionStop;
-            actionStop.fadeCurve = (byte)numFadeCurve.Value;
-            actionStop.stopActionSpecificParams.applyToStateTransitions = checkStateTransition.Checked;
-            actionStop.stopActionSpecificParams.applyToDynamicSequence = checkDynamicSequence.Checked;
-            actionStop.exceptParams.listElementException = exceptions.ToList();
-            actionStop.exceptParams.exceptionListSize = (ulong)actionStop.exceptParams.listElementException.Count;
+            var actionResume = action as ActionResume;
+            actionResume.fadeCurve = (byte)numFadeCurve.Value;
+            actionResume.resumeActionSpecificParams.isMasterResume = checkMasterResume.Checked;
+            actionResume.resumeActionSpecificParams.applyToStateTransitions = checkStateTransition.Checked;
+            actionResume.resumeActionSpecificParams.applyToDynamicSequence = checkDynamicSequence.Checked;
+            actionResume.exceptParams.listElementException = exceptions.ToList();
+            actionResume.exceptParams.exceptionListSize = (ulong)actionResume.exceptParams.listElementException.Count;
         }
 
         private void listExceptions_SelectedIndexChanged(object sender, EventArgs e)

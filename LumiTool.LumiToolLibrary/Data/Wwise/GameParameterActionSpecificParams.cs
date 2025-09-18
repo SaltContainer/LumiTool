@@ -6,6 +6,11 @@
         public byte valueMeaning;
         public RangedParameter rangedParameter;
 
+        public GameParameterActionSpecificParams()
+        {
+            rangedParameter = new RangedParameter();
+        }
+
         public void Deserialize(WwiseData wd)
         {
             rangedParameter = new();

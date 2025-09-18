@@ -1,6 +1,6 @@
 ﻿namespace LumiTool.Forms.WwiseActions
 {
-    partial class FormWwiseActionStop : FormWwiseActionBase
+    partial class FormWwiseActionPause : FormWwiseActionBase
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            grpActionStop = new GroupBox();
+            grpActionPause = new GroupBox();
             grpExceptions = new GroupBox();
             lbExceptionBus = new Label();
             checkExceptionBus = new CheckBox();
@@ -42,9 +42,11 @@
             checkDynamicSequence = new CheckBox();
             lbStateTransition = new Label();
             checkStateTransition = new CheckBox();
+            lbPendingResume = new Label();
+            checkPendingResume = new CheckBox();
             lbFadeCurve = new Label();
             numFadeCurve = new NumericUpDown();
-            grpActionStop.SuspendLayout();
+            grpActionPause.SuspendLayout();
             grpExceptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numExceptionID).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numFadeCurve).BeginInit();
@@ -54,21 +56,23 @@
             // 
             btnSave.Size = new Size(626, 37);
             // 
-            // grpActionStop
+            // grpActionPause
             // 
-            grpActionStop.Controls.Add(grpExceptions);
-            grpActionStop.Controls.Add(lbDynamicSequence);
-            grpActionStop.Controls.Add(checkDynamicSequence);
-            grpActionStop.Controls.Add(lbStateTransition);
-            grpActionStop.Controls.Add(checkStateTransition);
-            grpActionStop.Controls.Add(lbFadeCurve);
-            grpActionStop.Controls.Add(numFadeCurve);
-            grpActionStop.Location = new Point(328, 12);
-            grpActionStop.Name = "grpActionStop";
-            grpActionStop.Size = new Size(310, 644);
-            grpActionStop.TabIndex = 1;
-            grpActionStop.TabStop = false;
-            grpActionStop.Text = "Action Stop";
+            grpActionPause.Controls.Add(grpExceptions);
+            grpActionPause.Controls.Add(lbDynamicSequence);
+            grpActionPause.Controls.Add(checkDynamicSequence);
+            grpActionPause.Controls.Add(lbStateTransition);
+            grpActionPause.Controls.Add(checkStateTransition);
+            grpActionPause.Controls.Add(lbPendingResume);
+            grpActionPause.Controls.Add(checkPendingResume);
+            grpActionPause.Controls.Add(lbFadeCurve);
+            grpActionPause.Controls.Add(numFadeCurve);
+            grpActionPause.Location = new Point(328, 12);
+            grpActionPause.Name = "grpActionPause";
+            grpActionPause.Size = new Size(310, 644);
+            grpActionPause.TabIndex = 3;
+            grpActionPause.TabStop = false;
+            grpActionPause.Text = "Action Pause";
             // 
             // grpExceptions
             // 
@@ -80,10 +84,10 @@
             grpExceptions.Controls.Add(btnExceptionsRemove);
             grpExceptions.Controls.Add(btnExceptionsAdd);
             grpExceptions.Controls.Add(listExceptions);
-            grpExceptions.Location = new Point(6, 110);
+            grpExceptions.Location = new Point(6, 140);
             grpExceptions.Name = "grpExceptions";
             grpExceptions.Size = new Size(298, 257);
-            grpExceptions.TabIndex = 8;
+            grpExceptions.TabIndex = 15;
             grpExceptions.TabStop = false;
             grpExceptions.Text = "Exceptions";
             // 
@@ -165,38 +169,56 @@
             // lbDynamicSequence
             // 
             lbDynamicSequence.AutoSize = true;
-            lbDynamicSequence.Location = new Point(12, 84);
+            lbDynamicSequence.Location = new Point(12, 114);
             lbDynamicSequence.Name = "lbDynamicSequence";
             lbDynamicSequence.Size = new Size(159, 15);
-            lbDynamicSequence.TabIndex = 6;
+            lbDynamicSequence.TabIndex = 13;
             lbDynamicSequence.Text = "Apply to Dynamic Sequence:";
             // 
             // checkDynamicSequence
             // 
             checkDynamicSequence.AutoSize = true;
-            checkDynamicSequence.Location = new Point(177, 85);
+            checkDynamicSequence.Location = new Point(177, 115);
             checkDynamicSequence.Name = "checkDynamicSequence";
             checkDynamicSequence.Size = new Size(15, 14);
-            checkDynamicSequence.TabIndex = 7;
+            checkDynamicSequence.TabIndex = 14;
             checkDynamicSequence.UseVisualStyleBackColor = true;
             // 
             // lbStateTransition
             // 
             lbStateTransition.AutoSize = true;
-            lbStateTransition.Location = new Point(28, 54);
+            lbStateTransition.Location = new Point(28, 84);
             lbStateTransition.Name = "lbStateTransition";
             lbStateTransition.Size = new Size(143, 15);
-            lbStateTransition.TabIndex = 4;
+            lbStateTransition.TabIndex = 11;
             lbStateTransition.Text = "Apply to State Transitions:";
             // 
             // checkStateTransition
             // 
             checkStateTransition.AutoSize = true;
-            checkStateTransition.Location = new Point(177, 55);
+            checkStateTransition.Location = new Point(177, 85);
             checkStateTransition.Name = "checkStateTransition";
             checkStateTransition.Size = new Size(15, 14);
-            checkStateTransition.TabIndex = 5;
+            checkStateTransition.TabIndex = 12;
             checkStateTransition.UseVisualStyleBackColor = true;
+            // 
+            // lbPendingResume
+            // 
+            lbPendingResume.AutoSize = true;
+            lbPendingResume.Location = new Point(30, 54);
+            lbPendingResume.Name = "lbPendingResume";
+            lbPendingResume.Size = new Size(141, 15);
+            lbPendingResume.TabIndex = 16;
+            lbPendingResume.Text = "Include Pending Resume:";
+            // 
+            // checkPendingResume
+            // 
+            checkPendingResume.AutoSize = true;
+            checkPendingResume.Location = new Point(177, 55);
+            checkPendingResume.Name = "checkPendingResume";
+            checkPendingResume.Size = new Size(15, 14);
+            checkPendingResume.TabIndex = 17;
+            checkPendingResume.UseVisualStyleBackColor = true;
             // 
             // lbFadeCurve
             // 
@@ -204,7 +226,7 @@
             lbFadeCurve.Location = new Point(102, 24);
             lbFadeCurve.Name = "lbFadeCurve";
             lbFadeCurve.Size = new Size(69, 15);
-            lbFadeCurve.TabIndex = 1;
+            lbFadeCurve.TabIndex = 10;
             lbFadeCurve.Text = "Fade Curve:";
             // 
             // numFadeCurve
@@ -213,22 +235,22 @@
             numFadeCurve.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numFadeCurve.Name = "numFadeCurve";
             numFadeCurve.Size = new Size(127, 23);
-            numFadeCurve.TabIndex = 0;
+            numFadeCurve.TabIndex = 9;
             // 
-            // FormWwiseActionStop
+            // FormWwiseActionPause
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(650, 711);
-            Controls.Add(grpActionStop);
+            Controls.Add(grpActionPause);
             MaximumSize = new Size(666, 750);
             MinimumSize = new Size(666, 750);
-            Name = "FormWwiseActionStop";
-            Text = "Enter Data for ActionStop";
+            Name = "FormWwiseActionPause";
+            Text = "Enter Data for ActionPause";
             Controls.SetChildIndex(btnSave, 0);
-            Controls.SetChildIndex(grpActionStop, 0);
-            grpActionStop.ResumeLayout(false);
-            grpActionStop.PerformLayout();
+            Controls.SetChildIndex(grpActionPause, 0);
+            grpActionPause.ResumeLayout(false);
+            grpActionPause.PerformLayout();
             grpExceptions.ResumeLayout(false);
             grpExceptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numExceptionID).EndInit();
@@ -238,21 +260,23 @@
 
         #endregion
 
-        private GroupBox grpActionStop;
-        private Label lbFadeCurve;
-        private NumericUpDown numFadeCurve;
-        private Label lbStateTransition;
-        private CheckBox checkStateTransition;
-        private Label lbDynamicSequence;
-        private CheckBox checkDynamicSequence;
+        private GroupBox grpActionPause;
         private GroupBox grpExceptions;
         private Label lbExceptionBus;
+        private CheckBox checkExceptionBus;
         private Label lbExceptionID;
         private NumericUpDown numExceptionID;
         private Button btnExceptionsEdit;
         private Button btnExceptionsRemove;
         private Button btnExceptionsAdd;
         private ListBox listExceptions;
-        private CheckBox checkExceptionBus;
+        private Label lbDynamicSequence;
+        private CheckBox checkDynamicSequence;
+        private Label lbStateTransition;
+        private CheckBox checkStateTransition;
+        private Label lbFadeCurve;
+        private NumericUpDown numFadeCurve;
+        private Label lbPendingResume;
+        private CheckBox checkPendingResume;
     }
 }
