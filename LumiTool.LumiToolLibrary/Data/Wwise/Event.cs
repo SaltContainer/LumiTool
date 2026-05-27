@@ -5,6 +5,11 @@
         public ulong actionListSize;
         public List<uint> actionIDs;
 
+        public Event()
+        {
+            actionIDs = new List<uint>();
+        }
+
         public Event Clone()
         {
             Event e = (Event)this.MemberwiseClone();

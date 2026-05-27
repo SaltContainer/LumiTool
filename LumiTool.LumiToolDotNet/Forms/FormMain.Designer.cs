@@ -44,6 +44,7 @@ namespace LumiTool
             btnWwiseBankCloner = new Button();
             btnWwiseEventBrowser = new Button();
             btnSettings = new Button();
+            btnWwiseMusicSwitchCntrViewer = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -177,12 +178,23 @@ namespace LumiTool
             btnSettings.UseVisualStyleBackColor = true;
             btnSettings.Click += btnSettings_Click;
             // 
+            // btnWwiseMusicSwitchCntrViewer
+            // 
+            btnWwiseMusicSwitchCntrViewer.Location = new Point(352, 260);
+            btnWwiseMusicSwitchCntrViewer.Name = "btnWwiseMusicSwitchCntrViewer";
+            btnWwiseMusicSwitchCntrViewer.Size = new Size(164, 59);
+            btnWwiseMusicSwitchCntrViewer.TabIndex = 13;
+            btnWwiseMusicSwitchCntrViewer.Text = "Wwise MusicSwitchCntr Viewer";
+            btnWwiseMusicSwitchCntrViewer.UseVisualStyleBackColor = true;
+            btnWwiseMusicSwitchCntrViewer.Click += btnWwiseMusicSwitchCntrViewer_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(528, 331);
             Controls.Add(btnSettings);
+            Controls.Add(btnWwiseMusicSwitchCntrViewer);
             Controls.Add(btnWwiseEventBrowser);
             Controls.Add(btnWwiseBankCloner);
             Controls.Add(btnBundleRenamer);
@@ -221,5 +233,6 @@ namespace LumiTool
         private Button btnWwiseBankCloner;
         private Button btnWwiseEventBrowser;
         private Button btnSettings;
+        private Button btnWwiseMusicSwitchCntrViewer;
     }
 }

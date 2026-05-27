@@ -1,16 +1,17 @@
 ﻿using LumiTool.Data;
 using LumiTool.Data.Wwise;
-using Microsoft.VisualBasic;
 
 namespace LumiTool.Engine
 {
     public class WwiseEngine
     {
         private LumiToolEngine engine;
+        private BDSPWwiseEngine bdspWwiseEngine;
 
         public WwiseEngine(LumiToolEngine engine)
         {
             this.engine = engine;
+            this.bdspWwiseEngine = new BDSPWwiseEngine(engine);
         }
 
         public WwiseData LoadBank(string path)
@@ -271,6 +272,11 @@ namespace LumiTool.Engine
             }
         }
 
+        public void MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
+        {
+            bdspWwiseEngine.MakeNewBDSPWwiseEvent(wd, eventType, newEventName, loopData, dsLoopData);
+        }
+
         public List<Event> GetEventsOfBank(WwiseData wd)
         {
             HircChunk hc = (HircChunk)wd.banks[0].chunks.First(c => c is HircChunk);
@@ -293,6 +299,12 @@ namespace LumiTool.Engine
         public void RemoveActionOfEvent(WwiseData wd, Event ev, Data.Wwise.Action action)
         {
             ev.actionIDs.Remove(action.id);
+        }
+
+        public List<MusicSwitchCntr> GetMusicSwitchCntrsOfBank(WwiseData wd)
+        {
+            HircChunk hc = (HircChunk)wd.banks[0].chunks.First(c => c is HircChunk);
+            return hc.loadedItem.Where(hi => hi is MusicSwitchCntr).Cast<MusicSwitchCntr>().ToList();
         }
 
         private void AddHirc(WwiseData wd, HircItem hi, uint id)
@@ -350,6 +362,20 @@ namespace LumiTool.Engine
             {
                 if (update.ContainsKey(idList[i]))
                     idList.Add(update[idList[i]]);
+            }
+        }
+
+        private void GenerateNewPlaylistItemIDs(WwiseData wd, List<MusicRanSeqPlaylistItem> playlistItems, Dictionary<uint, uint> update)
+        {
+            foreach (var playlistItem in playlistItems)
+            {
+                uint newID = GenerateNewID(wd);
+                engine.Log($"Playlist Item {playlistItem.playlistItemID} cloned to {newID}", LogLevel.Information);
+                update.Add(playlistItem.playlistItemID, newID);
+                playlistItem.playlistItemID = newID;
+
+                // Call recursively
+                GenerateNewPlaylistItemIDs(wd, playlistItem.playList, update);
             }
         }
     }

@@ -57,6 +57,7 @@ namespace LumiTool.Forms
             btnAddAction.Enabled = false;
             btnRemoveAction.Enabled = false;
             btnEditAction.Enabled = false;
+            btnBankSave.Enabled = false;
 
             ClearListBoxes();
 
@@ -72,6 +73,7 @@ namespace LumiTool.Forms
             btnAddAction.Enabled = true;
             btnRemoveAction.Enabled = true;
             btnEditAction.Enabled = true;
+            btnBankSave.Enabled = true;
 
             AddEventsToListBox();
 

@@ -61,5 +61,10 @@
             b.AddRange(b0);
             return b;
         }
+
+        public override string ToString()
+        {
+            return $"[{id}] {arguments.Count} argument{(arguments.Count != 1 ? "s" : "")}";
+        }
     }
 }

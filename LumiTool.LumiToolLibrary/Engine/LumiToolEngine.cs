@@ -3,8 +3,6 @@ using AssetsTools.NET.Extra;
 using LumiTool.Data;
 using LumiTool.Data.Wwise;
 using SmartPoint.AssetAssistant;
-using static LumiTool.Engine.BundleEngine;
-using static LumiTool.Engine.LoggerEngine;
 
 namespace LumiTool.Engine
 {
@@ -147,6 +145,11 @@ namespace LumiTool.Engine
             wwiseEngine.CloneHircEvent(wd, oldEventName, newEventName, groupName, loopEdit, initDelay, loopStart, loopEnd, totalDuration);
         }
 
+        public void MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
+        {
+            wwiseEngine.MakeNewBDSPWwiseEvent(wd, eventType, newEventName, loopData, dsLoopData);
+        }
+
         public List<Event> GetEventsOfBank(WwiseData wd)
         {
             return wwiseEngine.GetEventsOfBank(wd);
@@ -165,6 +168,11 @@ namespace LumiTool.Engine
         public void RemoveActionOfEvent(WwiseData wd, Event ev, Data.Wwise.Action action)
         {
             wwiseEngine.RemoveActionOfEvent(wd, ev, action);
+        }
+
+        public List<MusicSwitchCntr> GetMusicSwitchCntrsOfBank(WwiseData wd)
+        {
+            return wwiseEngine.GetMusicSwitchCntrsOfBank(wd);
         }
 
         public uint FNV132Hash(string data)
@@ -247,22 +255,22 @@ namespace LumiTool.Engine
             return bundleEngine.GetCABNamesInBundleDependencies(assetsFile);
         }
 
-        public void AddOnAssetSelectCallback(FindDependencyAssetDelegate callback)
+        public void AddOnAssetSelectCallback(BundleEngine.FindDependencyAssetDelegate callback)
         {
             bundleEngine.AddOnAssetSelectCallback(callback);
         }
 
-        public void RemoveOnAssetSelectCallback(FindDependencyAssetDelegate callback)
+        public void RemoveOnAssetSelectCallback(BundleEngine.FindDependencyAssetDelegate callback)
         {
             bundleEngine.RemoveOnAssetSelectCallback(callback);
         }
 
-        public void AddOnLogCallback(LogDelegate callback)
+        public void AddOnLogCallback(LoggerEngine.LogDelegate callback)
         {
             loggerEngine.AddOnLogCallback(callback);
         }
 
-        public void RemoveOnLogCallback(LogDelegate callback)
+        public void RemoveOnLogCallback(LoggerEngine.LogDelegate callback)
         {
             loggerEngine.RemoveOnLogCallback(callback);
         }

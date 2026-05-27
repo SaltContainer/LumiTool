@@ -8,6 +8,11 @@ namespace LumiTool.Forms
     {
         LumiToolEngine engine;
 
+        private static Dictionary<string, BDSPWwiseEventType> eventTypes = new Dictionary<string, BDSPWwiseEventType>()
+        {
+            { "BGM_FIELD - C01_NIGHT (1 segment, 2 tracks)", BDSPWwiseEventType.BGM_FIELD_C01_NIGHT },
+        };
+
         WwiseData bank;
         string originalPath = string.Empty;
 
@@ -20,6 +25,9 @@ namespace LumiTool.Forms
             this.engine = engine;
 
             infoLogQueue = new Queue<string>();
+
+            comboEventType.Items.Clear();
+            comboEventType.Items.AddRange(eventTypes.Keys.ToArray());
         }
 
         private void UpdateComponentsOnStart()
@@ -27,28 +35,27 @@ namespace LumiTool.Forms
             infoLogQueue.Clear();
 
             lbBankName.Text = "Bank Name: " + Path.GetFileName(originalPath);
-            txtOldEvent.Enabled = false;
             txtNewEvent.Enabled = false;
-            txtGroup.Enabled = false;
-            btnOldEventHash.Enabled = false;
+            comboEventType.Enabled = false;
             btnNewEventHash.Enabled = false;
-            btnGroupHash.Enabled = false;
             checkLoop.Enabled = false;
-            numInitialDelay.Enabled = false;
-            numLoopStart.Enabled = false;
-            numLoopEnd.Enabled = false;
-            numTotalDuration.Enabled = false;
+            numRegInitialDelay.Enabled = false;
+            numRegLoopStart.Enabled = false;
+            numRegLoopEnd.Enabled = false;
+            numRegTotalDuration.Enabled = false;
+            numDSInitialDelay.Enabled = false;
+            numDSLoopStart.Enabled = false;
+            numDSLoopEnd.Enabled = false;
+            numDSTotalDuration.Enabled = false;
             btnBankSave.Enabled = false;
             btnApply.Enabled = false;
 
-            txtOldEvent.Text = string.Empty;
             txtNewEvent.Text = string.Empty;
-            txtGroup.Text = string.Empty;
 
-            numInitialDelay.Value = 0;
-            numLoopStart.Value = 0;
-            numLoopEnd.Value = 0;
-            numTotalDuration.Value = 0;
+            numRegInitialDelay.Value = 0;
+            numRegLoopStart.Value = 0;
+            numRegLoopEnd.Value = 0;
+            numRegTotalDuration.Value = 0;
 
             ttWwiseBankCloner.SetToolTip(lbBankName, "");
         }
@@ -56,19 +63,22 @@ namespace LumiTool.Forms
         private void UpdateComponentsOnLoad()
         {
             lbBankName.Text = "Bank Name: " + Path.GetFileName(originalPath);
-            txtOldEvent.Enabled = true;
             txtNewEvent.Enabled = true;
-            txtGroup.Enabled = true;
-            btnOldEventHash.Enabled = true;
+            comboEventType.Enabled = true;
             btnNewEventHash.Enabled = true;
-            btnGroupHash.Enabled = true;
             checkLoop.Enabled = true;
-            numInitialDelay.Enabled = checkLoop.Checked;
-            numLoopStart.Enabled = checkLoop.Checked;
-            numLoopEnd.Enabled = checkLoop.Checked;
-            numTotalDuration.Enabled = checkLoop.Checked;
+            numRegInitialDelay.Enabled = checkLoop.Checked;
+            numRegLoopStart.Enabled = checkLoop.Checked;
+            numRegLoopEnd.Enabled = checkLoop.Checked;
+            numRegTotalDuration.Enabled = checkLoop.Checked;
+            numDSInitialDelay.Enabled = checkLoop.Checked;
+            numDSLoopStart.Enabled = checkLoop.Checked;
+            numDSLoopEnd.Enabled = checkLoop.Checked;
+            numDSTotalDuration.Enabled = checkLoop.Checked;
             btnBankSave.Enabled = true;
             btnApply.Enabled = true;
+
+            comboEventType.SelectedIndex = 0;
 
             ttWwiseBankCloner.SetToolTip(lbBankName, originalPath);
         }
@@ -109,12 +119,45 @@ namespace LumiTool.Forms
             infoLogQueue.Clear();
         }
 
+        private WwiseLoopPointData GenerateLoopData()
+        {
+            WwiseLoopPointData loopData = null;
+            if (checkLoop.Checked)
+            {
+                loopData = new WwiseLoopPointData()
+                {
+                    InitialDelay = (double)numRegInitialDelay.Value,
+                    LoopStart = (double)numRegLoopStart.Value,
+                    LoopEnd = (double)numRegLoopEnd.Value,
+                    TotalSourceLength = (double)numRegTotalDuration.Value,
+                };
+            }
+            return loopData;
+        }
+
+        private WwiseLoopPointData GenerateDSLoopData()
+        {
+            WwiseLoopPointData loopData = null;
+            if (checkLoop.Checked)
+            {
+                loopData = new WwiseLoopPointData()
+                {
+                    InitialDelay = (double)numDSInitialDelay.Value,
+                    LoopStart = (double)numDSLoopStart.Value,
+                    LoopEnd = (double)numDSLoopEnd.Value,
+                    TotalSourceLength = (double)numDSTotalDuration.Value,
+                };
+            }
+            return loopData;
+        }
+
         private void btnApply_Click(object sender, EventArgs e)
         {
             try
             {
                 engine.AddOnLogCallback(LogReceiver);
-                engine.CloneHircEvent(bank, txtOldEvent.Text, txtNewEvent.Text, txtGroup.Text, checkLoop.Checked, (double)numInitialDelay.Value, (double)numLoopStart.Value, (double)numLoopEnd.Value, (double)numTotalDuration.Value);
+                engine.MakeNewBDSPWwiseEvent(bank, eventTypes[(string)comboEventType.SelectedItem], txtNewEvent.Text, GenerateLoopData(), GenerateDSLoopData());
+                //ShowInfoPopup();
                 MessageBox.Show("Successfully cloned an event. Don't forget to save your bank!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -189,27 +232,21 @@ namespace LumiTool.Forms
                 OpenBank(files[0]);
         }
 
-        private void btnOldEventHash_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show($"The hash for \"{txtOldEvent.Text}\" is {CalculateHash(txtOldEvent.Text)}.", "FNV132 Hash", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
         private void btnNewEventHash_Click(object sender, EventArgs e)
         {
             MessageBox.Show($"The hash for \"{txtNewEvent.Text}\" is {CalculateHash(txtNewEvent.Text)}.", "FNV132 Hash", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void btnGroupHash_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show($"The hash for \"{txtGroup.Text}\" is {CalculateHash(txtGroup.Text)}.", "FNV132 Hash", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
         private void checkLoop_CheckedChanged(object sender, EventArgs e)
         {
-            numInitialDelay.Enabled = checkLoop.Checked;
-            numLoopStart.Enabled = checkLoop.Checked;
-            numLoopEnd.Enabled = checkLoop.Checked;
-            numTotalDuration.Enabled = checkLoop.Checked;
+            numRegInitialDelay.Enabled = checkLoop.Checked;
+            numRegLoopStart.Enabled = checkLoop.Checked;
+            numRegLoopEnd.Enabled = checkLoop.Checked;
+            numRegTotalDuration.Enabled = checkLoop.Checked;
+            numDSInitialDelay.Enabled = checkLoop.Checked;
+            numDSLoopStart.Enabled = checkLoop.Checked;
+            numDSLoopEnd.Enabled = checkLoop.Checked;
+            numDSTotalDuration.Enabled = checkLoop.Checked;
         }
     }
 }

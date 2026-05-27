@@ -15,9 +15,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AssetsTools.NET" Version="3.0.1" />
-    <PackageReference Include="AssetsTools.NET.MonoCecil" Version="1.0.1" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
+    <PackageReference Include="AssetsTools.NET" Version="3.0.4" />
+    <PackageReference Include="AssetsTools.NET.MonoCecil" Version="3.0.4" />
+    <PackageReference Include="Microsoft.Msagl.GraphViewerGDI" Version="1.1.7" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.8" />
   </ItemGroup>
 
   <ItemGroup>

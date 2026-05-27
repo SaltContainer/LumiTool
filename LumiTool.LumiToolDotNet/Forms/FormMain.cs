@@ -21,6 +21,7 @@ namespace LumiTool
         private FormRenameBundle bundleRenamerForm;
         private FormWwiseEventCloner wwiseBankClonerForm;
         private FormWwiseEventBrowser wwiseEventBrowserForm;
+        private FormWwiseMusicSwitchCntrViewer wwiseFormWwiseMusicSwitchCntrViewer;
 
         public FormMain()
         {
@@ -41,6 +42,7 @@ namespace LumiTool
             bundleRenamerForm = new FormRenameBundle(engine);
             wwiseBankClonerForm = new FormWwiseEventCloner(engine);
             wwiseEventBrowserForm = new FormWwiseEventBrowser(engine);
+            wwiseFormWwiseMusicSwitchCntrViewer = new FormWwiseMusicSwitchCntrViewer(engine);
 
             InitializeComponent();
 
@@ -136,6 +138,11 @@ namespace LumiTool
         private void btnWwiseEventBrowser_Click(object sender, EventArgs e)
         {
             wwiseEventBrowserForm.ShowDialog(this);
+        }
+
+        private void btnWwiseMusicSwitchCntrViewer_Click(object sender, EventArgs e)
+        {
+            wwiseFormWwiseMusicSwitchCntrViewer.ShowDialog(this);
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
