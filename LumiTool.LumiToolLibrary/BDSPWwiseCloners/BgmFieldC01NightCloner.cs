@@ -1,7 +1,9 @@
 ﻿using LumiTool.Data;
 using LumiTool.Data.Wwise;
+using LumiTool.Engine;
+using LumiTool.Utils;
 
-namespace LumiTool.Engine.BDSPWwiseCloners
+namespace LumiTool.BDSPWwiseCloners
 {
     public class BgmFieldC01NightCloner : BaseCloner
     {
@@ -68,7 +70,7 @@ namespace LumiTool.Engine.BDSPWwiseCloners
             {
                 if (msc.id == 805188190)
                     engine.Log($"Editing MusicSwitchCntr {msc.id} [Regular]", LogLevel.Information);
-                else if(msc.id == 319787682)
+                else if (msc.id == 319787682)
                     engine.Log($"Editing MusicSwitchCntr {msc.id} [DS]", LogLevel.Information);
                 else
                     engine.Log($"Editing MusicSwitchCntr {msc.id} [Unknown]", LogLevel.Information);
@@ -126,7 +128,8 @@ namespace LumiTool.Engine.BDSPWwiseCloners
             // Clone the old MusicRanSeqCntrs
             List<MusicRanSeqCntr> mrscs = oldMusicRanSeqCntrIDs.Select(i => ((MusicRanSeqCntr)wd.objectsByID[i]).Clone()).ToList();
 
-            List<MusicRanSeqPlaylistItem> mrspis = new();
+            // List all the PlaylistItems recursively
+            List<MusicRanSeqPlaylistItem> mrspis = mrscs.SelectMany(mrsc => mrsc.playList).FlattenRecursive(pi => pi.playList).ToList();
             foreach (MusicRanSeqCntr mrsc in mrscs)
             {
                 AddHirc(wd, mrsc, update[mrsc.id]);
@@ -180,6 +183,7 @@ namespace LumiTool.Engine.BDSPWwiseCloners
             // Do some edits on the loop data for MusicTracks
             foreach (var tracks in splitTracks)
             {
+                // INTRO SECTION
                 // First segment, first track, second playlist item (Regular)
                 if (tracks[0][0].id == 921805984 && loopData != null)
                 {
@@ -195,6 +199,24 @@ namespace LumiTool.Engine.BDSPWwiseCloners
                     tracks[0][0].playlist[1].beginTrimOffset = dsLoopData.InitialDelay;
                     tracks[0][0].playlist[1].endTrimOffset = dsLoopData.LoopStart;
                     tracks[0][0].playlist[1].srcDuration = dsLoopData.TotalSourceLength;
+                }
+
+                // LOOP SECTION
+                // First segment, second track, first playlist item (Regular)
+                if (tracks[0][1].id == 978661004 && loopData != null)
+                {
+                    tracks[0][1].playlist[0].playAt = loopData.InitialDelay - loopData.LoopStart;
+                    tracks[0][1].playlist[0].beginTrimOffset = loopData.LoopStart;
+                    tracks[0][1].playlist[0].endTrimOffset = loopData.LoopEnd;
+                    tracks[0][1].playlist[0].srcDuration = loopData.TotalSourceLength;
+                }
+                // First segment, second track, first playlist item (DS)
+                else if (tracks[0][1].id == 433531414 && dsLoopData != null)
+                {
+                    tracks[0][1].playlist[0].playAt = dsLoopData.InitialDelay - dsLoopData.LoopStart;
+                    tracks[0][1].playlist[0].beginTrimOffset = dsLoopData.LoopStart;
+                    tracks[0][1].playlist[0].endTrimOffset = dsLoopData.LoopEnd;
+                    tracks[0][1].playlist[0].srcDuration = dsLoopData.TotalSourceLength;
                 }
             }
 

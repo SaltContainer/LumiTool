@@ -1,7 +1,8 @@
 ﻿using LumiTool.Data.Wwise;
 using LumiTool.Data;
+using LumiTool.Engine;
 
-namespace LumiTool.Engine.BDSPWwiseCloners
+namespace LumiTool.BDSPWwiseCloners
 {
     public abstract class BaseCloner
     {

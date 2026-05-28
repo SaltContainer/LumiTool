@@ -154,7 +154,7 @@ namespace LumiTool
             btnWwiseBankCloner.Name = "btnWwiseBankCloner";
             btnWwiseBankCloner.Size = new Size(164, 59);
             btnWwiseBankCloner.TabIndex = 9;
-            btnWwiseBankCloner.Text = "Wwise Event Cloner";
+            btnWwiseBankCloner.Text = "Wwise Event Cloner For BDSP";
             btnWwiseBankCloner.UseVisualStyleBackColor = true;
             btnWwiseBankCloner.Click += btnWwiseBankCloner_Click;
             // 

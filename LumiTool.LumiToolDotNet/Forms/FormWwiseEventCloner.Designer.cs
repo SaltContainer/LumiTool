@@ -41,40 +41,40 @@ namespace LumiTool.Forms
             btnBankSave = new Button();
             ttWwiseBankCloner = new ToolTip(components);
             grpLoop = new GroupBox();
-            lbRegTotalDuration = new Label();
-            lbRegLoopEnd = new Label();
-            lbRegLoopStart = new Label();
-            lbRegInitialDelay = new Label();
+            grpDS = new GroupBox();
+            numDSTotalDuration = new NumericUpDown();
+            lbDSTotalDuration = new Label();
+            numDSLoopEnd = new NumericUpDown();
+            lbDSLoopEnd = new Label();
+            numDSLoopStart = new NumericUpDown();
+            lbDSLoopStart = new Label();
+            numDSInitialDelay = new NumericUpDown();
+            lbDSInitialDelay = new Label();
+            grpRegular = new GroupBox();
             numRegTotalDuration = new NumericUpDown();
+            lbRegTotalDuration = new Label();
             numRegLoopEnd = new NumericUpDown();
+            lbRegLoopEnd = new Label();
             numRegLoopStart = new NumericUpDown();
+            lbRegLoopStart = new Label();
             numRegInitialDelay = new NumericUpDown();
+            lbRegInitialDelay = new Label();
             checkLoop = new CheckBox();
             btnNewEventHash = new Button();
             comboEventType = new ComboBox();
             lbEventType = new Label();
-            grpRegular = new GroupBox();
-            grpDS = new GroupBox();
-            lbDSInitialDelay = new Label();
-            lbDSTotalDuration = new Label();
-            numDSInitialDelay = new NumericUpDown();
-            lbDSLoopEnd = new Label();
-            numDSLoopStart = new NumericUpDown();
-            lbDSLoopStart = new Label();
-            numDSLoopEnd = new NumericUpDown();
-            numDSTotalDuration = new NumericUpDown();
             grpBank.SuspendLayout();
             grpLoop.SuspendLayout();
+            grpDS.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numDSTotalDuration).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numDSLoopEnd).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numDSLoopStart).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numDSInitialDelay).BeginInit();
+            grpRegular.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numRegTotalDuration).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRegLoopEnd).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRegLoopStart).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRegInitialDelay).BeginInit();
-            grpRegular.SuspendLayout();
-            grpDS.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numDSInitialDelay).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numDSLoopStart).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numDSLoopEnd).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numDSTotalDuration).BeginInit();
             SuspendLayout();
             // 
             // btnApply
@@ -163,41 +163,115 @@ namespace LumiTool.Forms
             grpLoop.TabStop = false;
             grpLoop.Text = "Looping";
             // 
-            // lbRegTotalDuration
+            // grpDS
             // 
-            lbRegTotalDuration.AutoSize = true;
-            lbRegTotalDuration.Location = new Point(5, 111);
-            lbRegTotalDuration.Name = "lbRegTotalDuration";
-            lbRegTotalDuration.Size = new Size(114, 15);
-            lbRegTotalDuration.TabIndex = 7;
-            lbRegTotalDuration.Text = "Total Source Length:";
+            grpDS.Controls.Add(numDSTotalDuration);
+            grpDS.Controls.Add(lbDSTotalDuration);
+            grpDS.Controls.Add(numDSLoopEnd);
+            grpDS.Controls.Add(lbDSLoopEnd);
+            grpDS.Controls.Add(numDSLoopStart);
+            grpDS.Controls.Add(lbDSLoopStart);
+            grpDS.Controls.Add(numDSInitialDelay);
+            grpDS.Controls.Add(lbDSInitialDelay);
+            grpDS.Location = new Point(250, 44);
+            grpDS.Name = "grpDS";
+            grpDS.Size = new Size(238, 141);
+            grpDS.TabIndex = 10;
+            grpDS.TabStop = false;
+            grpDS.Text = "DS Sounds";
             // 
-            // lbRegLoopEnd
+            // numDSTotalDuration
             // 
-            lbRegLoopEnd.AutoSize = true;
-            lbRegLoopEnd.Location = new Point(59, 82);
-            lbRegLoopEnd.Name = "lbRegLoopEnd";
-            lbRegLoopEnd.Size = new Size(60, 15);
-            lbRegLoopEnd.TabIndex = 5;
-            lbRegLoopEnd.Text = "Loop End:";
+            numDSTotalDuration.DecimalPlaces = 5;
+            numDSTotalDuration.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
+            numDSTotalDuration.Location = new Point(125, 109);
+            numDSTotalDuration.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numDSTotalDuration.Name = "numDSTotalDuration";
+            numDSTotalDuration.Size = new Size(107, 23);
+            numDSTotalDuration.TabIndex = 8;
             // 
-            // lbRegLoopStart
+            // lbDSTotalDuration
             // 
-            lbRegLoopStart.AutoSize = true;
-            lbRegLoopStart.Location = new Point(55, 53);
-            lbRegLoopStart.Name = "lbRegLoopStart";
-            lbRegLoopStart.Size = new Size(64, 15);
-            lbRegLoopStart.TabIndex = 3;
-            lbRegLoopStart.Text = "Loop Start:";
+            lbDSTotalDuration.AutoSize = true;
+            lbDSTotalDuration.Location = new Point(5, 111);
+            lbDSTotalDuration.Name = "lbDSTotalDuration";
+            lbDSTotalDuration.Size = new Size(114, 15);
+            lbDSTotalDuration.TabIndex = 7;
+            lbDSTotalDuration.Text = "Total Source Length:";
             // 
-            // lbRegInitialDelay
+            // numDSLoopEnd
             // 
-            lbRegInitialDelay.AutoSize = true;
-            lbRegInitialDelay.Location = new Point(48, 24);
-            lbRegInitialDelay.Name = "lbRegInitialDelay";
-            lbRegInitialDelay.Size = new Size(71, 15);
-            lbRegInitialDelay.TabIndex = 1;
-            lbRegInitialDelay.Text = "Initial Delay:";
+            numDSLoopEnd.DecimalPlaces = 5;
+            numDSLoopEnd.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
+            numDSLoopEnd.Location = new Point(125, 80);
+            numDSLoopEnd.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numDSLoopEnd.Name = "numDSLoopEnd";
+            numDSLoopEnd.Size = new Size(107, 23);
+            numDSLoopEnd.TabIndex = 6;
+            // 
+            // lbDSLoopEnd
+            // 
+            lbDSLoopEnd.AutoSize = true;
+            lbDSLoopEnd.Location = new Point(59, 82);
+            lbDSLoopEnd.Name = "lbDSLoopEnd";
+            lbDSLoopEnd.Size = new Size(60, 15);
+            lbDSLoopEnd.TabIndex = 5;
+            lbDSLoopEnd.Text = "Loop End:";
+            // 
+            // numDSLoopStart
+            // 
+            numDSLoopStart.DecimalPlaces = 5;
+            numDSLoopStart.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
+            numDSLoopStart.Location = new Point(125, 51);
+            numDSLoopStart.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numDSLoopStart.Name = "numDSLoopStart";
+            numDSLoopStart.Size = new Size(107, 23);
+            numDSLoopStart.TabIndex = 4;
+            // 
+            // lbDSLoopStart
+            // 
+            lbDSLoopStart.AutoSize = true;
+            lbDSLoopStart.Location = new Point(55, 53);
+            lbDSLoopStart.Name = "lbDSLoopStart";
+            lbDSLoopStart.Size = new Size(64, 15);
+            lbDSLoopStart.TabIndex = 3;
+            lbDSLoopStart.Text = "Loop Start:";
+            // 
+            // numDSInitialDelay
+            // 
+            numDSInitialDelay.DecimalPlaces = 5;
+            numDSInitialDelay.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
+            numDSInitialDelay.Location = new Point(125, 22);
+            numDSInitialDelay.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numDSInitialDelay.Name = "numDSInitialDelay";
+            numDSInitialDelay.Size = new Size(107, 23);
+            numDSInitialDelay.TabIndex = 2;
+            // 
+            // lbDSInitialDelay
+            // 
+            lbDSInitialDelay.AutoSize = true;
+            lbDSInitialDelay.Location = new Point(48, 24);
+            lbDSInitialDelay.Name = "lbDSInitialDelay";
+            lbDSInitialDelay.Size = new Size(71, 15);
+            lbDSInitialDelay.TabIndex = 1;
+            lbDSInitialDelay.Text = "Initial Delay:";
+            // 
+            // grpRegular
+            // 
+            grpRegular.Controls.Add(numRegTotalDuration);
+            grpRegular.Controls.Add(lbRegTotalDuration);
+            grpRegular.Controls.Add(numRegLoopEnd);
+            grpRegular.Controls.Add(lbRegLoopEnd);
+            grpRegular.Controls.Add(numRegLoopStart);
+            grpRegular.Controls.Add(lbRegLoopStart);
+            grpRegular.Controls.Add(numRegInitialDelay);
+            grpRegular.Controls.Add(lbRegInitialDelay);
+            grpRegular.Location = new Point(6, 44);
+            grpRegular.Name = "grpRegular";
+            grpRegular.Size = new Size(238, 141);
+            grpRegular.TabIndex = 9;
+            grpRegular.TabStop = false;
+            grpRegular.Text = "Regular";
             // 
             // numRegTotalDuration
             // 
@@ -209,6 +283,15 @@ namespace LumiTool.Forms
             numRegTotalDuration.Size = new Size(107, 23);
             numRegTotalDuration.TabIndex = 8;
             // 
+            // lbRegTotalDuration
+            // 
+            lbRegTotalDuration.AutoSize = true;
+            lbRegTotalDuration.Location = new Point(5, 111);
+            lbRegTotalDuration.Name = "lbRegTotalDuration";
+            lbRegTotalDuration.Size = new Size(114, 15);
+            lbRegTotalDuration.TabIndex = 7;
+            lbRegTotalDuration.Text = "Total Source Length:";
+            // 
             // numRegLoopEnd
             // 
             numRegLoopEnd.DecimalPlaces = 5;
@@ -218,6 +301,15 @@ namespace LumiTool.Forms
             numRegLoopEnd.Name = "numRegLoopEnd";
             numRegLoopEnd.Size = new Size(107, 23);
             numRegLoopEnd.TabIndex = 6;
+            // 
+            // lbRegLoopEnd
+            // 
+            lbRegLoopEnd.AutoSize = true;
+            lbRegLoopEnd.Location = new Point(59, 82);
+            lbRegLoopEnd.Name = "lbRegLoopEnd";
+            lbRegLoopEnd.Size = new Size(60, 15);
+            lbRegLoopEnd.TabIndex = 5;
+            lbRegLoopEnd.Text = "Loop End:";
             // 
             // numRegLoopStart
             // 
@@ -229,6 +321,15 @@ namespace LumiTool.Forms
             numRegLoopStart.Size = new Size(107, 23);
             numRegLoopStart.TabIndex = 4;
             // 
+            // lbRegLoopStart
+            // 
+            lbRegLoopStart.AutoSize = true;
+            lbRegLoopStart.Location = new Point(55, 53);
+            lbRegLoopStart.Name = "lbRegLoopStart";
+            lbRegLoopStart.Size = new Size(64, 15);
+            lbRegLoopStart.TabIndex = 3;
+            lbRegLoopStart.Text = "Loop Start:";
+            // 
             // numRegInitialDelay
             // 
             numRegInitialDelay.DecimalPlaces = 5;
@@ -238,6 +339,15 @@ namespace LumiTool.Forms
             numRegInitialDelay.Name = "numRegInitialDelay";
             numRegInitialDelay.Size = new Size(107, 23);
             numRegInitialDelay.TabIndex = 2;
+            // 
+            // lbRegInitialDelay
+            // 
+            lbRegInitialDelay.AutoSize = true;
+            lbRegInitialDelay.Location = new Point(48, 24);
+            lbRegInitialDelay.Name = "lbRegInitialDelay";
+            lbRegInitialDelay.Size = new Size(71, 15);
+            lbRegInitialDelay.TabIndex = 1;
+            lbRegInitialDelay.Text = "Initial Delay:";
             // 
             // checkLoop
             // 
@@ -277,116 +387,6 @@ namespace LumiTool.Forms
             lbEventType.TabIndex = 13;
             lbEventType.Text = "Event Type:";
             // 
-            // grpRegular
-            // 
-            grpRegular.Controls.Add(numRegTotalDuration);
-            grpRegular.Controls.Add(lbRegTotalDuration);
-            grpRegular.Controls.Add(numRegLoopEnd);
-            grpRegular.Controls.Add(lbRegLoopEnd);
-            grpRegular.Controls.Add(numRegLoopStart);
-            grpRegular.Controls.Add(lbRegLoopStart);
-            grpRegular.Controls.Add(numRegInitialDelay);
-            grpRegular.Controls.Add(lbRegInitialDelay);
-            grpRegular.Location = new Point(6, 44);
-            grpRegular.Name = "grpRegular";
-            grpRegular.Size = new Size(238, 141);
-            grpRegular.TabIndex = 9;
-            grpRegular.TabStop = false;
-            grpRegular.Text = "Regular";
-            // 
-            // grpDS
-            // 
-            grpDS.Controls.Add(numDSTotalDuration);
-            grpDS.Controls.Add(lbDSTotalDuration);
-            grpDS.Controls.Add(numDSLoopEnd);
-            grpDS.Controls.Add(lbDSLoopEnd);
-            grpDS.Controls.Add(numDSLoopStart);
-            grpDS.Controls.Add(lbDSLoopStart);
-            grpDS.Controls.Add(numDSInitialDelay);
-            grpDS.Controls.Add(lbDSInitialDelay);
-            grpDS.Location = new Point(250, 44);
-            grpDS.Name = "grpDS";
-            grpDS.Size = new Size(238, 141);
-            grpDS.TabIndex = 10;
-            grpDS.TabStop = false;
-            grpDS.Text = "DS Sounds";
-            // 
-            // lbDSInitialDelay
-            // 
-            lbDSInitialDelay.AutoSize = true;
-            lbDSInitialDelay.Location = new Point(48, 24);
-            lbDSInitialDelay.Name = "lbDSInitialDelay";
-            lbDSInitialDelay.Size = new Size(71, 15);
-            lbDSInitialDelay.TabIndex = 1;
-            lbDSInitialDelay.Text = "Initial Delay:";
-            // 
-            // lbDSTotalDuration
-            // 
-            lbDSTotalDuration.AutoSize = true;
-            lbDSTotalDuration.Location = new Point(5, 111);
-            lbDSTotalDuration.Name = "lbDSTotalDuration";
-            lbDSTotalDuration.Size = new Size(114, 15);
-            lbDSTotalDuration.TabIndex = 7;
-            lbDSTotalDuration.Text = "Total Source Length:";
-            // 
-            // numDSInitialDelay
-            // 
-            numDSInitialDelay.DecimalPlaces = 5;
-            numDSInitialDelay.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
-            numDSInitialDelay.Location = new Point(125, 22);
-            numDSInitialDelay.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
-            numDSInitialDelay.Name = "numDSInitialDelay";
-            numDSInitialDelay.Size = new Size(107, 23);
-            numDSInitialDelay.TabIndex = 2;
-            // 
-            // lbDSLoopEnd
-            // 
-            lbDSLoopEnd.AutoSize = true;
-            lbDSLoopEnd.Location = new Point(59, 82);
-            lbDSLoopEnd.Name = "lbDSLoopEnd";
-            lbDSLoopEnd.Size = new Size(60, 15);
-            lbDSLoopEnd.TabIndex = 5;
-            lbDSLoopEnd.Text = "Loop End:";
-            // 
-            // numDSLoopStart
-            // 
-            numDSLoopStart.DecimalPlaces = 5;
-            numDSLoopStart.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
-            numDSLoopStart.Location = new Point(125, 51);
-            numDSLoopStart.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
-            numDSLoopStart.Name = "numDSLoopStart";
-            numDSLoopStart.Size = new Size(107, 23);
-            numDSLoopStart.TabIndex = 4;
-            // 
-            // lbDSLoopStart
-            // 
-            lbDSLoopStart.AutoSize = true;
-            lbDSLoopStart.Location = new Point(55, 53);
-            lbDSLoopStart.Name = "lbDSLoopStart";
-            lbDSLoopStart.Size = new Size(64, 15);
-            lbDSLoopStart.TabIndex = 3;
-            lbDSLoopStart.Text = "Loop Start:";
-            // 
-            // numDSLoopEnd
-            // 
-            numDSLoopEnd.DecimalPlaces = 5;
-            numDSLoopEnd.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
-            numDSLoopEnd.Location = new Point(125, 80);
-            numDSLoopEnd.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
-            numDSLoopEnd.Name = "numDSLoopEnd";
-            numDSLoopEnd.Size = new Size(107, 23);
-            numDSLoopEnd.TabIndex = 6;
-            // 
-            // numDSTotalDuration
-            // 
-            numDSTotalDuration.DecimalPlaces = 5;
-            numDSTotalDuration.Increment = new decimal(new int[] { 1, 0, 0, 327680 });
-            numDSTotalDuration.Location = new Point(125, 109);
-            numDSTotalDuration.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
-            numDSTotalDuration.Name = "numDSTotalDuration";
-            numDSTotalDuration.Size = new Size(107, 23);
-            numDSTotalDuration.TabIndex = 8;
-            // 
             // FormWwiseEventCloner
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -406,25 +406,25 @@ namespace LumiTool.Forms
             MaximumSize = new Size(800, 254);
             MinimumSize = new Size(800, 254);
             Name = "FormWwiseEventCloner";
-            Text = "Wwise Event Cloner";
+            Text = "Wwise Event Cloner For BDSP";
             FormClosed += FormWwiseBankCloner_FormClosed;
             Shown += FormWwiseBankCloner_Shown;
             grpBank.ResumeLayout(false);
             grpBank.PerformLayout();
             grpLoop.ResumeLayout(false);
             grpLoop.PerformLayout();
+            grpDS.ResumeLayout(false);
+            grpDS.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numDSTotalDuration).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numDSLoopEnd).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numDSLoopStart).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numDSInitialDelay).EndInit();
+            grpRegular.ResumeLayout(false);
+            grpRegular.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numRegTotalDuration).EndInit();
             ((System.ComponentModel.ISupportInitialize)numRegLoopEnd).EndInit();
             ((System.ComponentModel.ISupportInitialize)numRegLoopStart).EndInit();
             ((System.ComponentModel.ISupportInitialize)numRegInitialDelay).EndInit();
-            grpRegular.ResumeLayout(false);
-            grpRegular.PerformLayout();
-            grpDS.ResumeLayout(false);
-            grpDS.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numDSInitialDelay).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numDSLoopStart).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numDSLoopEnd).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numDSTotalDuration).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }

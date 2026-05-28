@@ -75,9 +75,6 @@ namespace LumiTool.Forms
             var name = $"{currIndex}";
             graph.AddNode(name);
 
-            if (node.audioNodeId == 380621555)
-                MessageBox.Show($"Hi!!!! I'm index {currIndex}", "test");
-
             if (!string.IsNullOrEmpty(parentName))
                 graph.AddEdge(parentName, name);
 
