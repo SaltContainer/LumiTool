@@ -1,9 +1,6 @@
 ﻿using LumiTool.Data.Wwise;
 using LumiTool.Data;
 using LumiTool.Engine;
-using Microsoft.VisualBasic;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace LumiTool.BDSPWwiseCloners
 {
@@ -133,7 +130,7 @@ namespace LumiTool.BDSPWwiseCloners
             }
         }
 
-        protected void AdjustLoopPointsInMusicSegments(List<List<MusicSegment>> splitSegments, Dictionary<(int i, uint id), WwiseLoopPointData> loopData)
+        protected void AdjustLoopPointsInMusicSegments(List<List<MusicSegment>> splitSegments, Dictionary<(int segmentIndex, uint segmentID), WwiseLoopPointData> loopData)
         {
             // Do some edits on the loop data for MusicSegments
             foreach (var segments in splitSegments)
@@ -142,8 +139,8 @@ namespace LumiTool.BDSPWwiseCloners
                 {
                     if (l != null && segments.Count > i && segments[i].id == id)
                     {
-                        segments[i].duration = l.LoopStart - l.InitialDelay;
-                        segments[i].arrayMarkers[1].position = l.LoopStart - l.InitialDelay;
+                        segments[i].duration = l.SegmentDuration;
+                        segments[i].arrayMarkers[1].position = l.SegmentArrayMarkerPosition;
                     }
                 }
             }
@@ -160,7 +157,7 @@ namespace LumiTool.BDSPWwiseCloners
             }
         }
 
-        protected void AdjustLoopPointsInMusicTracks(List<List<List<MusicTrack>>> splitTracks, Dictionary<(int i, int j, uint id, int k), WwiseLoopPointData> loopData)
+        protected void AdjustLoopPointsInMusicTracks(List<List<List<MusicTrack>>> splitTracks, Dictionary<(int segmentIndex, int trackIndex, uint trackID, int playlistItemIndex), WwiseLoopPointData> loopData)
         {
             // Do some edits on the loop data for MusicTracks
             foreach (var tracks in splitTracks)

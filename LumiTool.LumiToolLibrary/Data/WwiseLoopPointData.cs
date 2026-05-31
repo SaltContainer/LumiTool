@@ -24,7 +24,7 @@
         // Math for Intro Section
         private double PlayAtIntro() => -InitialDelay;
         private double BeginTrimOffsetIntro() => InitialDelay;
-        private double EndTrimOffsetIntro() => -(TotalSourceLength - LoopStart);
+        private double EndTrimOffsetIntro() => (TotalSourceLength == LoopStart) ? TotalSourceLength : -(TotalSourceLength - LoopStart);
         private double SrcDurationIntro() => TotalSourceLength;
         private double SegmentDurationIntro() => LoopStart - InitialDelay;
         private double SegmentArrayMarkerPositionIntro() => LoopStart - InitialDelay;
@@ -32,7 +32,7 @@
         // Math for Looping Section
         private double PlayAtLoop() => -LoopStart;
         private double BeginTrimOffsetLoop() => LoopStart;
-        private double EndTrimOffsetLoop() => -(TotalSourceLength - LoopEnd);
+        private double EndTrimOffsetLoop() => (TotalSourceLength == LoopEnd) ? TotalSourceLength : - (TotalSourceLength - LoopEnd);
         private double SrcDurationLoop() => TotalSourceLength;
         private double SegmentDurationLoop() => LoopEnd - LoopStart;
         private double SegmentArrayMarkerPositionLoop() => LoopEnd - LoopStart;

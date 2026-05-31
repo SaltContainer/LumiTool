@@ -10,10 +10,11 @@ namespace LumiTool.Forms
 
         private static Dictionary<string, BDSPWwiseEventType> eventTypes = new Dictionary<string, BDSPWwiseEventType>()
         {
-            { "BGM_FIELD Both With Intro (D05)",     BDSPWwiseEventType.BGM_FIELD_WITH_INTRO },
-            { "BGM_FIELD BDSP With Intro (C01_DAY)", BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO },
-            { "BGM_FIELD DS With Intro (TBD)",       BDSPWwiseEventType.BGM_FIELD_DS_INTRO },
-            { "BGM_FIELD Both No Intro (C01_NIGHT)", BDSPWwiseEventType.BGM_FIELD_NO_INTRO },
+            { "BGM_FIELD With Intro (D05)",     BDSPWwiseEventType.BGM_FIELD_WITH_INTRO },
+            //{ "BGM_FIELD BDSP With Intro (C01_DAY)", BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO },
+            //{ "BGM_FIELD DS With Intro (TBD)",       BDSPWwiseEventType.BGM_FIELD_DS_INTRO },
+            { "BGM_FIELD No Intro (C01_NIGHT)", BDSPWwiseEventType.BGM_FIELD_NO_INTRO },
+            { "BGM_BATTLE No Intro (BA001)",    BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO },
         };
 
         WwiseData bank;

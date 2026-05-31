@@ -11,6 +11,7 @@ namespace LumiTool.Engine
         private BgmFieldBothIntroCloner bgmFieldBothIntroCloner;
         private BgmFieldBDSPWithIntroCloner bgmFieldBDSPWithIntroCloner;
         private BgmFieldBothNoIntroCloner bgmFieldBothNoIntroCloner;
+        private BgmBattleBothIntroCloner bgmBattleBothIntroCloner;
 
         public BDSPWwiseEngine(LumiToolEngine engine)
         {
@@ -18,6 +19,7 @@ namespace LumiTool.Engine
             this.bgmFieldBothIntroCloner = new BgmFieldBothIntroCloner(engine);
             this.bgmFieldBDSPWithIntroCloner = new BgmFieldBDSPWithIntroCloner(engine);
             this.bgmFieldBothNoIntroCloner = new BgmFieldBothNoIntroCloner(engine);
+            this.bgmBattleBothIntroCloner = new BgmBattleBothIntroCloner(engine);
         }
 
         public void MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
@@ -38,6 +40,10 @@ namespace LumiTool.Engine
 
                 case BDSPWwiseEventType.BGM_FIELD_NO_INTRO:
                     bgmFieldBothNoIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
+                    break;
+
+                case BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO:
+                    bgmBattleBothIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
                     break;
             }
         }
