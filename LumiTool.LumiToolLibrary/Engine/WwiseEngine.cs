@@ -37,9 +37,9 @@ namespace LumiTool.Engine
             return hash;
         }
 
-        public void MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
+        public bool MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
         {
-            bdspWwiseEngine.MakeNewBDSPWwiseEvent(wd, eventType, newEventName, loopData, dsLoopData);
+            return bdspWwiseEngine.MakeNewBDSPWwiseEvent(wd, eventType, newEventName, loopData, dsLoopData);
         }
 
         public List<Event> GetEventsOfBank(WwiseData wd)

@@ -5,6 +5,14 @@
         public NodeBaseParams nodeBaseParams;
         public Children children;
 
+        public ActorMixer Clone()
+        {
+            ActorMixer am = (ActorMixer)this.MemberwiseClone();
+            am.nodeBaseParams = nodeBaseParams.Clone();
+            am.children = children.Clone();
+            return am;
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             base.Deserialize(wd);

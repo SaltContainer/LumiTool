@@ -5,6 +5,13 @@
         public byte fadeCurve;
         public uint bankID;
 
+        public ActionPlay Clone()
+        {
+            ActionPlay ap = (ActionPlay)this.MemberwiseClone();
+            ap.initialParams = initialParams.Clone();
+            return ap;
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             base.Deserialize(wd);

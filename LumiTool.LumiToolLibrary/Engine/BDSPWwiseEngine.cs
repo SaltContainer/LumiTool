@@ -12,6 +12,7 @@ namespace LumiTool.Engine
         private BgmFieldBDSPWithIntroCloner bgmFieldBDSPWithIntroCloner;
         private BgmFieldBothNoIntroCloner bgmFieldBothNoIntroCloner;
         private BgmBattleBothIntroCloner bgmBattleBothIntroCloner;
+        private PokemonCrySetCloner pokemonCrySetCloner;
 
         public BDSPWwiseEngine(LumiToolEngine engine)
         {
@@ -20,31 +21,35 @@ namespace LumiTool.Engine
             this.bgmFieldBDSPWithIntroCloner = new BgmFieldBDSPWithIntroCloner(engine);
             this.bgmFieldBothNoIntroCloner = new BgmFieldBothNoIntroCloner(engine);
             this.bgmBattleBothIntroCloner = new BgmBattleBothIntroCloner(engine);
+            this.pokemonCrySetCloner = new PokemonCrySetCloner(engine);
         }
 
-        public void MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
+        public bool MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
         {
             switch (eventType)
             {
                 case BDSPWwiseEventType.BGM_FIELD_WITH_INTRO:
-                    bgmFieldBothIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
-                    break;
+                    return bgmFieldBothIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
 
                 case BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO:
-                    bgmFieldBDSPWithIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
-                    break;
+                    return bgmFieldBDSPWithIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
 
                 case BDSPWwiseEventType.BGM_FIELD_DS_INTRO:
                     // TODO
-                    break;
+                    return false;
 
                 case BDSPWwiseEventType.BGM_FIELD_NO_INTRO:
-                    bgmFieldBothNoIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
-                    break;
+                    return bgmFieldBothNoIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
 
                 case BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO:
-                    bgmBattleBothIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
-                    break;
+                    return bgmBattleBothIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
+
+                case BDSPWwiseEventType.POKEMON_CRY_SET:
+                    return pokemonCrySetCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
+
+                default:
+                    engine.Log("No code is set up to clone this event at this time.", LogLevel.Error);
+                    return false;
             }
         }
     }

@@ -140,9 +140,9 @@ namespace LumiTool.Engine
             wwiseEngine.SaveBank(wd, path);
         }
 
-        public void MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
+        public bool MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
         {
-            wwiseEngine.MakeNewBDSPWwiseEvent(wd, eventType, newEventName, loopData, dsLoopData);
+            return wwiseEngine.MakeNewBDSPWwiseEvent(wd, eventType, newEventName, loopData, dsLoopData);
         }
 
         public List<Event> GetEventsOfBank(WwiseData wd)

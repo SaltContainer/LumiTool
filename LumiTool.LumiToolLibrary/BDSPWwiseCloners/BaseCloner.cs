@@ -13,9 +13,9 @@ namespace LumiTool.BDSPWwiseCloners
             this.engine = engine;
         }
 
-        public abstract void ExecuteClone(WwiseData wd, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData);
+        public abstract bool ExecuteClone(WwiseData wd, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData);
 
-        protected void CloneEventAndActions(WwiseData wd, uint oldEventID, uint newEventID, Dictionary<uint, uint> update)
+        protected Dictionary<uint, uint> CloneEventAndActions(WwiseData wd, uint oldEventID, uint newEventID, Dictionary<uint, uint> update)
         {
             // Clone initial Event and add it with the new ID
             Event e = ((Event)wd.objectsByID[oldEventID]).Clone();
@@ -49,11 +49,20 @@ namespace LumiTool.BDSPWwiseCloners
 
                     update.Add(oldActionIDs[i], newActionIDs[i]);
                 }
+                else if (wd.objectsByID[oldActionIDs[i]] is ActionPlay oldAp)
+                {
+                    // Clone Action of Event
+                    var newAp = oldAp.Clone();
+                    AddHirc(wd, newAp, newActionIDs[i]);
+                    update.Add(oldActionIDs[i], newActionIDs[i]);
+                }
                 else
                 {
                     engine.Log($"Action of Type {wd.objectsByID[oldActionIDs[i]].GetType()} is not supported at this time.", LogLevel.Information);
                 }
             }
+
+            return oldActionIDs.Zip(newActionIDs).ToDictionary(kvp => kvp.First, kvp => kvp.Second);
         }
 
         protected List<uint> UpdateMusicRanSeqCntrs(WwiseData wd, List<MusicSwitchCntr> mscs, uint oldEventID, uint newEventID, uint groupID, Dictionary<uint, uint> update, uint regularMusicSwitchCntrID, uint dsMusicSwitchCntrID, uint oldRegularMusicRanSeqCntrID, uint oldDSMusicRanSeqCntrID)
@@ -242,6 +251,50 @@ namespace LumiTool.BDSPWwiseCloners
 
                 mt.nodeBaseParams.directParentID = GetNewID(mt.nodeBaseParams.directParentID, update);
             }
+        }
+
+        protected void AddEventNameAndHashToDict(Dictionary<string, uint> dict, string eventName)
+        {
+            dict.Add(eventName, engine.FNV132Hash(eventName));
+        }
+
+        protected void GenerateNewSoundAndSourceIDs(WwiseData wd, List<Sound> sounds, Dictionary<uint, uint> update)
+        {
+            foreach (Sound sound in sounds)
+            {
+                // Generate new IDs for the Sounds
+                uint newID = GenerateNewID(wd);
+                update.Add(sound.id, newID);
+                sound.id = newID;
+                AddHirc(wd, sound, newID);
+
+                // Only generate a new ID for a source if it hasn't already had one
+                uint oldSourceID = sound.bankSourceData.mediaInformation.sourceID;
+                if (!update.ContainsKey(oldSourceID))
+                {
+                    uint newSourceID = GenerateNewID(wd);
+                    update.Add(oldSourceID, newSourceID);
+                    engine.Log($"Source {oldSourceID} cloned to {newSourceID}", LogLevel.Information);
+                }
+            }
+        }
+
+        protected void CloneActorMixer(WwiseData wd, List<Sound> sounds, uint oldActorMixerID, uint parentActorMixerID, Dictionary<uint, uint> update)
+        {
+            // Clone the original ActorMixer
+            uint newActorMixerID = GenerateNewID(wd);
+            var mixer = ((ActorMixer)wd.objectsByID[oldActorMixerID]).Clone();
+            update.Add(mixer.id, newActorMixerID);
+            mixer.id = newActorMixerID;
+            mixer.children.childIDs = sounds.Select(s => s.id).ToList();
+            mixer.nodeBaseParams.directParentID = parentActorMixerID;
+            AddHirc(wd, mixer, newActorMixerID);
+
+            // Add ActorMixer to parent
+            var parent = (ActorMixer)wd.objectsByID[parentActorMixerID];
+            parent.children.childIDs.Add(mixer.id);
+
+            engine.Log($"ActorMixer {oldActorMixerID} cloned to {newActorMixerID}, with parent {parentActorMixerID}", LogLevel.Information);
         }
 
         protected void AddHirc(WwiseData wd, HircItem hi, uint id)

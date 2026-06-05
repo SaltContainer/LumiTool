@@ -5,6 +5,14 @@
         public BankSourceData bankSourceData;
         public NodeBaseParams nodeBaseParams;
 
+        public Sound Clone()
+        {
+            Sound s = (Sound)this.MemberwiseClone();
+            s.bankSourceData = bankSourceData.Clone();
+            s.nodeBaseParams = nodeBaseParams.Clone();
+            return s;
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             base.Deserialize(wd);

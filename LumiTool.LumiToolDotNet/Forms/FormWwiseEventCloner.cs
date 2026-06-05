@@ -10,11 +10,12 @@ namespace LumiTool.Forms
 
         private static Dictionary<string, BDSPWwiseEventType> eventTypes = new Dictionary<string, BDSPWwiseEventType>()
         {
-            { "BGM_FIELD With Intro (D05)",     BDSPWwiseEventType.BGM_FIELD_WITH_INTRO },
+            { "BGM_FIELD With Intro (D05)",          BDSPWwiseEventType.BGM_FIELD_WITH_INTRO },
             //{ "BGM_FIELD BDSP With Intro (C01_DAY)", BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO },
             //{ "BGM_FIELD DS With Intro (TBD)",       BDSPWwiseEventType.BGM_FIELD_DS_INTRO },
-            { "BGM_FIELD No Intro (C01_NIGHT)", BDSPWwiseEventType.BGM_FIELD_NO_INTRO },
-            { "BGM_BATTLE No Intro (BA001)",    BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO },
+            { "BGM_FIELD No Intro (C01_NIGHT)",      BDSPWwiseEventType.BGM_FIELD_NO_INTRO },
+            { "BGM_BATTLE No Intro (BA001)",         BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO },
+            { "Pokémon Cry Set (PLAY_PV_001_00_0*)", BDSPWwiseEventType.POKEMON_CRY_SET },
         };
 
         WwiseData bank;
@@ -160,9 +161,11 @@ namespace LumiTool.Forms
             try
             {
                 engine.AddOnLogCallback(LogReceiver);
-                engine.MakeNewBDSPWwiseEvent(bank, eventTypes[(string)comboEventType.SelectedItem], txtNewEvent.Text, GenerateLoopData(), GenerateDSLoopData());
-                //ShowInfoPopup();
-                MessageBox.Show("Successfully cloned an event. Don't forget to save your bank!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (engine.MakeNewBDSPWwiseEvent(bank, eventTypes[(string)comboEventType.SelectedItem], txtNewEvent.Text, GenerateLoopData(), GenerateDSLoopData()))
+                {
+                    MessageBox.Show("Successfully cloned an event. Don't forget to save your bank!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //ShowInfoPopup();
+                }
             }
             catch (Exception ex)
             {

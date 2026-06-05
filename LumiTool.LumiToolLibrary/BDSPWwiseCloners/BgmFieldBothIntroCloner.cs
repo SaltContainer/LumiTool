@@ -9,7 +9,7 @@ namespace LumiTool.BDSPWwiseCloners
     {
         public BgmFieldBothIntroCloner(LumiToolEngine engine) : base(engine) { }
 
-        public override void ExecuteClone(WwiseData wd, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
+        public override bool ExecuteClone(WwiseData wd, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
         {
             uint oldEventID = engine.FNV132Hash("D05"); // Also the ID of the old State in the State Group
             uint newEventID = engine.FNV132Hash(newEventName); // Also the ID of the new State in the State Group
@@ -82,6 +82,8 @@ namespace LumiTool.BDSPWwiseCloners
             GenerateNewMusicTrackAndSourceIDs(wd, mts, update, 1050421825, 956548356);
 
             UpdateAllFinalIDs(mscs, mrscs, mrspis, mss, mts, update);
+
+            return true;
         }
     }
 }
