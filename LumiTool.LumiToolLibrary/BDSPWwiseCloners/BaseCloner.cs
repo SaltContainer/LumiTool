@@ -15,7 +15,7 @@ namespace LumiTool.BDSPWwiseCloners
 
         public abstract bool ExecuteClone(WwiseData wd, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData);
 
-        protected Dictionary<uint, uint> CloneEventAndActions(WwiseData wd, uint oldEventID, uint newEventID, Dictionary<uint, uint> update)
+        protected Dictionary<uint, uint> CloneEventAndActions(WwiseData wd, uint oldEventID, uint newEventID, uint groupID, Dictionary<uint, uint> update)
         {
             // Clone initial Event and add it with the new ID
             Event e = ((Event)wd.objectsByID[oldEventID]).Clone();
@@ -43,9 +43,12 @@ namespace LumiTool.BDSPWwiseCloners
                     var newAss = oldAss.Clone();
                     AddHirc(wd, newAss, newActionIDs[i]);
 
-                    // Adjust necessary values
-                    newAss.targetStateID = newEventID;
-                    newAss.idExt = newEventID;
+                    // Adjust necessary values if it's the specified group
+                    if (newAss.stateGroupID == groupID)
+                    {
+                        newAss.targetStateID = newEventID;
+                        newAss.idExt = newEventID;
+                    }
 
                     update.Add(oldActionIDs[i], newActionIDs[i]);
                 }
@@ -54,6 +57,20 @@ namespace LumiTool.BDSPWwiseCloners
                     // Clone Action of Event
                     var newAp = oldAp.Clone();
                     AddHirc(wd, newAp, newActionIDs[i]);
+                    update.Add(oldActionIDs[i], newActionIDs[i]);
+                }
+                else if (wd.objectsByID[oldActionIDs[i]] is ActionPause oldAps)
+                {
+                    // Clone Action of Event
+                    var newAps = oldAps.Clone();
+                    AddHirc(wd, newAps, newActionIDs[i]);
+                    update.Add(oldActionIDs[i], newActionIDs[i]);
+                }
+                else if (wd.objectsByID[oldActionIDs[i]] is ActionSetAkProp oldAsap)
+                {
+                    // Clone Action of Event
+                    var newAsap = oldAsap.Clone();
+                    AddHirc(wd, newAsap, newActionIDs[i]);
                     update.Add(oldActionIDs[i], newActionIDs[i]);
                 }
                 else

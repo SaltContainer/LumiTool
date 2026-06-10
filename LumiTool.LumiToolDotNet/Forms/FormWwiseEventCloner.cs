@@ -8,14 +8,14 @@ namespace LumiTool.Forms
     {
         LumiToolEngine engine;
 
-        private static Dictionary<string, BDSPWwiseEventType> eventTypes = new Dictionary<string, BDSPWwiseEventType>()
+        private static Dictionary<string, (BDSPWwiseEventType type, bool looped)> eventTypes = new Dictionary<string, (BDSPWwiseEventType, bool)>()
         {
-            { "BGM_FIELD With Intro (D05)",          BDSPWwiseEventType.BGM_FIELD_WITH_INTRO },
-            //{ "BGM_FIELD BDSP With Intro (C01_DAY)", BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO },
-            //{ "BGM_FIELD DS With Intro (TBD)",       BDSPWwiseEventType.BGM_FIELD_DS_INTRO },
-            { "BGM_FIELD No Intro (C01_NIGHT)",      BDSPWwiseEventType.BGM_FIELD_NO_INTRO },
-            { "BGM_BATTLE No Intro (BA001)",         BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO },
-            { "Pokémon Cry Set (PLAY_PV_001_00_0*)", BDSPWwiseEventType.POKEMON_CRY_SET },
+            { "BGM_FIELD With Intro (D05)",          (BDSPWwiseEventType.BGM_FIELD_WITH_INTRO, true) },
+            //{ "BGM_FIELD BDSP With Intro (C01_DAY)", (BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO, true) },
+            //{ "BGM_FIELD DS With Intro (TBD)",       (BDSPWwiseEventType.BGM_FIELD_DS_INTRO, true) },
+            { "BGM_FIELD No Intro (C01_NIGHT)",      (BDSPWwiseEventType.BGM_FIELD_NO_INTRO, true) },
+            { "BGM_BATTLE With Intro (BA001)",       (BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO, true) },
+            { "Pokémon Cry Set (PLAY_PV_001_00_0*)", (BDSPWwiseEventType.POKEMON_CRY_SET, false) },
         };
 
         WwiseData bank;
@@ -158,22 +158,29 @@ namespace LumiTool.Forms
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            try
+            if (eventTypes[(string)comboEventType.SelectedItem].looped && !checkLoop.Checked)
             {
-                engine.AddOnLogCallback(LogReceiver);
-                if (engine.MakeNewBDSPWwiseEvent(bank, eventTypes[(string)comboEventType.SelectedItem], txtNewEvent.Text, GenerateLoopData(), GenerateDSLoopData()))
+                MessageBox.Show("This event type requires adjusting loop points and they are currently disabled!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                try
                 {
-                    MessageBox.Show("Successfully cloned an event. Don't forget to save your bank!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //ShowInfoPopup();
+                    engine.AddOnLogCallback(LogReceiver);
+                    if (engine.MakeNewBDSPWwiseEvent(bank, eventTypes[(string)comboEventType.SelectedItem].type, txtNewEvent.Text, GenerateLoopData(), GenerateDSLoopData()))
+                    {
+                        MessageBox.Show("Successfully cloned an event. Don't forget to save your bank!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //ShowInfoPopup();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There was an error while cloning the event. Full exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                engine.RemoveOnLogCallback(LogReceiver);
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error while cloning the event. Full exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    engine.RemoveOnLogCallback(LogReceiver);
+                }
             }
         }
 

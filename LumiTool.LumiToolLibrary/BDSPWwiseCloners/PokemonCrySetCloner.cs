@@ -93,7 +93,7 @@ namespace LumiTool.BDSPWwiseCloners
                 {
                     var actionIDSet = new Dictionary<uint, uint>();
                     foreach (var (oldEvent, newEvent) in oldEvents[i].Zip(newEvents[i]))
-                        actionIDSet.AddRange(CloneEventAndActions(wd, oldEvent.Value, newEvent.Value, update));
+                        actionIDSet.AddRange(CloneEventAndActions(wd, oldEvent.Value, newEvent.Value, 0, update));
 
                     actionIDs.Add(actionIDSet);
                 }

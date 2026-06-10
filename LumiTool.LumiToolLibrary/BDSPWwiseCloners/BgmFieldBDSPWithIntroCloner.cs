@@ -19,7 +19,7 @@ namespace LumiTool.BDSPWwiseCloners
 
             Dictionary<uint, uint> update = new();
 
-            CloneEventAndActions(wd, oldEventID, newEventID, update);
+            CloneEventAndActions(wd, oldEventID, newEventID, groupID, update);
 
             HircChunk hc = (HircChunk)wd.banks[0].chunks.First(c => c is HircChunk);
 
