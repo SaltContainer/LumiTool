@@ -24,10 +24,12 @@ A "swiss army knife"-type tool that allows for many different manipulations on U
   - Refreshes the records in an AssetAssistant manifest by updating the sizes of all records (based on a mod RomFS and a vanilla RomFS) and removing any that cannot be found.
 - **AssetAssistant Manifest Editor**
   - Allows directly editing an AssetAssistant manifest.
-- **Wwise Event Cloner**
-  - Clones a given Wwise event in a bank.
+- **Wwise Event Cloner For BDSP**
+  - Clones a given Wwise event in BDSP's Delphis_Main.bnk based on a multitude of presets.
 - **Wwise Event Browser**
   - Allows looking at an overview of all events in a Wwise bank and their actions.
+- **Wwise MusicSwitchCntr Viewer**
+  - Allows looking at a graph showcasing the decision tree of a Music Switch Container in a Wwise bank.
 
 ## Planned Features
 
