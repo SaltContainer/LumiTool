@@ -10,12 +10,13 @@ namespace LumiTool.Forms
 
         private static Dictionary<string, (BDSPWwiseEventType type, bool looped)> eventTypes = new Dictionary<string, (BDSPWwiseEventType, bool)>()
         {
-            { "BGM_FIELD With Intro (D05)",          (BDSPWwiseEventType.BGM_FIELD_WITH_INTRO, true) },
-            //{ "BGM_FIELD BDSP With Intro (C01_DAY)", (BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO, true) },
-            //{ "BGM_FIELD DS With Intro (TBD)",       (BDSPWwiseEventType.BGM_FIELD_DS_INTRO, true) },
-            { "BGM_FIELD No Intro (C01_NIGHT)",      (BDSPWwiseEventType.BGM_FIELD_NO_INTRO, true) },
-            { "BGM_BATTLE With Intro (BA001)",       (BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO, true) },
-            { "Pokémon Cry Set (PLAY_PV_001_00_0*)", (BDSPWwiseEventType.POKEMON_CRY_SET, false) },
+            { "BGM_FIELD With Intro (D05)",                   (BDSPWwiseEventType.BGM_FIELD_WITH_INTRO, true) },
+            //{ "BGM_FIELD BDSP With Intro (C01_DAY)",          (BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO, true) },
+            //{ "BGM_FIELD DS With Intro (TBD)",                (BDSPWwiseEventType.BGM_FIELD_DS_INTRO, true) },
+            { "BGM_FIELD No Intro (C01_NIGHT)",               (BDSPWwiseEventType.BGM_FIELD_NO_INTRO, true) },
+            { "BGM_BATTLE With Intro (BA001)",                (BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO, true) },
+            { "BGM_EVENT Character Theme With Intro (EV003)", (BDSPWwiseEventType.BGM_EVENT_CHARACTER_THEME_WITH_INTRO, true) },
+            { "Pokémon Cry Set (PLAY_PV_001_00_0*)",          (BDSPWwiseEventType.POKEMON_CRY_SET, false) },
         };
 
         WwiseData bank;
@@ -98,6 +99,29 @@ namespace LumiTool.Forms
         private uint CalculateHash(string eventName)
         {
             return engine.FNV132Hash(eventName);
+        }
+
+        private void DebugFindSourcesOfEvent(string eventName)
+        {
+            var hash = CalculateHash(eventName);
+
+            // Adjust ID to needed
+            var musicSwitchDS = bank.objectsByID[175587878] as MusicSwitchCntr;
+
+            var sourcesDS = (bank.objectsByID[musicSwitchDS.decisionTree.nodes.First(n => n.key == hash).audioNodeId] as MusicRanSeqCntr)
+                .playList[0].playList.Select(p => bank.objectsByID[p.segmentID]).Cast<MusicSegment>()
+                .SelectMany(s => s.musicNodeParams.children.childIDs.Select(c => bank.objectsByID[c]).Cast<MusicTrack>())
+                .SelectMany(t => t.source.Select(s => s.mediaInformation.sourceID)).ToHashSet();
+
+            // Adjust ID to needed
+            var musicSwitchBDSP = bank.objectsByID[717132912] as MusicSwitchCntr;
+
+            var sourcesBDSP = (bank.objectsByID[musicSwitchBDSP.decisionTree.nodes.First(n => n.key == hash).audioNodeId] as MusicRanSeqCntr)
+                .playList[0].playList.Select(p => bank.objectsByID[p.segmentID]).Cast<MusicSegment>()
+                .SelectMany(s => s.musicNodeParams.children.childIDs.Select(c => bank.objectsByID[c]).Cast<MusicTrack>())
+                .SelectMany(t => t.source.Select(s => s.mediaInformation.sourceID)).ToHashSet();
+
+            MessageBox.Show($"DS Sources: {string.Join(", ", sourcesDS)}\nBDSP Sources: {string.Join(", ", sourcesBDSP)}", "Sources", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void LogReceiver(string message, LogLevel level)

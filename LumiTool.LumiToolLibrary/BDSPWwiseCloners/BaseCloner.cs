@@ -43,8 +43,8 @@ namespace LumiTool.BDSPWwiseCloners
                     var newAss = oldAss.Clone();
                     AddHirc(wd, newAss, newActionIDs[i]);
 
-                    // Adjust necessary values if it's the specified group
-                    if (newAss.stateGroupID == groupID)
+                    // Adjust necessary values if it's the specified group and target
+                    if (newAss.stateGroupID == groupID && newAss.targetStateID == oldEventID)
                     {
                         newAss.targetStateID = newEventID;
                         newAss.idExt = newEventID;

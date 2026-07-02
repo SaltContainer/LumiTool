@@ -13,15 +13,18 @@ namespace LumiTool.Engine
         private BgmFieldBothNoIntroCloner bgmFieldBothNoIntroCloner;
         private BgmBattleBothIntroCloner bgmBattleBothIntroCloner;
         private PokemonCrySetCloner pokemonCrySetCloner;
+        private BgmEventCharacterThemeBothIntroCloner bgmEventCharacterThemeBothIntroCloner;
 
         public BDSPWwiseEngine(LumiToolEngine engine)
         {
             this.engine = engine;
-            this.bgmFieldBothIntroCloner = new BgmFieldBothIntroCloner(engine);
-            this.bgmFieldBDSPWithIntroCloner = new BgmFieldBDSPWithIntroCloner(engine);
-            this.bgmFieldBothNoIntroCloner = new BgmFieldBothNoIntroCloner(engine);
-            this.bgmBattleBothIntroCloner = new BgmBattleBothIntroCloner(engine);
-            this.pokemonCrySetCloner = new PokemonCrySetCloner(engine);
+
+            bgmFieldBothIntroCloner = new BgmFieldBothIntroCloner(engine);
+            bgmFieldBDSPWithIntroCloner = new BgmFieldBDSPWithIntroCloner(engine);
+            bgmFieldBothNoIntroCloner = new BgmFieldBothNoIntroCloner(engine);
+            bgmBattleBothIntroCloner = new BgmBattleBothIntroCloner(engine);
+            pokemonCrySetCloner = new PokemonCrySetCloner(engine);
+            bgmEventCharacterThemeBothIntroCloner = new BgmEventCharacterThemeBothIntroCloner(engine);
         }
 
         public bool MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
@@ -34,10 +37,6 @@ namespace LumiTool.Engine
                 case BDSPWwiseEventType.BGM_FIELD_BDSP_INTRO:
                     return bgmFieldBDSPWithIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
 
-                case BDSPWwiseEventType.BGM_FIELD_DS_INTRO:
-                    // TODO
-                    return false;
-
                 case BDSPWwiseEventType.BGM_FIELD_NO_INTRO:
                     return bgmFieldBothNoIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
 
@@ -46,6 +45,9 @@ namespace LumiTool.Engine
 
                 case BDSPWwiseEventType.POKEMON_CRY_SET:
                     return pokemonCrySetCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
+
+                case BDSPWwiseEventType.BGM_EVENT_CHARACTER_THEME_WITH_INTRO:
+                    return bgmEventCharacterThemeBothIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
 
                 default:
                     engine.Log("No code is set up to clone this event at this time.", LogLevel.Error);
