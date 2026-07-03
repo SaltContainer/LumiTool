@@ -67,14 +67,6 @@ namespace LumiTool.BDSPWwiseCloners
             // Collect the MusicTracks into one big list
             List<MusicTrack> mts = splitTracks.SelectMany(x => x).SelectMany(x => x).ToList();
 
-            AdjustLoopPointsInMusicTracks(splitTracks, new Dictionary<(int segmentIndex, int trackIndex, uint trackID, int playlistItemIndex), WwiseLoopPointData>()
-            {
-                { (0, 0, 374048914, 0), loopData.CloneForIntro() },   // First segment, first track, first playlist item (Regular)
-                { (1, 0, 116833099, 0), loopData.CloneForLoop() },    // Second segment, first track, first playlist item (Regular)
-                { (0, 0, 579154598, 0), dsLoopData.CloneForIntro() }, // First segment, first track, first playlist item (DS)
-                { (1, 0, 877168764, 0), dsLoopData.CloneForLoop() },  // Second segment, first track, first playlist item (DS)
-            });
-
             AdjustLoopPointsInMusicTracks(splitTracks, trackLoopData.ToDictionary(t => (t.segmentIndex, t.trackIndex, t.trackID, t.playlistItemIndex),
                 t => t.isDS ?
                     (t.isLoop ? dsLoopData.CloneForLoop() : dsLoopData.CloneForIntro()) :

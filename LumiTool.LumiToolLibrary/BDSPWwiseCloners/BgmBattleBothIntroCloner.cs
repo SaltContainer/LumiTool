@@ -52,8 +52,8 @@ namespace LumiTool.BDSPWwiseCloners
             {
                 { (0, 87947217), loopData.CloneForIntro() },    // First segment (Regular)
                 { (1, 879792264), loopData.CloneForLoop() },    // Second segment (Regular)
-                { (0, 118470410), dsLoopData.CloneForIntro() }, // First segment (DS)
-                { (1, 99051959), dsLoopData.CloneForLoop() },   // Second segment (DS)
+                { (0, 99051959), dsLoopData.CloneForLoop() },   // First segment (DS)
+                { (1, 118470410), dsLoopData.CloneForIntro() }, // Second segment (DS)
             });
 
             GenerateNewMusicSegmentIDs(wd, mss, update);
@@ -72,8 +72,8 @@ namespace LumiTool.BDSPWwiseCloners
             {
                 { (0, 0, 374048914, 0), loopData.CloneForIntro() },   // First segment, first track, first playlist item (Regular)
                 { (1, 0, 116833099, 0), loopData.CloneForLoop() },    // Second segment, first track, first playlist item (Regular)
-                { (0, 0, 579154598, 0), dsLoopData.CloneForIntro() }, // First segment, first track, first playlist item (DS)
-                { (1, 0, 877168764, 0), dsLoopData.CloneForLoop() },  // Second segment, first track, first playlist item (DS)
+                { (0, 0, 877168764, 0), dsLoopData.CloneForLoop() },  // First segment, first track, first playlist item (DS)
+                { (1, 0, 579154598, 0), dsLoopData.CloneForIntro() }, // Second segment, first track, first playlist item (DS)
             });
 
             GenerateNewMusicTrackAndSourceIDs(wd, mts, update, 498926385, 414103803);
