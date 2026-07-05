@@ -79,9 +79,9 @@ namespace LumiTool.Forms
             // 
             // btnApply
             // 
-            btnApply.Location = new Point(12, 162);
+            btnApply.Location = new Point(278, 18);
             btnApply.Name = "btnApply";
-            btnApply.Size = new Size(260, 41);
+            btnApply.Size = new Size(228, 80);
             btnApply.TabIndex = 11;
             btnApply.Text = "Clone";
             btnApply.UseVisualStyleBackColor = true;
@@ -90,7 +90,7 @@ namespace LumiTool.Forms
             // lbNewEvent
             // 
             lbNewEvent.AutoSize = true;
-            lbNewEvent.Location = new Point(13, 107);
+            lbNewEvent.Location = new Point(12, 115);
             lbNewEvent.Name = "lbNewEvent";
             lbNewEvent.Size = new Size(101, 15);
             lbNewEvent.TabIndex = 4;
@@ -98,9 +98,9 @@ namespace LumiTool.Forms
             // 
             // txtNewEvent
             // 
-            txtNewEvent.Location = new Point(120, 104);
+            txtNewEvent.Location = new Point(119, 112);
             txtNewEvent.Name = "txtNewEvent";
-            txtNewEvent.Size = new Size(121, 23);
+            txtNewEvent.Size = new Size(355, 23);
             txtNewEvent.TabIndex = 5;
             // 
             // grpBank
@@ -156,7 +156,7 @@ namespace LumiTool.Forms
             grpLoop.Controls.Add(grpDS);
             grpLoop.Controls.Add(grpRegular);
             grpLoop.Controls.Add(checkLoop);
-            grpLoop.Location = new Point(278, 12);
+            grpLoop.Location = new Point(12, 170);
             grpLoop.Name = "grpLoop";
             grpLoop.Size = new Size(494, 191);
             grpLoop.TabIndex = 10;
@@ -362,7 +362,7 @@ namespace LumiTool.Forms
             // 
             // btnNewEventHash
             // 
-            btnNewEventHash.Location = new Point(247, 104);
+            btnNewEventHash.Location = new Point(480, 112);
             btnNewEventHash.Name = "btnNewEventHash";
             btnNewEventHash.Size = new Size(26, 23);
             btnNewEventHash.TabIndex = 6;
@@ -373,15 +373,15 @@ namespace LumiTool.Forms
             // comboEventType
             // 
             comboEventType.FormattingEnabled = true;
-            comboEventType.Location = new Point(84, 133);
+            comboEventType.Location = new Point(84, 141);
             comboEventType.Name = "comboEventType";
-            comboEventType.Size = new Size(188, 23);
+            comboEventType.Size = new Size(422, 23);
             comboEventType.TabIndex = 12;
             // 
             // lbEventType
             // 
             lbEventType.AutoSize = true;
-            lbEventType.Location = new Point(12, 136);
+            lbEventType.Location = new Point(12, 144);
             lbEventType.Name = "lbEventType";
             lbEventType.Size = new Size(66, 15);
             lbEventType.TabIndex = 13;
@@ -391,7 +391,7 @@ namespace LumiTool.Forms
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 215);
+            ClientSize = new Size(518, 373);
             Controls.Add(grpLoop);
             Controls.Add(btnApply);
             Controls.Add(btnNewEventHash);
@@ -403,8 +403,8 @@ namespace LumiTool.Forms
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(800, 254);
-            MinimumSize = new Size(800, 254);
+            MaximumSize = new Size(534, 412);
+            MinimumSize = new Size(534, 412);
             Name = "FormWwiseEventCloner";
             Text = "Wwise Event Cloner For BDSP";
             FormClosed += FormWwiseBankCloner_FormClosed;
