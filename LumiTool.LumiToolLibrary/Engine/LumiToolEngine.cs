@@ -3,6 +3,8 @@ using AssetsTools.NET.Extra;
 using LumiTool.Data;
 using LumiTool.Data.Wwise;
 using SmartPoint.AssetAssistant;
+using System.IO;
+using System.Text.Json.Nodes;
 
 namespace LumiTool.Engine
 {
@@ -14,6 +16,7 @@ namespace LumiTool.Engine
         private WwiseEngine wwiseEngine;
         private ConfigEngine configEngine;
         private LoggerEngine loggerEngine;
+        private ReLumiSaveEngine reLumiSaveEngine;
 
         public LumiToolEngine()
         {
@@ -23,6 +26,7 @@ namespace LumiTool.Engine
             wwiseEngine = new WwiseEngine(this);
             configEngine = new ConfigEngine(this);
             loggerEngine = new LoggerEngine(this);
+            reLumiSaveEngine = new ReLumiSaveEngine(this);
         }
 
         public void UnloadBundles()
@@ -283,6 +287,21 @@ namespace LumiTool.Engine
         public void WriteTextToFile(string path, string text)
         {
             fileSystemEngine.WriteTextToFile(path, text);
+        }
+
+        public JsonNode LoadJsonReLumiSaveFile(string path)
+        {
+            return reLumiSaveEngine.LoadJsonReLumiSaveFile(path);
+        }
+
+        public void MigrateReLumiSaveFile(JsonNode saveFile, ReLumiSaveVersion version)
+        {
+            reLumiSaveEngine.MigrateReLumiSaveFile(saveFile, version);
+        }
+
+        public void SaveReLumiSaveToFile(string path, JsonNode saveFile)
+        {
+            reLumiSaveEngine.SaveReLumiSaveToFile(path, saveFile);
         }
     }
 }

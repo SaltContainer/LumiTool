@@ -45,6 +45,7 @@ namespace LumiTool
             btnWwiseEventBrowser = new Button();
             btnSettings = new Button();
             btnWwiseMusicSwitchCntrViewer = new Button();
+            btnReLumiSaveMigration = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -93,7 +94,7 @@ namespace LumiTool
             btnAbout.Location = new Point(441, 12);
             btnAbout.Name = "btnAbout";
             btnAbout.Size = new Size(75, 47);
-            btnAbout.TabIndex = 12;
+            btnAbout.TabIndex = 14;
             btnAbout.Text = "About";
             btnAbout.UseVisualStyleBackColor = true;
             btnAbout.Click += btnAbout_Click;
@@ -174,7 +175,7 @@ namespace LumiTool
             btnSettings.Location = new Point(388, 12);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(47, 47);
-            btnSettings.TabIndex = 11;
+            btnSettings.TabIndex = 13;
             btnSettings.UseVisualStyleBackColor = true;
             btnSettings.Click += btnSettings_Click;
             // 
@@ -183,35 +184,46 @@ namespace LumiTool
             btnWwiseMusicSwitchCntrViewer.Location = new Point(352, 260);
             btnWwiseMusicSwitchCntrViewer.Name = "btnWwiseMusicSwitchCntrViewer";
             btnWwiseMusicSwitchCntrViewer.Size = new Size(164, 59);
-            btnWwiseMusicSwitchCntrViewer.TabIndex = 13;
+            btnWwiseMusicSwitchCntrViewer.TabIndex = 11;
             btnWwiseMusicSwitchCntrViewer.Text = "Wwise MusicSwitchCntr Viewer";
             btnWwiseMusicSwitchCntrViewer.UseVisualStyleBackColor = true;
             btnWwiseMusicSwitchCntrViewer.Click += btnWwiseMusicSwitchCntrViewer_Click;
+            // 
+            // btnReLumiSaveMigration
+            // 
+            btnReLumiSaveMigration.Location = new Point(12, 325);
+            btnReLumiSaveMigration.Name = "btnReLumiSaveMigration";
+            btnReLumiSaveMigration.Size = new Size(164, 59);
+            btnReLumiSaveMigration.TabIndex = 12;
+            btnReLumiSaveMigration.Text = "Re:Lumi Save Migration";
+            btnReLumiSaveMigration.UseVisualStyleBackColor = true;
+            btnReLumiSaveMigration.Click += btnReLumiSaveMigration_Click;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(528, 331);
+            ClientSize = new Size(528, 396);
             Controls.Add(btnSettings);
-            Controls.Add(btnWwiseMusicSwitchCntrViewer);
-            Controls.Add(btnWwiseEventBrowser);
-            Controls.Add(btnWwiseBankCloner);
-            Controls.Add(btnBundleRenamer);
-            Controls.Add(btnShaderPathIDFixer);
-            Controls.Add(btnManifestEditor);
-            Controls.Add(btnManifestRefresher);
             Controls.Add(btnAbout);
             Controls.Add(btnPlatform);
             Controls.Add(btnMono);
+            Controls.Add(btnShaderPathIDFixer);
             Controls.Add(btnPrepper);
             Controls.Add(btnPrepperMass);
+            Controls.Add(btnBundleRenamer);
+            Controls.Add(btnManifestRefresher);
+            Controls.Add(btnManifestEditor);
             Controls.Add(btnColorVariation);
+            Controls.Add(btnWwiseBankCloner);
+            Controls.Add(btnWwiseEventBrowser);
+            Controls.Add(btnWwiseMusicSwitchCntrViewer);
+            Controls.Add(btnReLumiSaveMigration);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(544, 370);
-            MinimumSize = new Size(544, 370);
+            MaximumSize = new Size(544, 435);
+            MinimumSize = new Size(544, 435);
             Name = "FormMain";
             Text = "LumiTool";
             Shown += FormMain_Shown;
@@ -234,5 +246,6 @@ namespace LumiTool
         private Button btnWwiseEventBrowser;
         private Button btnSettings;
         private Button btnWwiseMusicSwitchCntrViewer;
+        private Button btnReLumiSaveMigration;
     }
 }
