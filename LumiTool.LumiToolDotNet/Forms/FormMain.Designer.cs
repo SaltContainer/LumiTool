@@ -46,6 +46,7 @@ namespace LumiTool
             btnSettings = new Button();
             btnWwiseMusicSwitchCntrViewer = new Button();
             btnReLumiSaveMigration = new Button();
+            btnWonderCardEditor = new Button();
             SuspendLayout();
             // 
             // btnPlatform
@@ -94,7 +95,7 @@ namespace LumiTool
             btnAbout.Location = new Point(441, 12);
             btnAbout.Name = "btnAbout";
             btnAbout.Size = new Size(75, 47);
-            btnAbout.TabIndex = 14;
+            btnAbout.TabIndex = 15;
             btnAbout.Text = "About";
             btnAbout.UseVisualStyleBackColor = true;
             btnAbout.Click += btnAbout_Click;
@@ -175,7 +176,7 @@ namespace LumiTool
             btnSettings.Location = new Point(388, 12);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(47, 47);
-            btnSettings.TabIndex = 13;
+            btnSettings.TabIndex = 14;
             btnSettings.UseVisualStyleBackColor = true;
             btnSettings.Click += btnSettings_Click;
             // 
@@ -199,6 +200,16 @@ namespace LumiTool
             btnReLumiSaveMigration.UseVisualStyleBackColor = true;
             btnReLumiSaveMigration.Click += btnReLumiSaveMigration_Click;
             // 
+            // btnWonderCardEditor
+            // 
+            btnWonderCardEditor.Location = new Point(182, 325);
+            btnWonderCardEditor.Name = "btnWonderCardEditor";
+            btnWonderCardEditor.Size = new Size(164, 59);
+            btnWonderCardEditor.TabIndex = 13;
+            btnWonderCardEditor.Text = "BDSP Wonder Card Editor";
+            btnWonderCardEditor.UseVisualStyleBackColor = true;
+            btnWonderCardEditor.Click += btnWonderCardEditor_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -219,6 +230,7 @@ namespace LumiTool
             Controls.Add(btnWwiseEventBrowser);
             Controls.Add(btnWwiseMusicSwitchCntrViewer);
             Controls.Add(btnReLumiSaveMigration);
+            Controls.Add(btnWonderCardEditor);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -247,5 +259,6 @@ namespace LumiTool
         private Button btnSettings;
         private Button btnWwiseMusicSwitchCntrViewer;
         private Button btnReLumiSaveMigration;
+        private Button btnWonderCardEditor;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace LumiTool
+namespace LumiTool.Data
 {
     public enum ReLumiSaveVersion
     {

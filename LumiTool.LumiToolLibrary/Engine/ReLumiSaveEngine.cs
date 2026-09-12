@@ -1,8 +1,8 @@
-﻿using LumiTool.Engine;
+﻿using LumiTool.Data;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace LumiTool
+namespace LumiTool.Engine
 {
     public class ReLumiSaveEngine
     {

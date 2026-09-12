@@ -1,7 +1,9 @@
-﻿using LumiTool.Engine;
+﻿using LumiTool.Data;
+using LumiTool.Engine;
+using LumiTool.Utils;
 using System.Text.Json.Nodes;
 
-namespace LumiTool
+namespace LumiTool.Forms
 {
     public partial class FormReLumiSaveMigration : Form
     {

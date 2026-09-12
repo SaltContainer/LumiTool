@@ -35,6 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Forms\FormWonderCardGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Popups\FormDependencySelect.cs">
       <SubType>Form</SubType>
     </Compile>

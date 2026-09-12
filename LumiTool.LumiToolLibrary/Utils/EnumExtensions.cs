@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace LumiTool
+namespace LumiTool.Utils
 {
     public static class EnumExtensions
     {

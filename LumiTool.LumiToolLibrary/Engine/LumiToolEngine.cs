@@ -3,7 +3,6 @@ using AssetsTools.NET.Extra;
 using LumiTool.Data;
 using LumiTool.Data.Wwise;
 using SmartPoint.AssetAssistant;
-using System.IO;
 using System.Text.Json.Nodes;
 
 namespace LumiTool.Engine
@@ -17,6 +16,7 @@ namespace LumiTool.Engine
         private ConfigEngine configEngine;
         private LoggerEngine loggerEngine;
         private ReLumiSaveEngine reLumiSaveEngine;
+        private WonderCardEngine wonderCardEngine;
 
         public LumiToolEngine()
         {
@@ -26,7 +26,7 @@ namespace LumiTool.Engine
             wwiseEngine = new WwiseEngine(this);
             configEngine = new ConfigEngine(this);
             loggerEngine = new LoggerEngine(this);
-            reLumiSaveEngine = new ReLumiSaveEngine(this);
+            wonderCardEngine = new WonderCardEngine(this);
         }
 
         public void UnloadBundles()
@@ -302,6 +302,26 @@ namespace LumiTool.Engine
         public void SaveReLumiSaveToFile(string path, JsonNode saveFile)
         {
             reLumiSaveEngine.SaveReLumiSaveToFile(path, saveFile);
+        }
+
+        public WonderCard.ConvertionResult CreateWonderCardFromFile(string path, out WonderCard wonderCard)
+        {
+            return wonderCardEngine.CreateWonderCardFromFile(path, out wonderCard);
+        }
+
+        public WonderCard.ConvertionResult CreateWonderCardFromBytes(byte[] dataBytes, out WonderCard wonderCard)
+        {
+            return wonderCardEngine.CreateWonderCardFromBytes(dataBytes, out wonderCard);
+        }
+
+        public void SaveWonderCardToFile(WonderCard card, string path)
+        {
+            wonderCardEngine.SaveWonderCardToFile(card, path);
+        }
+
+        public ushort CalcWonderCardCrc(WonderCard card)
+        {
+            return wonderCardEngine.CalcCrc(card);
         }
     }
 }

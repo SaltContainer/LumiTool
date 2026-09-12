@@ -1,4 +1,4 @@
-﻿namespace LumiTool
+﻿namespace LumiTool.Forms
 {
     partial class FormReLumiSaveMigration
     {
