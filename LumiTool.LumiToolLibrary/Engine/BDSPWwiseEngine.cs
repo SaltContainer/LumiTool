@@ -14,6 +14,8 @@ namespace LumiTool.Engine
         private BgmBattleBothIntroCloner bgmBattleBothIntroCloner;
         private PokemonCrySetCloner pokemonCrySetCloner;
         private BgmEventCharacterThemeBothIntroCloner bgmEventCharacterThemeBothIntroCloner;
+        private SimpleSoundEffectCloner simpleSoundEffectCloner;
+        private SimpleFanfareCloner simpleFanfareCloner;
 
         public BDSPWwiseEngine(LumiToolEngine engine)
         {
@@ -25,6 +27,8 @@ namespace LumiTool.Engine
             bgmBattleBothIntroCloner = new BgmBattleBothIntroCloner(engine);
             pokemonCrySetCloner = new PokemonCrySetCloner(engine);
             bgmEventCharacterThemeBothIntroCloner = new BgmEventCharacterThemeBothIntroCloner(engine);
+            simpleSoundEffectCloner = new SimpleSoundEffectCloner(engine);
+            simpleFanfareCloner = new SimpleFanfareCloner(engine);
         }
 
         public bool MakeNewBDSPWwiseEvent(WwiseData wd, BDSPWwiseEventType eventType, string newEventName, WwiseLoopPointData loopData, WwiseLoopPointData dsLoopData)
@@ -48,6 +52,12 @@ namespace LumiTool.Engine
 
                 case BDSPWwiseEventType.BGM_EVENT_CHARACTER_THEME_WITH_INTRO:
                     return bgmEventCharacterThemeBothIntroCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
+
+                case BDSPWwiseEventType.SIMPLE_SOUND_EFFECT:
+                    return simpleSoundEffectCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
+
+                case BDSPWwiseEventType.SIMPLE_FANFARE:
+                    return simpleFanfareCloner.ExecuteClone(wd, newEventName, loopData, dsLoopData);
 
                 default:
                     engine.Log("No code is set up to clone this event at this time.", LogLevel.Error);

@@ -6,6 +6,14 @@
         public uint itemsCount;
         public List<uint> nodeIDs;
 
+        public SwitchPackage Clone()
+        {
+            SwitchPackage sp = (SwitchPackage)this.MemberwiseClone();
+            sp.nodeIDs = new();
+            sp.nodeIDs.AddRange(nodeIDs);
+            return sp;
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             nodeIDs = new();

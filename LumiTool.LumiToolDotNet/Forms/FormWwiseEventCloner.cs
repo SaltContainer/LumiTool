@@ -17,12 +17,16 @@ namespace LumiTool.Forms
             { "BGM_BATTLE With Intro (BA001)",                (BDSPWwiseEventType.BGM_BATTLE_WITH_INTRO, true) },
             { "BGM_EVENT Character Theme With Intro (EV003)", (BDSPWwiseEventType.BGM_EVENT_CHARACTER_THEME_WITH_INTRO, true) },
             { "Pokémon Cry Set (PLAY_PV_001_00_0*)",          (BDSPWwiseEventType.POKEMON_CRY_SET, false) },
+            { "Simple Sound Effect (S_FI001)",                (BDSPWwiseEventType.SIMPLE_SOUND_EFFECT, false) },
+            { "Simple Fanfare (M_FI001)",                     (BDSPWwiseEventType.SIMPLE_FANFARE, false) },
         };
 
         WwiseData bank;
         string originalPath = string.Empty;
 
         private Queue<string> infoLogQueue;
+
+        private bool IsCurrentEventLooped => comboEventType.Items.Count > 0 && eventTypes[comboEventType.SelectedItem as string].looped;
 
         public FormWwiseEventCloner(LumiToolEngine engine)
         {
@@ -44,24 +48,24 @@ namespace LumiTool.Forms
             txtNewEvent.Enabled = false;
             comboEventType.Enabled = false;
             btnNewEventHash.Enabled = false;
-            checkLoop.Enabled = false;
-            numRegInitialDelay.Enabled = false;
-            numRegLoopStart.Enabled = false;
-            numRegLoopEnd.Enabled = false;
-            numRegTotalDuration.Enabled = false;
-            numDSInitialDelay.Enabled = false;
-            numDSLoopStart.Enabled = false;
-            numDSLoopEnd.Enabled = false;
-            numDSTotalDuration.Enabled = false;
             btnBankSave.Enabled = false;
             btnApply.Enabled = false;
 
             txtNewEvent.Text = string.Empty;
 
+            comboEventType.SelectedIndex = 0;
+
+            checkLoop.Enabled = false;
+            checkLoop.Checked = false; // Implicitly calls the CheckedChanged event
+
             numRegInitialDelay.Value = 0;
             numRegLoopStart.Value = 0;
             numRegLoopEnd.Value = 0;
             numRegTotalDuration.Value = 0;
+            numDSInitialDelay.Value = 0;
+            numDSLoopStart.Value = 0;
+            numDSLoopEnd.Value = 0;
+            numDSTotalDuration.Value = 0;
 
             ttWwiseBankCloner.SetToolTip(lbBankName, "");
         }
@@ -72,21 +76,31 @@ namespace LumiTool.Forms
             txtNewEvent.Enabled = true;
             comboEventType.Enabled = true;
             btnNewEventHash.Enabled = true;
-            checkLoop.Enabled = true;
-            numRegInitialDelay.Enabled = checkLoop.Checked;
-            numRegLoopStart.Enabled = checkLoop.Checked;
-            numRegLoopEnd.Enabled = checkLoop.Checked;
-            numRegTotalDuration.Enabled = checkLoop.Checked;
-            numDSInitialDelay.Enabled = checkLoop.Checked;
-            numDSLoopStart.Enabled = checkLoop.Checked;
-            numDSLoopEnd.Enabled = checkLoop.Checked;
-            numDSTotalDuration.Enabled = checkLoop.Checked;
             btnBankSave.Enabled = true;
             btnApply.Enabled = true;
 
-            comboEventType.SelectedIndex = 0;
+            checkLoop.Enabled = IsCurrentEventLooped;
+            checkLoop.Checked = IsCurrentEventLooped; // Implicitly calls the CheckedChanged event
 
             ttWwiseBankCloner.SetToolTip(lbBankName, originalPath);
+        }
+
+        private void UpdateLoopComponentsOnEventTypeChange()
+        {
+            checkLoop.Enabled = IsCurrentEventLooped;
+            checkLoop.Checked = IsCurrentEventLooped; // Implicitly calls the CheckedChanged event
+        }
+
+        private void ToggleLoopControls(bool value)
+        {
+            numRegInitialDelay.Enabled = value && IsCurrentEventLooped;
+            numRegLoopStart.Enabled = value && IsCurrentEventLooped;
+            numRegLoopEnd.Enabled = value && IsCurrentEventLooped;
+            numRegTotalDuration.Enabled = value && IsCurrentEventLooped;
+            numDSInitialDelay.Enabled = value && IsCurrentEventLooped;
+            numDSLoopStart.Enabled = value && IsCurrentEventLooped;
+            numDSLoopEnd.Enabled = value && IsCurrentEventLooped;
+            numDSTotalDuration.Enabled = value && IsCurrentEventLooped;
         }
 
         private void OpenBank(string path)
@@ -277,14 +291,12 @@ namespace LumiTool.Forms
 
         private void checkLoop_CheckedChanged(object sender, EventArgs e)
         {
-            numRegInitialDelay.Enabled = checkLoop.Checked;
-            numRegLoopStart.Enabled = checkLoop.Checked;
-            numRegLoopEnd.Enabled = checkLoop.Checked;
-            numRegTotalDuration.Enabled = checkLoop.Checked;
-            numDSInitialDelay.Enabled = checkLoop.Checked;
-            numDSLoopStart.Enabled = checkLoop.Checked;
-            numDSLoopEnd.Enabled = checkLoop.Checked;
-            numDSTotalDuration.Enabled = checkLoop.Checked;
+            ToggleLoopControls(checkLoop.Checked);
+        }
+
+        private void comboEventType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateLoopComponentsOnEventTypeChange();
         }
     }
 }

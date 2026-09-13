@@ -1,6 +1,8 @@
-﻿using LumiTool.Data.Wwise;
-using LumiTool.Data;
+﻿using LumiTool.Data;
+using LumiTool.Data.Wwise;
 using LumiTool.Engine;
+using System;
+using System.Security.Cryptography;
 
 namespace LumiTool.BDSPWwiseCloners
 {
@@ -25,7 +27,6 @@ namespace LumiTool.BDSPWwiseCloners
             List<uint> oldActionIDs = new List<uint>();
             List<uint> newActionIDs = new List<uint>();
 
-            // Should just be one ActionSetState
             for (int i=0; i<e.actionIDs.Count; i++)
             {
                 // Keep track of old IDs and their equivalent new IDs
@@ -275,7 +276,7 @@ namespace LumiTool.BDSPWwiseCloners
             dict.Add(eventName, engine.FNV132Hash(eventName));
         }
 
-        protected void GenerateNewSoundAndSourceIDs(WwiseData wd, List<Sound> sounds, Dictionary<uint, uint> update)
+        protected void GenerateNewSoundAndSourceIDs(WwiseData wd, List<Sound> sounds, Dictionary<uint, uint> update, uint oldRegularSourceID = 0, uint oldDSSourceID = 0)
         {
             foreach (Sound sound in sounds)
             {
@@ -291,9 +292,39 @@ namespace LumiTool.BDSPWwiseCloners
                 {
                     uint newSourceID = GenerateNewID(wd);
                     update.Add(oldSourceID, newSourceID);
-                    engine.Log($"Source {oldSourceID} cloned to {newSourceID}", LogLevel.Information);
+
+                    if (oldSourceID == oldRegularSourceID)
+                        engine.Log($"Source {oldSourceID} cloned to {newSourceID} [Regular]", LogLevel.Information);
+                    else if (oldSourceID == oldDSSourceID)
+                        engine.Log($"Source {oldSourceID} cloned to {newSourceID} [DS]", LogLevel.Information);
+                    else
+                        engine.Log($"Source {oldSourceID} cloned to {newSourceID}", LogLevel.Information);
                 }
             }
+        }
+
+        protected void GenerateNewSwitchCntrAndSourceIDs(WwiseData wd, SwitchCntr switchCntr, List<Sound> sounds, Dictionary<uint, uint> update, uint oldRegularSourceID, uint oldDSSourceID)
+        {
+            // Generate new ID for the SwitchCntr
+            uint newID = GenerateNewID(wd);
+            update.Add(switchCntr.id, newID);
+            switchCntr.id = newID;
+            AddHirc(wd, switchCntr, newID);
+
+            // Propagate to Sounds
+            GenerateNewSoundAndSourceIDs(wd, sounds, update, oldRegularSourceID, oldDSSourceID);
+
+            foreach (var param in switchCntr.paramList)
+                param.nodeID = GetNewID(param.nodeID, update);
+
+            // There is always only one Node ID for fanfare cloning
+            foreach (var sp in switchCntr.switchList)
+            {
+                var newNodeID = GetNewID(sp.nodeIDs[0], update);
+                sp.nodeIDs = new List<uint> { newNodeID };
+            }
+
+            switchCntr.children.childIDs = sounds.Select(s => s.id).ToList();
         }
 
         protected void CloneActorMixer(WwiseData wd, List<Sound> sounds, uint oldActorMixerID, uint parentActorMixerID, Dictionary<uint, uint> update)
