@@ -22,6 +22,8 @@ namespace LumiTool
         private FormWwiseEventCloner wwiseBankClonerForm;
         private FormWwiseEventBrowser wwiseEventBrowserForm;
         private FormWwiseMusicSwitchCntrViewer wwiseFormWwiseMusicSwitchCntrViewer;
+        private FormReLumiSaveMigration reLumiSaveMigrationForm;
+        private FormWonderCardGenerator wonderCardGeneratorForm;
 
         public FormMain()
         {
@@ -43,6 +45,8 @@ namespace LumiTool
             wwiseBankClonerForm = new FormWwiseEventCloner(engine);
             wwiseEventBrowserForm = new FormWwiseEventBrowser(engine);
             wwiseFormWwiseMusicSwitchCntrViewer = new FormWwiseMusicSwitchCntrViewer(engine);
+            reLumiSaveMigrationForm = new FormReLumiSaveMigration(engine);
+            wonderCardGeneratorForm = new FormWonderCardGenerator(engine);
 
             InitializeComponent();
 
@@ -143,6 +147,16 @@ namespace LumiTool
         private void btnWwiseMusicSwitchCntrViewer_Click(object sender, EventArgs e)
         {
             wwiseFormWwiseMusicSwitchCntrViewer.ShowDialog(this);
+        }
+
+        private void btnReLumiSaveMigration_Click(object sender, EventArgs e)
+        {
+            reLumiSaveMigrationForm.ShowDialog(this);
+        }
+
+        private void btnWonderCardEditor_Click(object sender, EventArgs e)
+        {
+            wonderCardGeneratorForm.ShowDialog(this);
         }
 
         private void FormMain_Shown(object sender, EventArgs e)

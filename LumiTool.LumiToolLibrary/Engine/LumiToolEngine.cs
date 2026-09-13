@@ -3,6 +3,7 @@ using AssetsTools.NET.Extra;
 using LumiTool.Data;
 using LumiTool.Data.Wwise;
 using SmartPoint.AssetAssistant;
+using System.Text.Json.Nodes;
 
 namespace LumiTool.Engine
 {
@@ -14,6 +15,8 @@ namespace LumiTool.Engine
         private WwiseEngine wwiseEngine;
         private ConfigEngine configEngine;
         private LoggerEngine loggerEngine;
+        private ReLumiSaveEngine reLumiSaveEngine;
+        private WonderCardEngine wonderCardEngine;
 
         public LumiToolEngine()
         {
@@ -23,6 +26,7 @@ namespace LumiTool.Engine
             wwiseEngine = new WwiseEngine(this);
             configEngine = new ConfigEngine(this);
             loggerEngine = new LoggerEngine(this);
+            wonderCardEngine = new WonderCardEngine(this);
         }
 
         public void UnloadBundles()
@@ -283,6 +287,41 @@ namespace LumiTool.Engine
         public void WriteTextToFile(string path, string text)
         {
             fileSystemEngine.WriteTextToFile(path, text);
+        }
+
+        public JsonNode LoadJsonReLumiSaveFile(string path)
+        {
+            return reLumiSaveEngine.LoadJsonReLumiSaveFile(path);
+        }
+
+        public void MigrateReLumiSaveFile(JsonNode saveFile, ReLumiSaveVersion version)
+        {
+            reLumiSaveEngine.MigrateReLumiSaveFile(saveFile, version);
+        }
+
+        public void SaveReLumiSaveToFile(string path, JsonNode saveFile)
+        {
+            reLumiSaveEngine.SaveReLumiSaveToFile(path, saveFile);
+        }
+
+        public WonderCard.ConvertionResult CreateWonderCardFromFile(string path, out WonderCard wonderCard)
+        {
+            return wonderCardEngine.CreateWonderCardFromFile(path, out wonderCard);
+        }
+
+        public WonderCard.ConvertionResult CreateWonderCardFromBytes(byte[] dataBytes, out WonderCard wonderCard)
+        {
+            return wonderCardEngine.CreateWonderCardFromBytes(dataBytes, out wonderCard);
+        }
+
+        public void SaveWonderCardToFile(WonderCard card, string path)
+        {
+            wonderCardEngine.SaveWonderCardToFile(card, path);
+        }
+
+        public ushort CalcWonderCardCrc(WonderCard card)
+        {
+            return wonderCardEngine.CalcCrc(card);
         }
     }
 }

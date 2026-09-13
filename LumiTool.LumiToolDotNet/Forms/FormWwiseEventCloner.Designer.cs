@@ -377,6 +377,7 @@ namespace LumiTool.Forms
             comboEventType.Name = "comboEventType";
             comboEventType.Size = new Size(422, 23);
             comboEventType.TabIndex = 12;
+            comboEventType.SelectedIndexChanged += comboEventType_SelectedIndexChanged;
             // 
             // lbEventType
             // 

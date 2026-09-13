@@ -9,6 +9,12 @@
         public int fadeOutTime;
         public int fadeInTime;
 
+        public SwitchNodeParams Clone()
+        {
+            SwitchNodeParams snp = (SwitchNodeParams)this.MemberwiseClone();
+            return snp;
+        }
+
         public void Deserialize(WwiseData wd)
         {
             nodeID = Utils.ReadUInt32(wd);

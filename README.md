@@ -14,8 +14,8 @@ A "swiss army knife"-type tool that allows for many different manipulations on U
 - **Bundle Prepper**
   - Converts bundles rebuilt from ripping to the Unity Editor (usually using AssetRipper) back into proper bundles for use in the game.
   - For bundles with dependencies, this requires reassigning references to those dependencies and is therefore only available with a proper JSON file detailing the path IDs of those references.
-	- An example of a valid configuration file is available in the tool's Config folder.
-	- The prepper will automatically ask for what the assets referenced are and will remember those choices when the same path IDs are seen again.
+    - An example of a valid configuration file is available in the tool's Config folder.
+    - The prepper will automatically ask for what the assets referenced are and will remember those choices when the same path IDs are seen again.
   - There is also a version that allows converting a full folder's worth of bundles.
 - **Bundle Renamer**
   - Changes the Asset Bundle Name of a bundle inside its manifest/preload table at path ID 1.
@@ -30,8 +30,8 @@ A "swiss army knife"-type tool that allows for many different manipulations on U
   - Allows looking at an overview of all events in a Wwise bank and their actions.
 - **Wwise MusicSwitchCntr Viewer**
   - Allows looking at a graph showcasing the decision tree of a Music Switch Container in a Wwise bank.
-
-## Planned Features
-
-- **ColorVariation Generator**
-  - Allows previewing and editing color palettes to be used with BDSP's ColorVariation system.
+- **Re:Lumi Save Migration**
+  - Updates a DEV save file for Re:Lumi across DEV versions.
+- **BDSP Wonder Card Editor**
+  - Allows importing, creating, editing, and exporting Wonder Cards in the format supported by BDSP.
+  - Supports custom Wonder Card types developed for Re:Lumi.

@@ -13,6 +13,20 @@
         public uint switchParamsCount;
         public List<SwitchNodeParams> paramList;
 
+        public SwitchCntr Clone()
+        {
+            SwitchCntr sc = (SwitchCntr)this.MemberwiseClone();
+            sc.nodeBaseParams = nodeBaseParams.Clone();
+            sc.children = children.Clone();
+            sc.switchList = new();
+            foreach (SwitchPackage sp in switchList)
+                sc.switchList.Add(sp.Clone());
+            sc.paramList = new();
+            foreach (SwitchNodeParams snp in paramList)
+                sc.paramList.Add(snp.Clone());
+            return sc;
+        }
+
         public override void Deserialize(WwiseData wd)
         {
             base.Deserialize(wd);
