@@ -1,5 +1,6 @@
 ﻿using LumiTool.Data;
 using LumiTool.Engine;
+using LumiTool.Forms.Popups;
 
 namespace LumiTool.Forms
 {
@@ -8,6 +9,31 @@ namespace LumiTool.Forms
         LumiToolEngine engine;
 
         WonderCard card;
+
+        private string[] nicknameStrings = new string[9]
+        {
+            string.Empty, string.Empty, string.Empty,
+            string.Empty, string.Empty, string.Empty,
+            string.Empty, string.Empty, string.Empty,
+        };
+        private string[] otStrings = new string[9]
+        {
+            string.Empty, string.Empty, string.Empty,
+            string.Empty, string.Empty, string.Empty,
+            string.Empty, string.Empty, string.Empty,
+        };
+        private BDSPLanguage[] nicknameLanguages = new BDSPLanguage[9]
+        {
+            BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+            BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+            BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+        };
+        private BDSPLanguage[] otLanguages = new BDSPLanguage[9]
+        {
+            BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+            BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+            BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+        };
 
         public FormWonderCardGenerator(LumiToolEngine engine)
         {
@@ -50,7 +76,8 @@ namespace LumiTool.Forms
             switch (comboDataType.SelectedItem)
             {
                 case WonderCard.DataType.Monster:
-                    txtPkmnNickname.Text = card.pokemonData.nickNames[0].name;
+                    nicknameStrings = card.pokemonData.nickNames.Select(x => x.name).ToArray();
+                    nicknameLanguages = card.pokemonData.nickNames.Select(x => (BDSPLanguage)x.languageId).ToArray();
                     numPkmnSpecies.Value = card.pokemonData.monsNo;
                     numPkmnForm.Value = card.pokemonData.formNo;
                     numPkmnGender.Value = card.pokemonData.sex;
@@ -61,11 +88,11 @@ namespace LumiTool.Forms
                     numPkmnShiny.Value = card.pokemonData.isRare;
                     numPkmnBall.Value = card.pokemonData.captureBallId;
                     numPkmnHeldItem.Value = card.pokemonData.itemId;
-                    numPkmnLanguage.Value = card.pokemonData.nickNames[0].languageId;
                     numPkmnVersion.Value = card.pokemonData.romVersion;
 
                     numOTID.Value = card.pokemonData.parentId;
-                    txtOTName.Text = card.pokemonData.parentNames[0].name;
+                    otStrings = card.pokemonData.parentNames.Select(x => x.name).ToArray();
+                    otLanguages = card.pokemonData.parentNames.Select(x => (BDSPLanguage)x.languageId).ToArray();
                     numOTGender.Value = card.pokemonData.parentSex;
 
                     numPkmnMetArea.Value = card.pokemonData.getArea;
@@ -102,6 +129,39 @@ namespace LumiTool.Forms
                     numPkmnClever.Value = card.pokemonData.clever;
                     numPkmnTough.Value = card.pokemonData.strong;
                     numPkmnSheen.Value = card.pokemonData.fur;
+
+                    numRibbon0.Value = card.pokemonData.ribbonIds[0];
+                    numRibbon1.Value = card.pokemonData.ribbonIds[1];
+                    numRibbon2.Value = card.pokemonData.ribbonIds[2];
+                    numRibbon3.Value = card.pokemonData.ribbonIds[3];
+                    numRibbon4.Value = card.pokemonData.ribbonIds[4];
+                    numRibbon5.Value = card.pokemonData.ribbonIds[5];
+                    numRibbon6.Value = card.pokemonData.ribbonIds[6];
+                    numRibbon7.Value = card.pokemonData.ribbonIds[7];
+                    numRibbon8.Value = card.pokemonData.ribbonIds[8];
+                    numRibbon9.Value = card.pokemonData.ribbonIds[9];
+                    numRibbon10.Value = card.pokemonData.ribbonIds[10];
+                    numRibbon11.Value = card.pokemonData.ribbonIds[11];
+                    numRibbon12.Value = card.pokemonData.ribbonIds[12];
+                    numRibbon13.Value = card.pokemonData.ribbonIds[13];
+                    numRibbon14.Value = card.pokemonData.ribbonIds[14];
+                    numRibbon15.Value = card.pokemonData.ribbonIds[15];
+                    numRibbon16.Value = card.pokemonData.twoRibbonIds[0];
+                    numRibbon17.Value = card.pokemonData.twoRibbonIds[1];
+                    numRibbon18.Value = card.pokemonData.twoRibbonIds[2];
+                    numRibbon19.Value = card.pokemonData.twoRibbonIds[3];
+                    numRibbon20.Value = card.pokemonData.twoRibbonIds[4];
+                    numRibbon21.Value = card.pokemonData.twoRibbonIds[5];
+                    numRibbon22.Value = card.pokemonData.twoRibbonIds[6];
+                    numRibbon23.Value = card.pokemonData.twoRibbonIds[7];
+                    numRibbon24.Value = card.pokemonData.twoRibbonIds[8];
+                    numRibbon25.Value = card.pokemonData.twoRibbonIds[9];
+                    numRibbon26.Value = card.pokemonData.twoRibbonIds[10];
+                    numRibbon27.Value = card.pokemonData.twoRibbonIds[11];
+                    numRibbon28.Value = card.pokemonData.twoRibbonIds[12];
+                    numRibbon29.Value = card.pokemonData.twoRibbonIds[13];
+                    numRibbon30.Value = card.pokemonData.twoRibbonIds[14];
+                    numRibbon31.Value = card.pokemonData.twoRibbonIds[15];
 
                     numPkmnSeed.Value = card.pokemonData.randomValue;
                     numPkmnSeedShiny.Value = card.pokemonData.colorRandomValue;
@@ -196,24 +256,11 @@ namespace LumiTool.Forms
             switch (comboDataType.SelectedItem)
             {
                 case WonderCard.DataType.Monster:
-                    card.pokemonData.nickNames[0].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[0].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.nickNames[1].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[1].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.nickNames[2].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[2].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.nickNames[3].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[3].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.nickNames[4].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[4].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.nickNames[5].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[5].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.nickNames[6].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[6].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.nickNames[7].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[7].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.nickNames[8].name = txtPkmnNickname.Text;
-                    card.pokemonData.nickNames[8].languageId = (byte)numPkmnLanguage.Value;
+                    for (int i=0; i<card.pokemonData.nickNames.Length; i++)
+                    {
+                        card.pokemonData.nickNames[i].name = nicknameStrings[i];
+                        card.pokemonData.nickNames[i].languageId = (byte)nicknameLanguages[i];
+                    }
                     card.pokemonData.monsNo = (ushort)numPkmnSpecies.Value;
                     card.pokemonData.formNo = (byte)numPkmnForm.Value;
                     card.pokemonData.sex = (byte)numPkmnGender.Value;
@@ -227,24 +274,11 @@ namespace LumiTool.Forms
                     card.pokemonData.romVersion = (uint)numPkmnVersion.Value;
 
                     card.pokemonData.parentId = (uint)numOTID.Value;
-                    card.pokemonData.parentNames[0].name = txtOTName.Text;
-                    card.pokemonData.parentNames[0].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.parentNames[1].name = txtOTName.Text;
-                    card.pokemonData.parentNames[1].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.parentNames[2].name = txtOTName.Text;
-                    card.pokemonData.parentNames[2].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.parentNames[3].name = txtOTName.Text;
-                    card.pokemonData.parentNames[3].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.parentNames[4].name = txtOTName.Text;
-                    card.pokemonData.parentNames[4].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.parentNames[5].name = txtOTName.Text;
-                    card.pokemonData.parentNames[5].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.parentNames[6].name = txtOTName.Text;
-                    card.pokemonData.parentNames[6].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.parentNames[7].name = txtOTName.Text;
-                    card.pokemonData.parentNames[7].languageId = (byte)numPkmnLanguage.Value;
-                    card.pokemonData.parentNames[8].name = txtOTName.Text;
-                    card.pokemonData.parentNames[8].languageId = (byte)numPkmnLanguage.Value;
+                    for (int i=0; i<card.pokemonData.parentNames.Length; i++)
+                    {
+                        card.pokemonData.parentNames[i].name = otStrings[i];
+                        card.pokemonData.parentNames[i].languageId = (byte)otLanguages[i];
+                    }
                     card.pokemonData.parentSex = (byte)numOTGender.Value;
 
                     card.pokemonData.getArea = (ushort)numPkmnMetArea.Value;
@@ -281,6 +315,39 @@ namespace LumiTool.Forms
                     card.pokemonData.clever = (byte)numPkmnClever.Value;
                     card.pokemonData.strong = (byte)numPkmnTough.Value;
                     card.pokemonData.fur = (byte)numPkmnSheen.Value;
+
+                    card.pokemonData.ribbonIds[0] = (byte)numRibbon0.Value;
+                    card.pokemonData.ribbonIds[1] = (byte)numRibbon1.Value;
+                    card.pokemonData.ribbonIds[2] = (byte)numRibbon2.Value;
+                    card.pokemonData.ribbonIds[3] = (byte)numRibbon3.Value;
+                    card.pokemonData.ribbonIds[4] = (byte)numRibbon4.Value;
+                    card.pokemonData.ribbonIds[5] = (byte)numRibbon5.Value;
+                    card.pokemonData.ribbonIds[6] = (byte)numRibbon6.Value;
+                    card.pokemonData.ribbonIds[7] = (byte)numRibbon7.Value;
+                    card.pokemonData.ribbonIds[8] = (byte)numRibbon8.Value;
+                    card.pokemonData.ribbonIds[9] = (byte)numRibbon9.Value;
+                    card.pokemonData.ribbonIds[10] = (byte)numRibbon10.Value;
+                    card.pokemonData.ribbonIds[11] = (byte)numRibbon11.Value;
+                    card.pokemonData.ribbonIds[12] = (byte)numRibbon12.Value;
+                    card.pokemonData.ribbonIds[13] = (byte)numRibbon13.Value;
+                    card.pokemonData.ribbonIds[14] = (byte)numRibbon14.Value;
+                    card.pokemonData.ribbonIds[15] = (byte)numRibbon15.Value;
+                    card.pokemonData.twoRibbonIds[0] = (byte)numRibbon16.Value;
+                    card.pokemonData.twoRibbonIds[1] = (byte)numRibbon17.Value;
+                    card.pokemonData.twoRibbonIds[2] = (byte)numRibbon18.Value;
+                    card.pokemonData.twoRibbonIds[3] = (byte)numRibbon19.Value;
+                    card.pokemonData.twoRibbonIds[4] = (byte)numRibbon20.Value;
+                    card.pokemonData.twoRibbonIds[5] = (byte)numRibbon21.Value;
+                    card.pokemonData.twoRibbonIds[6] = (byte)numRibbon22.Value;
+                    card.pokemonData.twoRibbonIds[7] = (byte)numRibbon23.Value;
+                    card.pokemonData.twoRibbonIds[8] = (byte)numRibbon24.Value;
+                    card.pokemonData.twoRibbonIds[9] = (byte)numRibbon25.Value;
+                    card.pokemonData.twoRibbonIds[10] = (byte)numRibbon26.Value;
+                    card.pokemonData.twoRibbonIds[11] = (byte)numRibbon27.Value;
+                    card.pokemonData.twoRibbonIds[12] = (byte)numRibbon28.Value;
+                    card.pokemonData.twoRibbonIds[13] = (byte)numRibbon29.Value;
+                    card.pokemonData.twoRibbonIds[14] = (byte)numRibbon30.Value;
+                    card.pokemonData.twoRibbonIds[15] = (byte)numRibbon31.Value;
 
                     card.pokemonData.randomValue = (uint)numPkmnSeed.Value;
                     card.pokemonData.colorRandomValue = (uint)numPkmnSeedShiny.Value;
@@ -362,7 +429,7 @@ namespace LumiTool.Forms
 
         private void TogglePokemonTabControls(bool value)
         {
-            txtPkmnNickname.Enabled = value;
+            btnPkmnNickname.Enabled = value;
             numPkmnSpecies.Enabled = value;
             numPkmnForm.Enabled = value;
             numPkmnGender.Enabled = value;
@@ -373,11 +440,10 @@ namespace LumiTool.Forms
             numPkmnShiny.Enabled = value;
             numPkmnBall.Enabled = value;
             numPkmnHeldItem.Enabled = value;
-            numPkmnLanguage.Enabled = value;
             numPkmnVersion.Enabled = value;
 
             numOTID.Enabled = value;
-            txtOTName.Enabled = value;
+            btnOTName.Enabled = value;
             numOTGender.Enabled = value;
 
             numPkmnMetArea.Enabled = value;
@@ -414,6 +480,39 @@ namespace LumiTool.Forms
             numPkmnClever.Enabled = value;
             numPkmnTough.Enabled = value;
             numPkmnSheen.Enabled = value;
+
+            numRibbon0.Enabled = value;
+            numRibbon1.Enabled = value;
+            numRibbon2.Enabled = value;
+            numRibbon3.Enabled = value;
+            numRibbon4.Enabled = value;
+            numRibbon5.Enabled = value;
+            numRibbon6.Enabled = value;
+            numRibbon7.Enabled = value;
+            numRibbon8.Enabled = value;
+            numRibbon9.Enabled = value;
+            numRibbon10.Enabled = value;
+            numRibbon11.Enabled = value;
+            numRibbon12.Enabled = value;
+            numRibbon13.Enabled = value;
+            numRibbon14.Enabled = value;
+            numRibbon15.Enabled = value;
+            numRibbon16.Enabled = value;
+            numRibbon17.Enabled = value;
+            numRibbon18.Enabled = value;
+            numRibbon19.Enabled = value;
+            numRibbon20.Enabled = value;
+            numRibbon21.Enabled = value;
+            numRibbon22.Enabled = value;
+            numRibbon23.Enabled = value;
+            numRibbon24.Enabled = value;
+            numRibbon25.Enabled = value;
+            numRibbon26.Enabled = value;
+            numRibbon27.Enabled = value;
+            numRibbon28.Enabled = value;
+            numRibbon29.Enabled = value;
+            numRibbon30.Enabled = value;
+            numRibbon31.Enabled = value;
 
             numPkmnSeed.Enabled = value;
             numPkmnSeedShiny.Enabled = value;
@@ -509,7 +608,18 @@ namespace LumiTool.Forms
 
         private void ClearPokemonTabControls()
         {
-            txtPkmnNickname.Text = string.Empty;
+            nicknameStrings = new string[9]
+            {
+                string.Empty, string.Empty, string.Empty,
+                string.Empty, string.Empty, string.Empty,
+                string.Empty, string.Empty, string.Empty,
+            };
+            nicknameLanguages = new BDSPLanguage[9]
+            {
+                BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+                BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+                BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+            };
             numPkmnSpecies.Value = 0;
             numPkmnForm.Value = 0;
             numPkmnGender.Value = 0;
@@ -520,11 +630,21 @@ namespace LumiTool.Forms
             numPkmnShiny.Value = 0;
             numPkmnBall.Value = 0;
             numPkmnHeldItem.Value = 0;
-            numPkmnLanguage.Value = 0;
             numPkmnVersion.Value = 0;
 
             numOTID.Value = 0;
-            txtOTName.Text = string.Empty;
+            otStrings = new string[9]
+            {
+                string.Empty, string.Empty, string.Empty,
+                string.Empty, string.Empty, string.Empty,
+                string.Empty, string.Empty, string.Empty,
+            };
+            otLanguages = new BDSPLanguage[9]
+            {
+                BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+                BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+                BDSPLanguage.USA, BDSPLanguage.USA, BDSPLanguage.USA,
+            };
             numOTGender.Value = 0;
 
             numPkmnMetArea.Value = 0;
@@ -561,6 +681,39 @@ namespace LumiTool.Forms
             numPkmnClever.Value = 0;
             numPkmnTough.Value = 0;
             numPkmnSheen.Value = 0;
+
+            numRibbon0.Value = 0;
+            numRibbon1.Value = 0;
+            numRibbon2.Value = 0;
+            numRibbon3.Value = 0;
+            numRibbon4.Value = 0;
+            numRibbon5.Value = 0;
+            numRibbon6.Value = 0;
+            numRibbon7.Value = 0;
+            numRibbon8.Value = 0;
+            numRibbon9.Value = 0;
+            numRibbon10.Value = 0;
+            numRibbon11.Value = 0;
+            numRibbon12.Value = 0;
+            numRibbon13.Value = 0;
+            numRibbon14.Value = 0;
+            numRibbon15.Value = 0;
+            numRibbon16.Value = 0;
+            numRibbon17.Value = 0;
+            numRibbon18.Value = 0;
+            numRibbon19.Value = 0;
+            numRibbon20.Value = 0;
+            numRibbon21.Value = 0;
+            numRibbon22.Value = 0;
+            numRibbon23.Value = 0;
+            numRibbon24.Value = 0;
+            numRibbon25.Value = 0;
+            numRibbon26.Value = 0;
+            numRibbon27.Value = 0;
+            numRibbon28.Value = 0;
+            numRibbon29.Value = 0;
+            numRibbon30.Value = 0;
+            numRibbon31.Value = 0;
 
             numPkmnSeed.Value = 0;
             numPkmnSeedShiny.Value = 0;
@@ -643,14 +796,6 @@ namespace LumiTool.Forms
             numFlagOff7.Value = 0;
         }
 
-        private string LimitText(string input, int limit)
-        {
-            if (input.Length > limit)
-                return input.Substring(0, limit);
-            else
-                return input;
-        }
-
         private void LoadWonderCard(string path)
         {
             try
@@ -677,6 +822,16 @@ namespace LumiTool.Forms
             {
                 MessageBox.Show($"Could not load a wonder card from this file. Full exception: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private (string[], BDSPLanguage[]) OpenStringLocalizer(string elementName, int lengthLimit, string[] strings, BDSPLanguage[] languages)
+        {
+            using FormLocalizedWonderCardString stringLocalizer = new FormLocalizedWonderCardString(elementName, lengthLimit, strings, languages);
+
+            if (stringLocalizer.ShowDialog() == DialogResult.OK)
+                return (stringLocalizer.ResultStrings, stringLocalizer.ResultLanguages);
+            else
+                return (strings, languages);
         }
 
         private void btnFileOpen_Click(object sender, EventArgs e)
@@ -760,14 +915,14 @@ namespace LumiTool.Forms
                 LoadWonderCard(files[0]);
         }
 
-        private void txtPkmnNickname_TextChanged(object sender, EventArgs e)
+        private void btnPkmnNickname_Click(object sender, EventArgs e)
         {
-            txtPkmnNickname.Text = LimitText(txtPkmnNickname.Text, 12);
+            (nicknameStrings, nicknameLanguages) = OpenStringLocalizer("this Pokémon's nickname", 12, nicknameStrings, nicknameLanguages);
         }
 
-        private void txtOTName_TextChanged(object sender, EventArgs e)
+        private void btnOTName_Click(object sender, EventArgs e)
         {
-            txtOTName.Text = LimitText(txtOTName.Text, 12);
+            (otStrings, otLanguages) = OpenStringLocalizer("this Pokémon's Original Trainer's name", 12, otStrings, otLanguages);
         }
 
         private void btnCRCRecalculate_Click(object sender, EventArgs e)

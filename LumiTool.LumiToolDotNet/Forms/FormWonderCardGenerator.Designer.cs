@@ -95,8 +95,6 @@ namespace LumiTool.Forms
             grpGeneral = new GroupBox();
             lbPkmnVersion = new Label();
             numPkmnVersion = new NumericUpDown();
-            lbPkmnLanguage = new Label();
-            numPkmnLanguage = new NumericUpDown();
             lbPkmnHeldItem = new Label();
             numPkmnHeldItem = new NumericUpDown();
             lbPkmnBall = new Label();
@@ -118,7 +116,7 @@ namespace LumiTool.Forms
             lbPkmnSpecies = new Label();
             numPkmnSpecies = new NumericUpDown();
             lbPkmnNickname = new Label();
-            txtPkmnNickname = new TextBox();
+            btnPkmnNickname = new Button();
             grpOther = new GroupBox();
             lbPkmnSeedShiny = new Label();
             numPkmnSeedShiny = new NumericUpDown();
@@ -128,7 +126,7 @@ namespace LumiTool.Forms
             lbOTGender = new Label();
             numOTGender = new NumericUpDown();
             lbOTName = new Label();
-            txtOTName = new TextBox();
+            btnOTName = new Button();
             lbOTID = new Label();
             numOTID = new NumericUpDown();
             tabItem = new TabPage();
@@ -308,6 +306,39 @@ namespace LumiTool.Forms
             numTextID = new NumericUpDown();
             lbDeliveryID = new Label();
             numDeliveryID = new NumericUpDown();
+            grpRibbons = new GroupBox();
+            numRibbon0 = new NumericUpDown();
+            numRibbon1 = new NumericUpDown();
+            numRibbon2 = new NumericUpDown();
+            numRibbon3 = new NumericUpDown();
+            numRibbon7 = new NumericUpDown();
+            numRibbon6 = new NumericUpDown();
+            numRibbon5 = new NumericUpDown();
+            numRibbon4 = new NumericUpDown();
+            numRibbon15 = new NumericUpDown();
+            numRibbon14 = new NumericUpDown();
+            numRibbon13 = new NumericUpDown();
+            numRibbon12 = new NumericUpDown();
+            numRibbon11 = new NumericUpDown();
+            numRibbon10 = new NumericUpDown();
+            numRibbon9 = new NumericUpDown();
+            numRibbon8 = new NumericUpDown();
+            numRibbon23 = new NumericUpDown();
+            numRibbon22 = new NumericUpDown();
+            numRibbon21 = new NumericUpDown();
+            numRibbon20 = new NumericUpDown();
+            numRibbon19 = new NumericUpDown();
+            numRibbon18 = new NumericUpDown();
+            numRibbon17 = new NumericUpDown();
+            numRibbon16 = new NumericUpDown();
+            numRibbon31 = new NumericUpDown();
+            numRibbon30 = new NumericUpDown();
+            numRibbon29 = new NumericUpDown();
+            numRibbon28 = new NumericUpDown();
+            numRibbon27 = new NumericUpDown();
+            numRibbon26 = new NumericUpDown();
+            numRibbon25 = new NumericUpDown();
+            numRibbon24 = new NumericUpDown();
             grpBinaryFile.SuspendLayout();
             tabsWonderCard.SuspendLayout();
             tabPokemon.SuspendLayout();
@@ -348,7 +379,6 @@ namespace LumiTool.Forms
             ((System.ComponentModel.ISupportInitialize)numPkmnMetArea).BeginInit();
             grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numPkmnVersion).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numPkmnLanguage).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPkmnHeldItem).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPkmnBall).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPkmnShiny).BeginInit();
@@ -475,6 +505,39 @@ namespace LumiTool.Forms
             ((System.ComponentModel.ISupportInitialize)numVersionID).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numTextID).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numDeliveryID).BeginInit();
+            grpRibbons.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRibbon0).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon15).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon14).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon13).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon12).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon11).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon10).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon9).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon23).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon22).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon21).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon20).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon19).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon18).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon17).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon16).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon31).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon30).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon29).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon28).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon27).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon26).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon25).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon24).BeginInit();
             SuspendLayout();
             // 
             // btnFileOpen
@@ -531,14 +594,15 @@ namespace LumiTool.Forms
             // 
             // tabPokemon
             // 
+            tabPokemon.Controls.Add(grpRibbons);
             tabPokemon.Controls.Add(grpContest);
             tabPokemon.Controls.Add(grpEVs);
             tabPokemon.Controls.Add(grpIVs);
+            tabPokemon.Controls.Add(grpOther);
             tabPokemon.Controls.Add(grpEggMoves);
             tabPokemon.Controls.Add(grpMoves);
             tabPokemon.Controls.Add(grpMet);
             tabPokemon.Controls.Add(grpGeneral);
-            tabPokemon.Controls.Add(grpOther);
             tabPokemon.Controls.Add(grpOT);
             tabPokemon.Location = new Point(4, 24);
             tabPokemon.Name = "tabPokemon";
@@ -565,7 +629,7 @@ namespace LumiTool.Forms
             grpContest.Location = new Point(646, 6);
             grpContest.Name = "grpContest";
             grpContest.Size = new Size(131, 197);
-            grpContest.TabIndex = 7;
+            grpContest.TabIndex = 8;
             grpContest.TabStop = false;
             grpContest.Text = "Contest";
             // 
@@ -694,7 +758,7 @@ namespace LumiTool.Forms
             grpEVs.Location = new Point(533, 6);
             grpEVs.Name = "grpEVs";
             grpEVs.Size = new Size(107, 197);
-            grpEVs.TabIndex = 6;
+            grpEVs.TabIndex = 7;
             grpEVs.TabStop = false;
             grpEVs.Text = "EVs";
             // 
@@ -823,7 +887,7 @@ namespace LumiTool.Forms
             grpIVs.Location = new Point(420, 6);
             grpIVs.Name = "grpIVs";
             grpIVs.Size = new Size(107, 197);
-            grpIVs.TabIndex = 5;
+            grpIVs.TabIndex = 6;
             grpIVs.TabStop = false;
             grpIVs.Text = "IVs";
             // 
@@ -1098,8 +1162,6 @@ namespace LumiTool.Forms
             // 
             grpGeneral.Controls.Add(lbPkmnVersion);
             grpGeneral.Controls.Add(numPkmnVersion);
-            grpGeneral.Controls.Add(lbPkmnLanguage);
-            grpGeneral.Controls.Add(numPkmnLanguage);
             grpGeneral.Controls.Add(lbPkmnHeldItem);
             grpGeneral.Controls.Add(numPkmnHeldItem);
             grpGeneral.Controls.Add(lbPkmnBall);
@@ -1121,10 +1183,10 @@ namespace LumiTool.Forms
             grpGeneral.Controls.Add(lbPkmnSpecies);
             grpGeneral.Controls.Add(numPkmnSpecies);
             grpGeneral.Controls.Add(lbPkmnNickname);
-            grpGeneral.Controls.Add(txtPkmnNickname);
+            grpGeneral.Controls.Add(btnPkmnNickname);
             grpGeneral.Location = new Point(6, 6);
             grpGeneral.Name = "grpGeneral";
-            grpGeneral.Size = new Size(193, 399);
+            grpGeneral.Size = new Size(193, 370);
             grpGeneral.TabIndex = 0;
             grpGeneral.TabStop = false;
             grpGeneral.Text = "General";
@@ -1133,7 +1195,7 @@ namespace LumiTool.Forms
             // 
             lbPkmnVersion.AutoSize = true;
             lbPkmnVersion.ForeColor = SystemColors.ControlText;
-            lbPkmnVersion.Location = new Point(25, 372);
+            lbPkmnVersion.Location = new Point(25, 343);
             lbPkmnVersion.Name = "lbPkmnVersion";
             lbPkmnVersion.Size = new Size(48, 15);
             lbPkmnVersion.TabIndex = 24;
@@ -1141,29 +1203,11 @@ namespace LumiTool.Forms
             // 
             // numPkmnVersion
             // 
-            numPkmnVersion.Location = new Point(79, 370);
+            numPkmnVersion.Location = new Point(79, 341);
             numPkmnVersion.Maximum = new decimal(new int[] { -1, 0, 0, 0 });
             numPkmnVersion.Name = "numPkmnVersion";
             numPkmnVersion.Size = new Size(108, 23);
             numPkmnVersion.TabIndex = 25;
-            // 
-            // lbPkmnLanguage
-            // 
-            lbPkmnLanguage.AutoSize = true;
-            lbPkmnLanguage.ForeColor = SystemColors.ControlText;
-            lbPkmnLanguage.Location = new Point(11, 343);
-            lbPkmnLanguage.Name = "lbPkmnLanguage";
-            lbPkmnLanguage.Size = new Size(62, 15);
-            lbPkmnLanguage.TabIndex = 22;
-            lbPkmnLanguage.Text = "Language:";
-            // 
-            // numPkmnLanguage
-            // 
-            numPkmnLanguage.Location = new Point(79, 341);
-            numPkmnLanguage.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
-            numPkmnLanguage.Name = "numPkmnLanguage";
-            numPkmnLanguage.Size = new Size(108, 23);
-            numPkmnLanguage.TabIndex = 23;
             // 
             // lbPkmnHeldItem
             // 
@@ -1355,14 +1399,15 @@ namespace LumiTool.Forms
             lbPkmnNickname.TabIndex = 0;
             lbPkmnNickname.Text = "Nickname:";
             // 
-            // txtPkmnNickname
+            // btnPkmnNickname
             // 
-            txtPkmnNickname.Location = new Point(79, 21);
-            txtPkmnNickname.MaxLength = 12;
-            txtPkmnNickname.Name = "txtPkmnNickname";
-            txtPkmnNickname.Size = new Size(108, 23);
-            txtPkmnNickname.TabIndex = 1;
-            txtPkmnNickname.TextChanged += txtPkmnNickname_TextChanged;
+            btnPkmnNickname.Location = new Point(79, 21);
+            btnPkmnNickname.Name = "btnPkmnNickname";
+            btnPkmnNickname.Size = new Size(108, 23);
+            btnPkmnNickname.TabIndex = 26;
+            btnPkmnNickname.Text = "Localize...";
+            btnPkmnNickname.UseVisualStyleBackColor = true;
+            btnPkmnNickname.Click += btnPkmnNickname_Click;
             // 
             // grpOther
             // 
@@ -1370,10 +1415,10 @@ namespace LumiTool.Forms
             grpOther.Controls.Add(numPkmnSeedShiny);
             grpOther.Controls.Add(lbPkmnSeed);
             grpOther.Controls.Add(numPkmnSeed);
-            grpOther.Location = new Point(420, 209);
+            grpOther.Location = new Point(6, 382);
             grpOther.Name = "grpOther";
-            grpOther.Size = new Size(193, 79);
-            grpOther.TabIndex = 8;
+            grpOther.Size = new Size(408, 47);
+            grpOther.TabIndex = 5;
             grpOther.TabStop = false;
             grpOther.Text = "Other";
             // 
@@ -1381,7 +1426,7 @@ namespace LumiTool.Forms
             // 
             lbPkmnSeedShiny.AutoSize = true;
             lbPkmnSeedShiny.ForeColor = SystemColors.ControlText;
-            lbPkmnSeedShiny.Location = new Point(6, 52);
+            lbPkmnSeedShiny.Location = new Point(221, 19);
             lbPkmnSeedShiny.Name = "lbPkmnSeedShiny";
             lbPkmnSeedShiny.Size = new Size(67, 15);
             lbPkmnSeedShiny.TabIndex = 2;
@@ -1389,7 +1434,7 @@ namespace LumiTool.Forms
             // 
             // numPkmnSeedShiny
             // 
-            numPkmnSeedShiny.Location = new Point(79, 50);
+            numPkmnSeedShiny.Location = new Point(294, 17);
             numPkmnSeedShiny.Maximum = new decimal(new int[] { -1, 0, 0, 0 });
             numPkmnSeedShiny.Name = "numPkmnSeedShiny";
             numPkmnSeedShiny.Size = new Size(108, 23);
@@ -1399,7 +1444,7 @@ namespace LumiTool.Forms
             // 
             lbPkmnSeed.AutoSize = true;
             lbPkmnSeed.ForeColor = SystemColors.ControlText;
-            lbPkmnSeed.Location = new Point(38, 24);
+            lbPkmnSeed.Location = new Point(38, 19);
             lbPkmnSeed.Name = "lbPkmnSeed";
             lbPkmnSeed.Size = new Size(35, 15);
             lbPkmnSeed.TabIndex = 0;
@@ -1407,7 +1452,7 @@ namespace LumiTool.Forms
             // 
             // numPkmnSeed
             // 
-            numPkmnSeed.Location = new Point(79, 21);
+            numPkmnSeed.Location = new Point(79, 17);
             numPkmnSeed.Maximum = new decimal(new int[] { -1, 0, 0, 0 });
             numPkmnSeed.Name = "numPkmnSeed";
             numPkmnSeed.Size = new Size(108, 23);
@@ -1418,7 +1463,7 @@ namespace LumiTool.Forms
             grpOT.Controls.Add(lbOTGender);
             grpOT.Controls.Add(numOTGender);
             grpOT.Controls.Add(lbOTName);
-            grpOT.Controls.Add(txtOTName);
+            grpOT.Controls.Add(btnOTName);
             grpOT.Controls.Add(lbOTID);
             grpOT.Controls.Add(numOTID);
             grpOT.Location = new Point(205, 6);
@@ -1456,14 +1501,15 @@ namespace LumiTool.Forms
             lbOTName.TabIndex = 2;
             lbOTName.Text = "Trainer Name:";
             // 
-            // txtOTName
+            // btnOTName
             // 
-            txtOTName.Location = new Point(95, 51);
-            txtOTName.MaxLength = 12;
-            txtOTName.Name = "txtOTName";
-            txtOTName.Size = new Size(108, 23);
-            txtOTName.TabIndex = 3;
-            txtOTName.TextChanged += txtOTName_TextChanged;
+            btnOTName.Location = new Point(95, 51);
+            btnOTName.Name = "btnOTName";
+            btnOTName.Size = new Size(108, 23);
+            btnOTName.TabIndex = 27;
+            btnOTName.Text = "Localize...";
+            btnOTName.UseVisualStyleBackColor = true;
+            btnOTName.Click += btnOTName_Click;
             // 
             // lbOTID
             // 
@@ -3248,6 +3294,303 @@ namespace LumiTool.Forms
             numDeliveryID.Size = new Size(128, 23);
             numDeliveryID.TabIndex = 3;
             // 
+            // grpRibbons
+            // 
+            grpRibbons.Controls.Add(numRibbon31);
+            grpRibbons.Controls.Add(numRibbon30);
+            grpRibbons.Controls.Add(numRibbon29);
+            grpRibbons.Controls.Add(numRibbon28);
+            grpRibbons.Controls.Add(numRibbon27);
+            grpRibbons.Controls.Add(numRibbon26);
+            grpRibbons.Controls.Add(numRibbon25);
+            grpRibbons.Controls.Add(numRibbon24);
+            grpRibbons.Controls.Add(numRibbon23);
+            grpRibbons.Controls.Add(numRibbon22);
+            grpRibbons.Controls.Add(numRibbon21);
+            grpRibbons.Controls.Add(numRibbon20);
+            grpRibbons.Controls.Add(numRibbon19);
+            grpRibbons.Controls.Add(numRibbon18);
+            grpRibbons.Controls.Add(numRibbon17);
+            grpRibbons.Controls.Add(numRibbon16);
+            grpRibbons.Controls.Add(numRibbon15);
+            grpRibbons.Controls.Add(numRibbon14);
+            grpRibbons.Controls.Add(numRibbon13);
+            grpRibbons.Controls.Add(numRibbon12);
+            grpRibbons.Controls.Add(numRibbon11);
+            grpRibbons.Controls.Add(numRibbon10);
+            grpRibbons.Controls.Add(numRibbon9);
+            grpRibbons.Controls.Add(numRibbon8);
+            grpRibbons.Controls.Add(numRibbon7);
+            grpRibbons.Controls.Add(numRibbon6);
+            grpRibbons.Controls.Add(numRibbon5);
+            grpRibbons.Controls.Add(numRibbon4);
+            grpRibbons.Controls.Add(numRibbon3);
+            grpRibbons.Controls.Add(numRibbon2);
+            grpRibbons.Controls.Add(numRibbon1);
+            grpRibbons.Controls.Add(numRibbon0);
+            grpRibbons.Location = new Point(420, 209);
+            grpRibbons.Name = "grpRibbons";
+            grpRibbons.Size = new Size(426, 137);
+            grpRibbons.TabIndex = 9;
+            grpRibbons.TabStop = false;
+            grpRibbons.Text = "Ribbons";
+            // 
+            // numRibbon0
+            // 
+            numRibbon0.Location = new Point(4, 21);
+            numRibbon0.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon0.Name = "numRibbon0";
+            numRibbon0.Size = new Size(47, 23);
+            numRibbon0.TabIndex = 0;
+            // 
+            // numRibbon1
+            // 
+            numRibbon1.Location = new Point(57, 21);
+            numRibbon1.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon1.Name = "numRibbon1";
+            numRibbon1.Size = new Size(47, 23);
+            numRibbon1.TabIndex = 1;
+            // 
+            // numRibbon2
+            // 
+            numRibbon2.Location = new Point(110, 21);
+            numRibbon2.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon2.Name = "numRibbon2";
+            numRibbon2.Size = new Size(47, 23);
+            numRibbon2.TabIndex = 2;
+            // 
+            // numRibbon3
+            // 
+            numRibbon3.Location = new Point(163, 21);
+            numRibbon3.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon3.Name = "numRibbon3";
+            numRibbon3.Size = new Size(47, 23);
+            numRibbon3.TabIndex = 3;
+            // 
+            // numRibbon7
+            // 
+            numRibbon7.Location = new Point(375, 21);
+            numRibbon7.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon7.Name = "numRibbon7";
+            numRibbon7.Size = new Size(47, 23);
+            numRibbon7.TabIndex = 7;
+            // 
+            // numRibbon6
+            // 
+            numRibbon6.Location = new Point(322, 21);
+            numRibbon6.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon6.Name = "numRibbon6";
+            numRibbon6.Size = new Size(47, 23);
+            numRibbon6.TabIndex = 6;
+            // 
+            // numRibbon5
+            // 
+            numRibbon5.Location = new Point(269, 21);
+            numRibbon5.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon5.Name = "numRibbon5";
+            numRibbon5.Size = new Size(47, 23);
+            numRibbon5.TabIndex = 5;
+            // 
+            // numRibbon4
+            // 
+            numRibbon4.Location = new Point(216, 21);
+            numRibbon4.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon4.Name = "numRibbon4";
+            numRibbon4.Size = new Size(47, 23);
+            numRibbon4.TabIndex = 4;
+            // 
+            // numRibbon15
+            // 
+            numRibbon15.Location = new Point(375, 50);
+            numRibbon15.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon15.Name = "numRibbon15";
+            numRibbon15.Size = new Size(47, 23);
+            numRibbon15.TabIndex = 15;
+            // 
+            // numRibbon14
+            // 
+            numRibbon14.Location = new Point(322, 50);
+            numRibbon14.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon14.Name = "numRibbon14";
+            numRibbon14.Size = new Size(47, 23);
+            numRibbon14.TabIndex = 14;
+            // 
+            // numRibbon13
+            // 
+            numRibbon13.Location = new Point(269, 50);
+            numRibbon13.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon13.Name = "numRibbon13";
+            numRibbon13.Size = new Size(47, 23);
+            numRibbon13.TabIndex = 13;
+            // 
+            // numRibbon12
+            // 
+            numRibbon12.Location = new Point(216, 50);
+            numRibbon12.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon12.Name = "numRibbon12";
+            numRibbon12.Size = new Size(47, 23);
+            numRibbon12.TabIndex = 12;
+            // 
+            // numRibbon11
+            // 
+            numRibbon11.Location = new Point(163, 50);
+            numRibbon11.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon11.Name = "numRibbon11";
+            numRibbon11.Size = new Size(47, 23);
+            numRibbon11.TabIndex = 11;
+            // 
+            // numRibbon10
+            // 
+            numRibbon10.Location = new Point(110, 50);
+            numRibbon10.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon10.Name = "numRibbon10";
+            numRibbon10.Size = new Size(47, 23);
+            numRibbon10.TabIndex = 10;
+            // 
+            // numRibbon9
+            // 
+            numRibbon9.Location = new Point(57, 50);
+            numRibbon9.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon9.Name = "numRibbon9";
+            numRibbon9.Size = new Size(47, 23);
+            numRibbon9.TabIndex = 9;
+            // 
+            // numRibbon8
+            // 
+            numRibbon8.Location = new Point(4, 50);
+            numRibbon8.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon8.Name = "numRibbon8";
+            numRibbon8.Size = new Size(47, 23);
+            numRibbon8.TabIndex = 8;
+            // 
+            // numRibbon23
+            // 
+            numRibbon23.Location = new Point(375, 79);
+            numRibbon23.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon23.Name = "numRibbon23";
+            numRibbon23.Size = new Size(47, 23);
+            numRibbon23.TabIndex = 23;
+            // 
+            // numRibbon22
+            // 
+            numRibbon22.Location = new Point(322, 79);
+            numRibbon22.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon22.Name = "numRibbon22";
+            numRibbon22.Size = new Size(47, 23);
+            numRibbon22.TabIndex = 22;
+            // 
+            // numRibbon21
+            // 
+            numRibbon21.Location = new Point(269, 79);
+            numRibbon21.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon21.Name = "numRibbon21";
+            numRibbon21.Size = new Size(47, 23);
+            numRibbon21.TabIndex = 21;
+            // 
+            // numRibbon20
+            // 
+            numRibbon20.Location = new Point(216, 79);
+            numRibbon20.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon20.Name = "numRibbon20";
+            numRibbon20.Size = new Size(47, 23);
+            numRibbon20.TabIndex = 20;
+            // 
+            // numRibbon19
+            // 
+            numRibbon19.Location = new Point(163, 79);
+            numRibbon19.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon19.Name = "numRibbon19";
+            numRibbon19.Size = new Size(47, 23);
+            numRibbon19.TabIndex = 19;
+            // 
+            // numRibbon18
+            // 
+            numRibbon18.Location = new Point(110, 79);
+            numRibbon18.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon18.Name = "numRibbon18";
+            numRibbon18.Size = new Size(47, 23);
+            numRibbon18.TabIndex = 18;
+            // 
+            // numRibbon17
+            // 
+            numRibbon17.Location = new Point(57, 79);
+            numRibbon17.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon17.Name = "numRibbon17";
+            numRibbon17.Size = new Size(47, 23);
+            numRibbon17.TabIndex = 17;
+            // 
+            // numRibbon16
+            // 
+            numRibbon16.Location = new Point(4, 79);
+            numRibbon16.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon16.Name = "numRibbon16";
+            numRibbon16.Size = new Size(47, 23);
+            numRibbon16.TabIndex = 16;
+            // 
+            // numRibbon31
+            // 
+            numRibbon31.Location = new Point(375, 108);
+            numRibbon31.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon31.Name = "numRibbon31";
+            numRibbon31.Size = new Size(47, 23);
+            numRibbon31.TabIndex = 31;
+            // 
+            // numRibbon30
+            // 
+            numRibbon30.Location = new Point(322, 108);
+            numRibbon30.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon30.Name = "numRibbon30";
+            numRibbon30.Size = new Size(47, 23);
+            numRibbon30.TabIndex = 30;
+            // 
+            // numRibbon29
+            // 
+            numRibbon29.Location = new Point(269, 108);
+            numRibbon29.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon29.Name = "numRibbon29";
+            numRibbon29.Size = new Size(47, 23);
+            numRibbon29.TabIndex = 29;
+            // 
+            // numRibbon28
+            // 
+            numRibbon28.Location = new Point(216, 108);
+            numRibbon28.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon28.Name = "numRibbon28";
+            numRibbon28.Size = new Size(47, 23);
+            numRibbon28.TabIndex = 28;
+            // 
+            // numRibbon27
+            // 
+            numRibbon27.Location = new Point(163, 108);
+            numRibbon27.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon27.Name = "numRibbon27";
+            numRibbon27.Size = new Size(47, 23);
+            numRibbon27.TabIndex = 27;
+            // 
+            // numRibbon26
+            // 
+            numRibbon26.Location = new Point(110, 108);
+            numRibbon26.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon26.Name = "numRibbon26";
+            numRibbon26.Size = new Size(47, 23);
+            numRibbon26.TabIndex = 26;
+            // 
+            // numRibbon25
+            // 
+            numRibbon25.Location = new Point(57, 108);
+            numRibbon25.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon25.Name = "numRibbon25";
+            numRibbon25.Size = new Size(47, 23);
+            numRibbon25.TabIndex = 25;
+            // 
+            // numRibbon24
+            // 
+            numRibbon24.Location = new Point(4, 108);
+            numRibbon24.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRibbon24.Name = "numRibbon24";
+            numRibbon24.Size = new Size(47, 23);
+            numRibbon24.TabIndex = 24;
+            // 
             // FormWonderCardGenerator
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3310,7 +3653,6 @@ namespace LumiTool.Forms
             grpGeneral.ResumeLayout(false);
             grpGeneral.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numPkmnVersion).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numPkmnLanguage).EndInit();
             ((System.ComponentModel.ISupportInitialize)numPkmnHeldItem).EndInit();
             ((System.ComponentModel.ISupportInitialize)numPkmnBall).EndInit();
             ((System.ComponentModel.ISupportInitialize)numPkmnShiny).EndInit();
@@ -3483,6 +3825,39 @@ namespace LumiTool.Forms
             ((System.ComponentModel.ISupportInitialize)numVersionID).EndInit();
             ((System.ComponentModel.ISupportInitialize)numTextID).EndInit();
             ((System.ComponentModel.ISupportInitialize)numDeliveryID).EndInit();
+            grpRibbons.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numRibbon0).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon15).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon14).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon13).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon12).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon11).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon10).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon9).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon23).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon22).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon21).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon20).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon19).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon18).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon17).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon16).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon31).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon30).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon29).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon28).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon27).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon26).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon25).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRibbon24).EndInit();
             ResumeLayout(false);
         }
 
@@ -3673,7 +4048,6 @@ namespace LumiTool.Forms
         private Label lbOTGender;
         private NumericUpDown numOTGender;
         private Label lbOTName;
-        private TextBox txtOTName;
         private GroupBox grpOther;
         private Label lbPkmnSeedShiny;
         private NumericUpDown numPkmnSeedShiny;
@@ -3699,7 +4073,6 @@ namespace LumiTool.Forms
         private Label lbPkmnSpecies;
         private NumericUpDown numPkmnSpecies;
         private Label lbPkmnNickname;
-        private TextBox txtPkmnNickname;
         private GroupBox grpMet;
         private Label lbPkmnCaughtArea;
         private NumericUpDown numPkmnCaughtArea;
@@ -3711,8 +4084,6 @@ namespace LumiTool.Forms
         private NumericUpDown numPkmnBall;
         private Label lbPkmnCaughtLevel;
         private NumericUpDown numPkmnCaughtLevel;
-        private Label lbPkmnLanguage;
-        private NumericUpDown numPkmnLanguage;
         private GroupBox grpEggMoves;
         private NumericUpDown numPkmnEggMove4;
         private NumericUpDown numPkmnEggMove3;
@@ -3765,5 +4136,40 @@ namespace LumiTool.Forms
         private TextBox txtCRC;
         private Label lbCRC;
         private Button btnCRCRecalculate;
+        private Button btnPkmnNickname;
+        private Button btnOTName;
+        private GroupBox grpRibbons;
+        private NumericUpDown numRibbon31;
+        private NumericUpDown numRibbon30;
+        private NumericUpDown numRibbon29;
+        private NumericUpDown numRibbon28;
+        private NumericUpDown numRibbon27;
+        private NumericUpDown numRibbon26;
+        private NumericUpDown numRibbon25;
+        private NumericUpDown numRibbon24;
+        private NumericUpDown numRibbon23;
+        private NumericUpDown numRibbon22;
+        private NumericUpDown numRibbon21;
+        private NumericUpDown numRibbon20;
+        private NumericUpDown numRibbon19;
+        private NumericUpDown numRibbon18;
+        private NumericUpDown numRibbon17;
+        private NumericUpDown numRibbon16;
+        private NumericUpDown numRibbon15;
+        private NumericUpDown numRibbon14;
+        private NumericUpDown numRibbon13;
+        private NumericUpDown numRibbon12;
+        private NumericUpDown numRibbon11;
+        private NumericUpDown numRibbon10;
+        private NumericUpDown numRibbon9;
+        private NumericUpDown numRibbon8;
+        private NumericUpDown numRibbon7;
+        private NumericUpDown numRibbon6;
+        private NumericUpDown numRibbon5;
+        private NumericUpDown numRibbon4;
+        private NumericUpDown numRibbon3;
+        private NumericUpDown numRibbon2;
+        private NumericUpDown numRibbon1;
+        private NumericUpDown numRibbon0;
     }
 }
